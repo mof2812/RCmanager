@@ -1,0 +1,17 @@
+DL_SCRIPTVERSION
+1
+38585
+
+DL.ClearCommWindows  
+
+While TRUE
+Wend                         
+
+
+Sub DL_OnReceive()
+	msgBuffer = DL.OnReceive_GetName()
+	
+	If  msgBuffer = "Clear Screen" Then 
+		DL.ClearCommWindows
+	End If	
+End Sub
