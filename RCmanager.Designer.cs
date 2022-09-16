@@ -29,11 +29,14 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RCmanager));
             this.tabRelayCard = new System.Windows.Forms.TabControl();
             this.tabSheetSwitchingCard = new System.Windows.Forms.TabPage();
             this.relayCard = new RelayCard.RelayCard();
             this.tabSheetPowerSupply = new System.Windows.Forms.TabPage();
             this.relayCardPowerSupply = new RelayCard.RelayCard();
+            this.tabMonitoring1 = new System.Windows.Forms.TabPage();
+            this.tabMonitoring2 = new System.Windows.Forms.TabPage();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMainSettings = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,6 +45,8 @@
             this.menuMainSettingsViewNightMode = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.serialCommunication = new SerialCommunication.SerialCommunication(this.components);
+            this.ledAllOff = new Bulb.LedBulb();
+            this.lblAllOff = new System.Windows.Forms.Label();
             this.tabRelayCard.SuspendLayout();
             this.tabSheetSwitchingCard.SuspendLayout();
             this.tabSheetPowerSupply.SuspendLayout();
@@ -52,6 +57,8 @@
             // 
             this.tabRelayCard.Controls.Add(this.tabSheetSwitchingCard);
             this.tabRelayCard.Controls.Add(this.tabSheetPowerSupply);
+            this.tabRelayCard.Controls.Add(this.tabMonitoring1);
+            this.tabRelayCard.Controls.Add(this.tabMonitoring2);
             this.tabRelayCard.Location = new System.Drawing.Point(3, 58);
             this.tabRelayCard.Name = "tabRelayCard";
             this.tabRelayCard.SelectedIndex = 0;
@@ -96,6 +103,26 @@
             this.relayCardPowerSupply.Name = "relayCardPowerSupply";
             this.relayCardPowerSupply.Size = new System.Drawing.Size(1408, 1013);
             this.relayCardPowerSupply.TabIndex = 0;
+            // 
+            // tabMonitoring1
+            // 
+            this.tabMonitoring1.Location = new System.Drawing.Point(4, 29);
+            this.tabMonitoring1.Name = "tabMonitoring1";
+            this.tabMonitoring1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabMonitoring1.Size = new System.Drawing.Size(1425, 1026);
+            this.tabMonitoring1.TabIndex = 2;
+            this.tabMonitoring1.Text = "Monitor 1";
+            this.tabMonitoring1.UseVisualStyleBackColor = true;
+            // 
+            // tabMonitoring2
+            // 
+            this.tabMonitoring2.Location = new System.Drawing.Point(4, 29);
+            this.tabMonitoring2.Name = "tabMonitoring2";
+            this.tabMonitoring2.Padding = new System.Windows.Forms.Padding(3);
+            this.tabMonitoring2.Size = new System.Drawing.Size(1425, 1026);
+            this.tabMonitoring2.TabIndex = 3;
+            this.tabMonitoring2.Text = "Monitor 2";
+            this.tabMonitoring2.UseVisualStyleBackColor = true;
             // 
             // menuMain
             // 
@@ -165,20 +192,41 @@
             this.serialCommunication.DefaultDatabits = ((byte)(8));
             this.serialCommunication.DefaultSerialPort = "COM1";
             this.serialCommunication.DefaultStopbits = System.IO.Ports.StopBits.One;
-            this.serialCommunication.UseDelimiters = true;
             this.serialCommunication.SmallVersion = true;
+            this.serialCommunication.UseDelimiters = true;
+            // 
+            // ledAllOff
+            // 
+            this.ledAllOff.Location = new System.Drawing.Point(1212, 43);
+            this.ledAllOff.Name = "ledAllOff";
+            this.ledAllOff.On = true;
+            this.ledAllOff.Size = new System.Drawing.Size(42, 36);
+            this.ledAllOff.TabIndex = 3;
+            this.ledAllOff.Text = "ledBulb1";
+            // 
+            // lblAllOff
+            // 
+            this.lblAllOff.AutoSize = true;
+            this.lblAllOff.Location = new System.Drawing.Point(1257, 51);
+            this.lblAllOff.Name = "lblAllOff";
+            this.lblAllOff.Size = new System.Drawing.Size(170, 20);
+            this.lblAllOff.TabIndex = 4;
+            this.lblAllOff.Text = "Alle Kanäle abschalten";
             // 
             // RCmanager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1438, 1144);
+            this.Controls.Add(this.lblAllOff);
+            this.Controls.Add(this.ledAllOff);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabRelayCard);
             this.Controls.Add(this.menuMain);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuMain;
             this.Name = "RCmanager";
-            this.Text = "Form1";
+            this.Text = "Steuerzentral für Relaiskarten";
             this.tabRelayCard.ResumeLayout(false);
             this.tabSheetSwitchingCard.ResumeLayout(false);
             this.tabSheetPowerSupply.ResumeLayout(false);
@@ -204,6 +252,10 @@
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripMenuItem menuMainSettingsView;
         private System.Windows.Forms.ToolStripMenuItem menuMainSettingsViewNightMode;
+        private System.Windows.Forms.TabPage tabMonitoring1;
+        private System.Windows.Forms.TabPage tabMonitoring2;
+        private Bulb.LedBulb ledAllOff;
+        private System.Windows.Forms.Label lblAllOff;
     }
 }
 
