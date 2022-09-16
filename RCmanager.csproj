@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0D9F1A58-360C-4442-8949-4B34343D41E3}</ProjectGuid>
+    <ProjectGuid>{040BE346-CC06-4DBB-824D-166A1B169203}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>RCmanager</RootNamespace>
     <AssemblyName>RCmanager</AssemblyName>
@@ -47,87 +47,71 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Communication.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="CommunicationRelayControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="DebugControl.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="DebugControl.Designer.cs">
-      <DependentUpon>DebugControl.cs</DependentUpon>
-    </Compile>
     <Compile Include="LedBulb.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="LedBulb.Designer.cs">
       <DependentUpon>LedBulb.cs</DependentUpon>
     </Compile>
-    <Compile Include="Properties\DebugCtrl.cs" />
-    <Compile Include="Properties\DebugCtrl.Designer.cs">
+    <Compile Include="MySettings.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MySettings.designer.cs">
+      <DependentUpon>MySettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MySettings.user.cs" />
+    <Compile Include="Properties\SerialSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>DebugCtrl.settings</DependentUpon>
+      <DependentUpon>SerialSettings.settings</DependentUpon>
     </Compile>
-    <Compile Include="Main.cs">
+    <Compile Include="RCmanager.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Main.Designer.cs">
-      <DependentUpon>Main.cs</DependentUpon>
+    <Compile Include="RCmanager.Designer.cs">
+      <DependentUpon>RCmanager.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Properties\SetupSerialSettings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>SetupSerialSettings.settings</DependentUpon>
-    </Compile>
-    <Compile Include="RelayCard16.cs">
+    <Compile Include="Relay.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="RelayCard16.Designer.cs">
-      <DependentUpon>RelayCard16.cs</DependentUpon>
+    <Compile Include="Relay.Designer.cs">
+      <DependentUpon>Relay.cs</DependentUpon>
     </Compile>
-    <Compile Include="RelayControl.cs">
+    <Compile Include="RelayCard.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="RelayControl.Designer.cs">
-      <DependentUpon>RelayControl.cs</DependentUpon>
+    <Compile Include="RelayCard.Designer.cs">
+      <DependentUpon>RelayCard.cs</DependentUpon>
     </Compile>
-    <Compile Include="RelayControlSettings.cs">
+    <Compile Include="RelaySettingsDlg.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="RelayControlSettings.Designer.cs">
-      <DependentUpon>RelayControlSettings.cs</DependentUpon>
-    </Compile>
-    <Compile Include="RelayControl8.cs">
-      <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="RelayControl8.Designer.cs">
-      <DependentUpon>RelayControl8.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Properties\SerialPortSettings.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTimeSharedInput>True</DesignTimeSharedInput>
-      <DependentUpon>SerialPortSettings.settings</DependentUpon>
+    <Compile Include="RelaySettingsDlg.designer.cs">
+      <DependentUpon>RelaySettingsDlg.cs</DependentUpon>
     </Compile>
     <Compile Include="Serial.cs">
-      <SubType>UserControl</SubType>
+      <SubType>Component</SubType>
     </Compile>
-    <Compile Include="SetupSerial.cs">
+    <Compile Include="SerialCommunication.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SerialCommunication.Designer.cs">
+      <DependentUpon>SerialCommunication.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SerialCommunication_User.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="SetupSerialDlg.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="SetupSerial.Designer.cs">
-      <DependentUpon>SetupSerial.cs</DependentUpon>
+    <Compile Include="SetupSerialDlg.Designer.cs">
+      <DependentUpon>SetupSerialDlg.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="DebugControl.resx">
-      <DependentUpon>DebugControl.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Main.resx">
-      <DependentUpon>Main.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="Version.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -137,29 +121,24 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="RelayCard16.resx">
-      <DependentUpon>RelayCard16.cs</DependentUpon>
+    <EmbeddedResource Include="RCmanager.resx">
+      <DependentUpon>RCmanager.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RelayControl.resx">
-      <DependentUpon>RelayControl.cs</DependentUpon>
+    <EmbeddedResource Include="Relay.resx">
+      <DependentUpon>Relay.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RelayControlSettings.resx">
-      <DependentUpon>RelayControlSettings.cs</DependentUpon>
+    <EmbeddedResource Include="RelayCard.resx">
+      <DependentUpon>RelayCard.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="RelayControl8.resx">
-      <DependentUpon>RelayControl8.cs</DependentUpon>
+    <EmbeddedResource Include="RelaySettingsDlg.resx">
+      <DependentUpon>RelaySettingsDlg.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="SetupSerial.resx">
-      <DependentUpon>SetupSerial.cs</DependentUpon>
+    <EmbeddedResource Include="SerialCommunication.resx">
+      <DependentUpon>SerialCommunication.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="Properties\DebugCtrl.settings">
+    <None Include="Properties\SerialSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>DebugCtrl.Designer.cs</LastGenOutput>
-    </None>
-    <None Include="Properties\SetupSerialSettings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>SetupSerialSettings.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>SetupSerial</CustomToolNamespace>
+      <LastGenOutput>SerialSettings.Designer.cs</LastGenOutput>
     </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -170,11 +149,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <None Include="Properties\SerialPortSettings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>SerialPortSettings.Designer.cs</LastGenOutput>
-      <CustomToolNamespace>RelayCard16</CustomToolNamespace>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
