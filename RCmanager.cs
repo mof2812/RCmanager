@@ -68,6 +68,61 @@ namespace RCmanager
 
             return Return;
         }
+        private RETURN_T GetRelayParameter(byte Channel, ref Relay.PARAMS_T RelayParams)
+        {
+            RETURN_T Return;
+            byte Module;
+            byte RelayChannel;
+
+            Return = RETURN_T.OKAY;
+            Module = (byte)(Channel / Constants.CHANNELS);
+            RelayChannel = (byte)(Channel % Constants.CHANNELS);
+
+            switch (Module)
+            {
+                case 0:
+                    Return = (RETURN_T)relayCard.GetRelayParameter(RelayChannel, ref RelayParams);
+                    break;
+
+                case 1:
+                    Return = (RETURN_T)relayCardPowerSupply.GetRelayParameter(RelayChannel, ref RelayParams);
+                    break;
+
+                default:
+                    Return = RETURN_T.INVALIDE_CHANNEL;
+                    break;
+            }
+
+            return Return;
+        }
+        private RETURN_T GetSignalName(byte Channel, ref string SignalName)
+        {
+            RETURN_T Return;
+            byte Module;
+            byte RelayChannel;
+
+            Return = RETURN_T.OKAY;
+            SignalName = "";
+            Module = (byte)(Channel / Constants.CHANNELS);
+            RelayChannel = (byte)(Channel % Constants.CHANNELS);
+
+            switch (Module)
+            {
+                case 0:
+                    Return = (RETURN_T)relayCard.GetSignalName(RelayChannel, ref SignalName);
+                    break;
+
+                case 1:
+                    Return = (RETURN_T)relayCardPowerSupply.GetSignalName(RelayChannel, ref SignalName);
+                    break;
+
+                default:
+                    Return = RETURN_T.INVALIDE_CHANNEL;
+                    break;
+            }
+
+            return Return;
+        }
         private RETURN_T Init()
         {
             RETURN_T Return;
@@ -92,6 +147,8 @@ namespace RCmanager
 
             if (Return == RETURN_T.OKAY)
             {
+                // Init the monitoring routines
+                Init_Monitoring();
                 // Get the configuration of all relays
                 GetConfig(255);
             }
@@ -104,6 +161,8 @@ namespace RCmanager
             Return = RETURN_T.OKAY;
 
             serialCommunication.Init_Communication();
+
+            serialCommunication.SetAction(SerialCommunication.ACTION_T.GET_OUTPUT_STATES, true);
 
             // AddEvent
             serialCommunication.FrameReceived += FrameReceived;
@@ -134,6 +193,34 @@ namespace RCmanager
             Return = RETURN_T.OKAY;
 
             menuMainSettingsViewNightMode.Checked = Properties.Settings.Default.NightMode;
+
+            return Return;
+        }
+        private RETURN_T Init_Monitoring()
+        {
+            RETURN_T Return;
+            string SignalName;
+            byte Index;
+            Relay.PARAMS_T RelayParams = new Relay.PARAMS_T();
+
+            Return = RETURN_T.OKAY;
+            SignalName = "";
+
+            relayCardMonitoring1.InitMonitoring(menuMainSettingsViewNightMode.Checked);
+//            relayCardMonitoring2.InitMonitoring(menuMainSettingsViewNightMode.Checked);
+
+            for (Index = 0; (Index < Constants.MODULES * Constants.CHANNELS) && (Return == RETURN_T.OKAY); Index++)
+            {
+                if (Return == RETURN_T.OKAY)
+                {
+                    Return = GetRelayParameter(Index, ref RelayParams);
+
+                    if (Return == RETURN_T.OKAY)
+                    {
+                        relayCardMonitoring1.InitRelayMonitoring(Index, RelayParams);
+                    }
+                }
+            }
 
             return Return;
         }
@@ -302,6 +389,9 @@ namespace RCmanager
                             break;
                     }
                     break;
+                    case SerialCommunication.ACTION_T.GET_OUTPUT_STATES:
+                        relayCardMonitoring1.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
+                    break;
                 default:
                     break;
             }
@@ -359,6 +449,10 @@ namespace RCmanager
             }
         }
         #endregion
+        private void RCmanager_Load(object sender, EventArgs e)
+        {
+            //Init();
+        }
     }
     static class Constants
     {

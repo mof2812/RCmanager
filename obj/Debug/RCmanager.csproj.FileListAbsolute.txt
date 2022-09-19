@@ -28,3 +28,6 @@ F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager - V1.000
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager - V1.000\V2.000\bin\Debug\RCmanager.exe.config
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager - V1.000\V2.000\bin\Debug\RCmanager.exe
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager - V1.000\V2.000\bin\Debug\RCmanager.pdb
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RelayCardMonitoring.RelayCardMonitoring.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RelayMonitoring.RelayMonitoring.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\TriggerMonitoring.TriggerMonitoring.resources

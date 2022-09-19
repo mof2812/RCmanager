@@ -16,7 +16,7 @@ namespace RelayMonitoring
     }
     public partial class RelayMonitoring : UserControl
     {
-        protected PARAM_T Param;
+        public Relay.PARAMS_T Params;
 
         public RelayMonitoring()
         {
@@ -36,7 +36,7 @@ namespace RelayMonitoring
         {
             get
             {
-                return Param.NightMode;
+                return Params.NightMode;
             }
             set
             {
@@ -53,6 +53,17 @@ namespace RelayMonitoring
             set 
             { 
                 ledStatus.On = value; 
+            }
+        }
+        public Relay.PARAMS_T Parameter
+        {
+            get
+            {
+                return Params;
+            }
+            set 
+            { 
+                Params = value;
             }
         }
         public string SignalName

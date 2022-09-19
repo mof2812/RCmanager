@@ -45,6 +45,9 @@ namespace SerialCommunication
                 case ACTION_T.GET_CONFIG:
                     WaitFor = RECEIVE_WAIT_FOR_T.DATA;
                     break;
+                case ACTION_T.GET_OUTPUT_STATES:
+                    WaitFor = RECEIVE_WAIT_FOR_T.DATA;
+                    break;
                 #endregion
                 default:
                     break;
@@ -57,7 +60,14 @@ namespace SerialCommunication
             byte Channel;
 
             Frame = "";
-            Channel = Convert.ToByte(Params.ParameterExecuting[0]);
+            if (Params.ParameterExecuting[0] != "")
+            {
+                Channel = Convert.ToByte(Params.ParameterExecuting[0]);
+            }
+            else
+            {
+                Channel = 0;
+            }
 
             switch (Params.ActionExecuting)
             {
@@ -67,6 +77,11 @@ namespace SerialCommunication
                     Frame = Channel < 8 ? $"GSWCONFIG {Channel}" : $"GPSPCONFIG {Channel % 8}";
                     break;
                 #endregion
+                #region GET_OUTPUT_STATES
+                case ACTION_T.GET_OUTPUT_STATES:
+                    Frame = Channel == 0 ? $"GSTATES" : "";
+                    break;
+                #endregion /* GET_OUTPUT_STATES */
                 #region ACTION_T.SET_ASYNCHRONOUS_MODE
                 case ACTION_T.SET_ASYNCHRONOUS_MODE:
                     if (Params.ParameterExecuting[1].Length > 0)

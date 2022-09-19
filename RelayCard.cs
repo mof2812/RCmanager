@@ -139,6 +139,41 @@ namespace RelayCard
 
             return relay;
         }
+        public RETURN_T GetRelayParameter(byte Channel, ref Relay.PARAMS_T RelayParams)
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+
+            if (Channel < RCmanager.Constants.CHANNELS)
+            {
+                RelayParams = GetRelay(Channel).GetParams();
+            }
+            else
+            {
+                Return = RETURN_T.INVALIDE_CHANNEL;
+            }
+
+            return Return;
+        }
+        public RETURN_T GetSignalName(byte Channel, ref string SignalName)
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+            SignalName = "";
+            
+            if (Channel < RCmanager.Constants.CHANNELS)
+            {
+                SignalName = GetRelay(Channel).GetSignalName();
+            }
+            else
+            {
+                Return = RETURN_T.INVALIDE_CHANNEL;
+            }
+
+            return Return;
+        }
         public RETURN_T Init(byte Module, bool NightMode)
         {
             RETURN_T Return;

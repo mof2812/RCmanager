@@ -30,6 +30,21 @@ namespace RelayCardMonitoring
         private void Init()
         {
         }
+        public void InitMonitoring(bool NightMode)
+        {
+            this.NightMode = NightMode;
+        }
+        public bool InitRelayMonitoring(byte Index, Relay.PARAMS_T Params)
+        {
+            bool Error;
+
+            Error = false;
+
+            GetRelayMonitoring(Index).Params = Params;
+            GetRelayMonitoring(Index).SignalName = Params.SignalLabel;
+
+            return Error;
+        }
         public void Monitoring(UInt32 RelayStates)
         {
             for (byte Index = 0; Index < 16; Index++)

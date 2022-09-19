@@ -85,6 +85,18 @@
     <Compile Include="RelayCard.Designer.cs">
       <DependentUpon>RelayCard.cs</DependentUpon>
     </Compile>
+    <Compile Include="RelayCardMonitoring.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RelayCardMonitoring.Designer.cs">
+      <DependentUpon>RelayCardMonitoring.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RelayMonitoring.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RelayMonitoring.Designer.cs">
+      <DependentUpon>RelayMonitoring.cs</DependentUpon>
+    </Compile>
     <Compile Include="RelaySettingsDlg.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -109,6 +121,12 @@
     <Compile Include="SetupSerialDlg.Designer.cs">
       <DependentUpon>SetupSerialDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="TriggerMonitoring.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TriggerMonitoring.Designer.cs">
+      <DependentUpon>TriggerMonitoring.cs</DependentUpon>
+    </Compile>
     <Compile Include="Version.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -130,11 +148,20 @@
     <EmbeddedResource Include="RelayCard.resx">
       <DependentUpon>RelayCard.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="RelayCardMonitoring.resx">
+      <DependentUpon>RelayCardMonitoring.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RelayMonitoring.resx">
+      <DependentUpon>RelayMonitoring.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="RelaySettingsDlg.resx">
       <DependentUpon>RelaySettingsDlg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SerialCommunication.resx">
       <DependentUpon>SerialCommunication.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TriggerMonitoring.resx">
+      <DependentUpon>TriggerMonitoring.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\SerialSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

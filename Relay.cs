@@ -126,7 +126,7 @@ namespace Relay
             {
                 if (MySetup.settings.SignalLabel != value)
                 {
-                    MySetup.settings.SignalLabel = value;
+                    MySetup.settings.SignalLabel = Params.SignalLabel = value;
                     chartRelay.Series[0].Label = MySetup.settings.SignalLabel;
 
                     MySetup.Save();
@@ -434,6 +434,14 @@ namespace Relay
 
             return Return;
         }
+        public PARAMS_T GetParams()
+        {
+            return Params;
+        }
+        public string GetSignalName()
+        {
+            return Params.SignalLabel = chartRelay.Series[0].Name;
+        }
         public RETURN_T Init(byte Channel, bool NightMode)
         {
             RETURN_T Return;
@@ -444,6 +452,8 @@ namespace Relay
             Params.NightMode = NightMode;
 
             Init_Settings();
+
+            Params.SignalLabel = MySetup.settings.SignalLabel;
 
             Return = Init_Chart();
 
@@ -603,7 +613,7 @@ namespace Relay
         }
         private void SetSettings()
         {
-            chartRelay.Series[0].Name = MySetup.settings.SignalLabel;
+            chartRelay.Series[0].Name = Params.SignalLabel = MySetup.settings.SignalLabel;
             ledEnable.On = Params.Enabled;
             ledInvertingMode.On = Params.InvertedMode;
             ledTriggerMode.On = Params.Triggering;
@@ -688,7 +698,6 @@ namespace Relay
         {
             SetParameterRelayEventArgs Args = new SetParameterRelayEventArgs();
 
-//            Args.Channel = (byte)(Params.Channel - 1);
             Args.Channel = (byte)(e.Params.Channel - 1);
             Args.Parameter = e.Parameter;
             Args.Mode = e.Mode;
@@ -703,18 +712,38 @@ namespace Relay
 
         private void ledEnable_Click(object sender, EventArgs e)
         {
+            SetParameterRelayEventArgs Args = new SetParameterRelayEventArgs();
+
             ledEnable.On = Params.Enabled = !Params.Enabled;
 
             SetSettings();
             Draw();
+
+            /* Send Message to parent */
+            Args.Channel = (byte)(Params.Channel - 1);
+            Args.Parameter = WHICH_PARAMETER_T.ENABLE;
+            Args.Mode = ledEnable.On ? MODE_T.ON : MODE_T.OFF;
+            Args.Params = Params;
+
+            OnSetParmeterRelay(Args);
         }
 
         private void ledInvertingMode_Click(object sender, EventArgs e)
         {
+            SetParameterRelayEventArgs Args = new SetParameterRelayEventArgs();
+
             ledInvertingMode.On = Params.InvertedMode = !Params.InvertedMode;
 
             SetSettings();
             Draw();
+
+            /* Send Message to parent */
+            Args.Channel = (byte)(Params.Channel - 1);
+            Args.Parameter = WHICH_PARAMETER_T.INVERTING_MODE;
+            Args.Mode = ledInvertingMode.On ? MODE_T.ON : MODE_T.OFF;
+            Args.Params = Params;
+
+            OnSetParmeterRelay(Args);
         }
     }
     public class SetParameterRelayEventArgs : EventArgs
