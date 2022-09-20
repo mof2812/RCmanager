@@ -16,6 +16,8 @@ namespace Relay
         ASYNCHRONOUS_MODE,
         DELAY_TIME_MS,
         ENABLE,
+        ENABLE_ALL,
+        ENABLE_CARD,
         IMMEDIATE_MODE,
         INVERTING_MODE,
         MODE,

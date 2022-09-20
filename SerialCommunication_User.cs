@@ -10,6 +10,7 @@ namespace SerialCommunication
     public enum ACTION_T
     {
         NONE = 0,
+        ENABLE_ALL,
         GET_CONFIG,
         GET_COUNTER,
         GET_ENABLE,
@@ -23,6 +24,7 @@ namespace SerialCommunication
         SET_COUNTER,
         SET_DELAY_TIME_MS,
         SET_ENABLE,
+        SET_ENABLE_CARD,
         SET_IMMEDIATE_MODE,
         SET_INVERTING_MODE,
         SET_MODE,
@@ -42,6 +44,11 @@ namespace SerialCommunication
             switch (Action)
             {
                 #region USER_PART
+                case ACTION_T.ENABLE_ALL:
+                case ACTION_T.SET_ENABLE:
+                case ACTION_T.SET_ENABLE_CARD:
+                    WaitFor = RECEIVE_WAIT_FOR_T.OK;
+                    break;
                 case ACTION_T.GET_CONFIG:
                     WaitFor = RECEIVE_WAIT_FOR_T.DATA;
                     break;
@@ -72,6 +79,24 @@ namespace SerialCommunication
             switch (Params.ActionExecuting)
             {
                 #region USER_PART
+                #region ACTION_T.ENABLE_ALL
+                case ACTION_T.ENABLE_ALL:
+                    if (Params.ParameterExecuting[1].Length > 0)
+                    {
+                        if (Params.ParameterExecuting[1] != "0")
+                        {
+                            Params.ParameterExecuting[1] = "1";
+                        }
+                    }
+                    else
+                    {
+                        Params.ParameterExecuting[1] = "0";
+                    }
+                    //#pragma warning disable CS1690 // Beim Zugriff auf ein Element zu einem Feld einer "Marshal by Reference"-Klasse kann eine Laufzeitausnahme ausgelöst werden
+                    Frame = $"EA {Params.ParameterExecuting[1]} ";
+                    //#pragma warning restore CS1690 // Beim Zugriff auf ein Element zu einem Feld einer "Marshal by Reference"-Klasse kann eine Laufzeitausnahme ausgelöst werden
+                    break;
+                #endregion
                 #region ACTION_T.GET_CONFIG
                 case ACTION_T.GET_CONFIG:
                     Frame = Channel < 8 ? $"GSWCONFIG {Channel}" : $"GPSPCONFIG {Channel % 8}";
@@ -131,6 +156,24 @@ namespace SerialCommunication
                     Frame = Channel < 8 ? $"SSWE {Channel} " : $"SPSPE {Channel % 8} ";
                     Frame += Params.ParameterExecuting[1];
 //#pragma warning restore CS1690 // Beim Zugriff auf ein Element zu einem Feld einer "Marshal by Reference"-Klasse kann eine Laufzeitausnahme ausgelöst werden
+                    break;
+                #endregion
+                #region ACTION_T.SET_ENABLE_CARD
+                case ACTION_T.SET_ENABLE_CARD:
+                    if (Params.ParameterExecuting[1].Length > 0)
+                    {
+                        if (Params.ParameterExecuting[1] != "0")
+                        {
+                            Params.ParameterExecuting[1] = "1";
+                        }
+                    }
+                    else
+                    {
+                        Params.ParameterExecuting[1] = "0";
+                    }
+                    //#pragma warning disable CS1690 // Beim Zugriff auf ein Element zu einem Feld einer "Marshal by Reference"-Klasse kann eine Laufzeitausnahme ausgelöst werden
+                    Frame = Params.ParameterExecuting[2] == "0" ? $"SSWEA {Params.ParameterExecuting[1]} " : $"SPSPEA {Params.ParameterExecuting[1]} ";
+                    //#pragma warning restore CS1690 // Beim Zugriff auf ein Element zu einem Feld einer "Marshal by Reference"-Klasse kann eine Laufzeitausnahme ausgelöst werden
                     break;
                 #endregion
                 #region ACTION_T.SET_IMMEDIATE_MODE

@@ -448,6 +448,10 @@ namespace SerialCommunication
 
             return RetVal;
         }
+        private void CommunicationTask_ClearReceiveBuffer()
+        {
+            ComPort.DiscardInBuffer();
+        }
         private bool CommunicationTask_Evaluate(ref PARAMS_T Params)
         {
             FrameReceivedEventArgs Args = new FrameReceivedEventArgs();
@@ -469,14 +473,23 @@ namespace SerialCommunication
             Callback = RECEIVE_RETURN_T.ERROR;
 
             WaitFor = Receive(Params.ActionExecuting);
+            
+            switch (WaitFor)
+            {
+                case RECEIVE_WAIT_FOR_T.NONE:
+                    Callback = RECEIVE_RETURN_T.OKAY;
+                    break;
 
-            if (WaitFor == RECEIVE_WAIT_FOR_T.NONE)
-            {
-                Callback = RECEIVE_RETURN_T.OKAY;
-            }
-            else
-            {
-                Callback = CommunicationTask_WaitForData();
+                case RECEIVE_WAIT_FOR_T.DATA:
+                    Callback = CommunicationTask_WaitForData();
+                    break;
+
+                case RECEIVE_WAIT_FOR_T.OK:
+                    Callback = CommunicationTask_WaitForOkay();
+                    break;
+
+                default:
+                    break;
             }
 
             return Callback;
@@ -737,6 +750,9 @@ namespace SerialCommunication
 
             if (!Error)
             {
+                // Clear input buffer
+                CommunicationTask_ClearReceiveBuffer();
+
                 Write(Frame);
             }
 
@@ -758,6 +774,31 @@ namespace SerialCommunication
                     break;
 
                 case RECEIVE_RETURN_T.DATA_FRAME:
+                    RetVal = RECEIVE_RETURN_T.OKAY;
+                    break;
+
+                default:
+                    break;
+            }
+
+            return RetVal;
+        }
+        private RECEIVE_RETURN_T CommunicationTask_WaitForOkay()
+        {
+            RECEIVE_RETURN_T RetVal;
+            RECEIVE_RETURN_T Callback;
+
+            RetVal = RECEIVE_RETURN_T.ERROR;
+
+            Callback = RCmanager.Properties.SerialSettings.Default.UseDelimiters ? CommunicationTask_ReceiveFrame(ref Params.ReceivedData) : CommunicationTask_ReceiveRawFrame(ref Params.ReceivedData);
+
+            switch (Callback)
+            {
+                case RECEIVE_RETURN_T.BUSY:
+                    RetVal = RECEIVE_RETURN_T.BUSY;
+                    break;
+
+                case RECEIVE_RETURN_T.OK_FRAME:
                     RetVal = RECEIVE_RETURN_T.OKAY;
                     break;
 

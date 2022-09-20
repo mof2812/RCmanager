@@ -48,6 +48,8 @@
             this.lblAllOff = new System.Windows.Forms.Label();
             this.ledAllOff = new Bulb.LedBulb();
             this.serialCommunication = new SerialCommunication.SerialCommunication(this.components);
+            this.lblAllCardChannelsOff = new System.Windows.Forms.Label();
+            this.ledAllCardChannelsOff = new Bulb.LedBulb();
             this.tabRelayCard.SuspendLayout();
             this.tabSheetSwitchingCard.SuspendLayout();
             this.tabSheetPowerSupply.SuspendLayout();
@@ -78,6 +80,7 @@
             this.tabSheetSwitchingCard.TabIndex = 0;
             this.tabSheetSwitchingCard.Text = "Schaltkanäle";
             this.tabSheetSwitchingCard.UseVisualStyleBackColor = true;
+            this.tabSheetSwitchingCard.Enter += new System.EventHandler(this.tabSheetSwitchingCard_Enter);
             // 
             // relayCard
             // 
@@ -97,6 +100,7 @@
             this.tabSheetPowerSupply.TabIndex = 1;
             this.tabSheetPowerSupply.Text = "Netzteil";
             this.tabSheetPowerSupply.UseVisualStyleBackColor = true;
+            this.tabSheetPowerSupply.Enter += new System.EventHandler(this.tabSheetPowerSupply_Enter);
             // 
             // relayCardPowerSupply
             // 
@@ -116,6 +120,7 @@
             this.tabMonitoring1.TabIndex = 2;
             this.tabMonitoring1.Text = "Monitor 1";
             this.tabMonitoring1.UseVisualStyleBackColor = true;
+            this.tabMonitoring1.Enter += new System.EventHandler(this.tabMonitoring1_Enter);
             // 
             // relayCardMonitoring1
             // 
@@ -135,6 +140,7 @@
             this.tabMonitoring2.TabIndex = 3;
             this.tabMonitoring2.Text = "Monitor 2";
             this.tabMonitoring2.UseVisualStyleBackColor = true;
+            this.tabMonitoring2.Enter += new System.EventHandler(this.tabMonitoring2_Enter);
             // 
             // menuMain
             // 
@@ -205,6 +211,7 @@
             this.lblAllOff.Size = new System.Drawing.Size(170, 20);
             this.lblAllOff.TabIndex = 4;
             this.lblAllOff.Text = "Alle Kanäle abschalten";
+            this.lblAllOff.Click += new System.EventHandler(this.ledAllOff_Click);
             // 
             // ledAllOff
             // 
@@ -214,6 +221,7 @@
             this.ledAllOff.Size = new System.Drawing.Size(42, 36);
             this.ledAllOff.TabIndex = 3;
             this.ledAllOff.Text = "ledBulb1";
+            this.ledAllOff.Click += new System.EventHandler(this.ledAllOff_Click);
             // 
             // serialCommunication
             // 
@@ -225,11 +233,32 @@
             this.serialCommunication.SmallVersion = true;
             this.serialCommunication.UseDelimiters = true;
             // 
+            // lblAllCardChannelsOff
+            // 
+            this.lblAllCardChannelsOff.AutoSize = true;
+            this.lblAllCardChannelsOff.Location = new System.Drawing.Point(919, 51);
+            this.lblAllCardChannelsOff.Name = "lblAllCardChannelsOff";
+            this.lblAllCardChannelsOff.Size = new System.Drawing.Size(213, 20);
+            this.lblAllCardChannelsOff.TabIndex = 6;
+            this.lblAllCardChannelsOff.Text = "Alle Schaltkanäle abschalten";
+            // 
+            // ledAllCardChannelsOff
+            // 
+            this.ledAllCardChannelsOff.Location = new System.Drawing.Point(874, 43);
+            this.ledAllCardChannelsOff.Name = "ledAllCardChannelsOff";
+            this.ledAllCardChannelsOff.On = true;
+            this.ledAllCardChannelsOff.Size = new System.Drawing.Size(42, 36);
+            this.ledAllCardChannelsOff.TabIndex = 5;
+            this.ledAllCardChannelsOff.Text = "ledBulb1";
+            this.ledAllCardChannelsOff.Click += new System.EventHandler(this.ledAllCardChannelsOff_Click);
+            // 
             // RCmanager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1438, 1144);
+            this.Controls.Add(this.lblAllCardChannelsOff);
+            this.Controls.Add(this.ledAllCardChannelsOff);
             this.Controls.Add(this.lblAllOff);
             this.Controls.Add(this.ledAllOff);
             this.Controls.Add(this.statusStrip1);
@@ -271,6 +300,8 @@
         private Bulb.LedBulb ledAllOff;
         private System.Windows.Forms.Label lblAllOff;
         private RelayCardMonitoring.RelayCardMonitoring relayCardMonitoring1;
+        private System.Windows.Forms.Label lblAllCardChannelsOff;
+        private Bulb.LedBulb ledAllCardChannelsOff;
     }
 }
 

@@ -453,6 +453,43 @@ namespace RCmanager
         {
             //Init();
         }
+        private void ledAllOff_Click(object sender, EventArgs e)
+        {
+            serialCommunication.SetAction(SerialCommunication.ACTION_T.ENABLE_ALL, 0, 0, 0, 0, 0, false);
+
+            GetConfig(255);
+        }
+        private void ledAllCardChannelsOff_Click(object sender, EventArgs e)
+        {
+            if (lblAllCardChannelsOff.Text == "Alle Schaltkanäle abschalten")
+            {
+                serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_ENABLE_CARD, 0, 0, 0, 0, 0, false);
+            }
+            else
+            {
+                serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_ENABLE_CARD, 0, 0, 1, 0, 0, false);
+            }
+
+            GetConfig(255);
+        }
+        private void tabSheetSwitchingCard_Enter(object sender, EventArgs e)
+        {
+            ledAllCardChannelsOff.Visible = lblAllCardChannelsOff.Visible = true;
+            lblAllCardChannelsOff.Text = "Alle Schaltkanäle abschalten";
+        }
+        private void tabSheetPowerSupply_Enter(object sender, EventArgs e)
+        {
+            ledAllCardChannelsOff.Visible = lblAllCardChannelsOff.Visible = true;
+            lblAllCardChannelsOff.Text = "Alle Netzteil-Schaltkanäle abschalten";
+        }
+        private void tabMonitoring1_Enter(object sender, EventArgs e)
+        {
+            ledAllCardChannelsOff.Visible = lblAllCardChannelsOff.Visible = false;
+        }
+        private void tabMonitoring2_Enter(object sender, EventArgs e)
+        {
+            ledAllCardChannelsOff.Visible = lblAllCardChannelsOff.Visible = false;
+        }
     }
     static class Constants
     {

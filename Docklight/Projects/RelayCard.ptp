@@ -24,204 +24,204 @@ CHANNELALIAS
 
 SEND
 0
+EA - Enable All <0,1>
+02 45 41 20 ## 03
+0
+5
+
+SEND
+1
+-------------------------------------------------------
+02 03
+0
+5
+
+SEND
+2
 GCFG - GetConFiG <ENABLE>
 02 47 43 46 47 20 ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## 03
 0
 5
 
 SEND
-1
+3
 GCFG - GetConFiG ENABLE
 02 47 43 46 47 20 45 4E 41 42 4C 45 03
 0
 5
 
 SEND
-2
+4
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-3
+5
 GPSPAF - GetPowerSuPplyAsynchronousFlag <0,1,...7>
 02 47 50 53 50 41 46 20 ## ## 03
 0
 5
 
 SEND
-4
+6
 GPSPAF - GetPowerSuPplyAsynchronousFlag 0
 02 47 50 53 50 41 46 20 30 03
 0
 5
 
 SEND
-5
+7
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-6
+8
 GPSPC - GetPowerSuPplyCounter <0,1,...7>
 02 47 50 53 50 43 20 ## ## 03
 0
 5
 
 SEND
-7
+9
 GPSPC - GetPowerSuPplyCounter 0
 02 47 50 53 50 43 20 30 03
 0
 5
 
 SEND
-8
+10
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-9
+11
 GPSPCA - GetPowerSuPplyCounterActual <0,1,...7>
 02 47 50 53 50 43 41 20 ## ## 03
 0
 5
 
 SEND
-10
+12
 GPSPCA - GetPowerSuPplyCounterActual 0
 02 47 50 53 50 43 41 20 30 03
 0
 5
 
 SEND
-11
+13
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-12
+14
 GPSPCONFIG - GetPowerSuPplyCONFIGuration <0,1,...7>
 02 47 50 53 50 43 4F 4E 46 49 47 20 ## ## 03
 0
 5
 
 SEND
-13
+15
 GPSPCONFIG - GetPowerSuPplyCONFIGuration 0
 02 47 50 53 50 43 4F 4E 46 49 47 20 30 03
 0
 5
 
 SEND
-14
+16
 GPSPCONFIG - GetPowerSuPplyCONFIGuration 5
 02 47 50 53 50 43 4F 4E 46 49 47 20 35 03
 0
 5
 
 SEND
-15
+17
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-16
+18
 GPSPE - GetPowerSuPplyEnable <0,1,...7>
 02 47 50 53 50 45 20 ## ## 03
 0
 5
 
 SEND
-17
+19
 GPSPE - GetPowerSuPplyEnable 0
 02 47 50 53 50 45 20 30 03
 0
 5
 
 SEND
-18
+20
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-19
+21
 GPSPIF - GetPowerSuPplyImmediateFlag <0,1,...7>
 02 47 50 53 50 49 46 20 ## ## 03
 0
 5
 
 SEND
-20
+22
 GPSPIF - GetPowerSuPplyImmediateFlag 0
 02 47 50 53 50 49 46 20 30 03
 0
 5
 
 SEND
-21
+23
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-22
+24
 GPSPM - GetPowerSuPplyMode <0,1,...7>
 02 47 50 53 50 4D 20 ## ## 03
 0
 5
 
 SEND
-23
+25
 GPSPM - GetPowerSuPplyMode 0
 02 47 50 53 50 4D 20 30 03
 0
 5
 
 SEND
-24
+26
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-25
+27
 GPSPNF - GetPowerSuPplyNegationFlag <0,1,...7>
 02 47 50 53 50 4E 46 20 ## ## 03
 0
 5
 
 SEND
-26
+28
 GPSPNF - GetPowerSuPplyNegationFlag 0
 02 47 50 53 50 4E 46 20 30 03
-0
-5
-
-SEND
-27
--------------------------------------------------------
-02 03
-0
-5
-
-SEND
-28
-GPSPS - GetPowerSuPplyoutputStates
-02 47 50 53 50 53 03
 0
 5
 
@@ -234,29 +234,29 @@ SEND
 
 SEND
 30
-GPSPT - GetPowerSuPplyTiming <0,1,...7>
-02 47 50 53 50 54 20 ## ## 03
+GPSPS - GetPowerSuPplyoutputStates
+02 47 50 53 50 53 03
 0
 5
 
 SEND
 31
-GPSPT - GetPowerSuPplyTiming 0
-02 47 50 53 50 54 20 30 03
-0
-5
-
-SEND
-32
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
+32
+GPSPT - GetPowerSuPplyTiming <0,1,...7>
+02 47 50 53 50 54 20 ## ## 03
+0
+5
+
+SEND
 33
-GSTATES - GetoutputSTATES
-02 47 53 54 41 54 45 53 03
+GPSPT - GetPowerSuPplyTiming 0
+02 47 50 53 50 54 20 30 03
 0
 5
 
@@ -269,176 +269,176 @@ SEND
 
 SEND
 35
+GSTATES - GetoutputSTATES
+02 47 53 54 41 54 45 53 03
+0
+5
+
+SEND
+36
+-------------------------------------------------------
+02 03
+0
+5
+
+SEND
+37
 GSWAF - GetSWitchAsynchronousFlag <0,1,...7>
 02 47 53 57 41 46 20 ## ## 03
 0
 5
 
 SEND
-36
+38
 GSWAF - GetSWitchAsynchronousFlag 0
 02 47 53 57 41 46 20 30 03
 0
 5
 
 SEND
-37
+39
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-38
+40
 GSWC - GetSWitchCounter <0,1,...7>
 02 47 53 57 43 20 ## ## 03
 0
 5
 
 SEND
-39
+41
 GSWC - GetSWitchCounter 0
 02 47 53 57 43 20 30 03
 0
 5
 
 SEND
-40
+42
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-41
+43
 GSWCA - GetSWitchCounterActual <0,1,...7>
 02 47 53 57 43 41 20 ## ## 03
 0
 5
 
 SEND
-42
+44
 GSWCA - GetSWitchCounterActual 0
 02 47 53 57 43 41 20 30 03
 0
 5
 
 SEND
-43
+45
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-44
+46
 GSWCONFIG - GetSWitchCONFIGuration <0,1,...7>
 02 47 53 57 43 4F 4E 46 49 47 20 ## ## 03
 0
 5
 
 SEND
-45
+47
 GSWCONFIG - GetSWitchCONFIGuration 0
 02 47 53 57 43 4F 4E 46 49 47 20 30 03
 0
 5
 
 SEND
-46
+48
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-47
+49
 GSWE - GetSWitchEnable <0,1,...7>
 02 47 53 57 45 20 ## ## 03
 0
 5
 
 SEND
-48
+50
 GSWE - GetSWitchEnable 0
 02 47 53 57 45 20 30 03
 0
 5
 
 SEND
-49
+51
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-50
+52
 GSWIF - GetSWitchImmediateFlag <0,1,...7>
 02 47 53 57 49 46 20 ## ## 03
 0
 5
 
 SEND
-51
+53
 GSWIF - GetSWitchImmediateFlag 0
 02 47 53 57 49 46 20 30 03
 0
 5
 
 SEND
-52
+54
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-53
+55
 GSWM - GetSWitchMode <0,1,...7>
 02 47 53 57 4D 20 ## ## 03
 0
 5
 
 SEND
-54
+56
 GSWM - GetSWitchMode 0
 02 47 53 57 4D 20 30 03
 0
 5
 
 SEND
-55
+57
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-56
+58
 GSWNF - GetSWitchNegationFlag <0,1,...7>
 02 47 53 57 4E 46 20 ## ## 03
 0
 5
 
 SEND
-57
+59
 GSWNF - GetSWitchNegationFlag 0
 02 47 53 57 4E 46 20 30 03
-0
-5
-
-SEND
-58
--------------------------------------------------------
-02 03
-0
-5
-
-SEND
-59
-GSWS - GetSWitchoutputStates
-02 47 53 57 53 03
 0
 5
 
@@ -451,134 +451,134 @@ SEND
 
 SEND
 61
+GSWS - GetSWitchoutputStates
+02 47 53 57 53 03
+0
+5
+
+SEND
+62
+-------------------------------------------------------
+02 03
+0
+5
+
+SEND
+63
 GSWT - GetSWitchTiming <0,1,...7>
 02 47 53 57 54 20 ## ## 03
 0
 5
 
 SEND
-62
+64
 GSWT - GetSWitchTiming 0
 02 47 53 57 54 20 30 03
 0
 5
 
 SEND
-63
+65
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-64
+66
 GTRGE - GetTriggerCONFIGuration <0,1,...3>
 02 47 54 52 47 43 4F 4E 46 49 47 20 ## 03
 0
 5
 
 SEND
-65
+67
 GTRGE - GetTriggerCONFIGuration 0
 02 47 54 52 47 43 4F 4E 46 49 47 20 30 03
 0
 5
 
 SEND
-66
+68
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-67
+69
 GTRGE - GetTriggerEnable <0,1,...3>
 02 47 54 52 47 45 20 ## 03
 0
 5
 
 SEND
-68
+70
 GTRGE - GetTriggerEnable 0
 02 47 54 52 47 45 20 30 03
 0
 5
 
 SEND
-69
+71
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-70
+72
 GTRGL - GetTriggerLevel <0,1,...3>
 02 47 54 52 47 4C 20 ## 03
 0
 5
 
 SEND
-71
+73
 GTRGL - GetTriggerLevel 0
 02 47 54 52 47 4C 20 30 03
 0
 5
 
 SEND
-72
+74
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-73
+75
 GTRGM - GetTriggerMode <0,1,...3>
 02 47 54 52 47 4D 20 ## 03
 0
 5
 
 SEND
-74
+76
 GTRGM - GetTriggerMode 0
 02 47 54 52 47 4D 20 30 03
 0
 5
 
 SEND
-75
+77
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-76
+78
 GTRGR - GetTriggerRetrigger <0,1,...3>
 02 47 54 52 47 52 20 ## 03
 0
 5
 
 SEND
-77
+79
 GTRGR - GetTriggerRetrigger 0
 02 47 54 52 47 52 20 30 03
-0
-5
-
-SEND
-78
--------------------------------------------------------
-02 03
-0
-5
-
-SEND
-79
-HELP
-02 48 45 4C 50 03
 0
 5
 
@@ -591,8 +591,8 @@ SEND
 
 SEND
 81
-INFO
-02 49 4E 46 4F 03
+HELP
+02 48 45 4C 50 03
 0
 5
 
@@ -605,505 +605,505 @@ SEND
 
 SEND
 83
+INFO
+02 49 4E 46 4F 03
+0
+5
+
+SEND
+84
+-------------------------------------------------------
+02 03
+0
+5
+
+SEND
+85
 SCFG - SetConFiG <ENABLE> <Data>
 02 53 43 46 47 20 ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 03
 0
 5
 
 SEND
-84
+86
 SCFG - SetConFiG ENABLE <Data>
 02 53 43 46 47 20 45 4E 41 42 4C 45 20 ## ## ## ## ## ## ## ## 03
 0
 5
 
 SEND
-85
+87
 SCFG - SetConFiG ENABLE 0
 02 53 43 46 47 20 45 4E 41 42 4C 45 20 30 03
 0
 5
 
 SEND
-86
+88
 SCFG - SetConFiG ENABLE 1
 02 53 43 46 47 20 45 4E 41 42 4C 45 20 31 03
 0
 5
 
 SEND
-87
+89
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-88
+90
 SPSPCONFIG - SetPowerSuPplyCONFiG <0,1,...7> <ENABLE> <Mode> <OnTime> <OffTime> <OffsetTime> <Counter> <Asynchronous flag> <Immediate flag> <Negation flag> <Triggerkanal> <Trigger flag>
 02 53 50 53 50 43 4F 4E 46 49 47 20 ## 20 ## 20 ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## 20 ## 20 ## 20 ## ## ## 20 ## 03
 0
 5
 
 SEND
-89
+91
 SPSPCONFIG - SetPowerSuPplyCONFiG 0 <ENABLE> <Mode> <OnTime> <OffTime> <OffsetTime> <Counter> <Asynchronous flag> <Immediate flag> <Negation flag> <Triggerkanal> <Trigger flag>
 02 53 50 53 50 43 4F 4E 46 49 47 20 30 20 ## 20 ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## 20 ## 20 ## 20 ## ## ## 20 ## 03
 0
 5
 
 SEND
-90
+92
 SPSPCONFIG - SetPowerSuPplyCONFiG <0,1,...7> 0 TOGGLE 500 500 0 5 0 1 0 0 0
 02 53 50 53 50 43 4F 4E 46 49 47 20 ## 20 31 20 54 4F 47 47 4C 45 20 35 30 30 20 35 30 30 20 30 20 35 20 30 20 31 20 30 20 30 20 30 03
 0
 5
 
 SEND
-91
+93
 SPSPCONFIG - SetPowerSuPplyCONFiG 5 0 TOGGLE 500 500 0 5 0 1 0 0 0
 02 53 50 53 50 43 4F 4E 46 49 47 20 35 20 31 20 54 4F 47 47 4C 45 20 35 30 30 20 35 30 30 20 30 20 35 20 30 20 31 20 30 20 30 20 30 03
 0
 5
 
 SEND
-92
+94
 SPSPCONFIG - SetPowerSuPplyCONFiG 3 0 TOGGLE 500 500 0 5 0 1 0 0 0
 02 53 50 53 50 43 4F 4E 46 49 47 20 33 20 31 20 54 4F 47 47 4C 45 20 35 30 30 20 35 30 30 20 30 20 35 20 30 20 31 20 30 20 30 20 30 03
 0
 5
 
 SEND
-93
+95
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-94
+96
 SPSPAF - SetPowerSuPplyAsynchronousFlag <0,1,...7> <0,1>
 02 53 50 53 50 41 46 20 ## ## 20 ## 03
 0
 5
 
 SEND
-95
+97
 SPSPAF - SetPowerSuPplyAsynchronousFlag 0 0
 02 53 50 53 50 41 46 20 30 20 30 03
 0
 5
 
 SEND
-96
+98
 SPSPAF - SetPowerSuPplyAsynchronousFlag 0 1
 02 53 50 53 50 41 46 20 30 20 31 03
 0
 5
 
 SEND
-97
+99
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-98
+100
 SPSPC - SetPowerSuPplyCounter <0,1,...7> <Counter>
 02 53 50 53 50 43 20 ## ## 20 ## ## ## ## ## ## ## ## 03
 0
 5
 
 SEND
-99
+101
 SPSPC - SetPowerSuPplyCounter 0 <Counter>
 02 53 50 53 50 43 20 30 20 ## ## ## ## ## ## ## ## 03
 0
 5
 
 SEND
-100
+102
 SPSPC - SetPowerSuPplyCounter 0 5
 02 53 50 53 50 43 20 30 20 35 03
 0
 5
 
 SEND
-101
+103
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-102
+104
 SPSPE - SetPowerSuPplyEnable <0,1,...7> <0,1>
 02 53 50 53 50 45 20 ## ## 20 ## 03
 0
 5
 
 SEND
-103
+105
 SPSPE - SetPowerSuPplyEnable 0 <0,1>
 02 53 50 53 50 45 20 30 20 ## 03
 0
 5
 
 SEND
-104
+106
 SPSPE - SetPowerSuPplyEnable 0 0
 02 53 50 53 50 45 20 30 20 30 03
 0
 5
 
 SEND
-105
+107
 SPSPE - SetPowerSuPplyEnable 0 1
 02 53 50 53 50 45 20 30 20 31 03
 0
 5
 
 SEND
-106
+108
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-107
+109
 SPSPIF - SetPowerSuPplyImmediateFlag <0,1,...7> <0,1>
 02 53 50 53 50 49 46 20 ## ## 20 ## 03
 0
 5
 
 SEND
-108
+110
 SPSPIF - SetPowerSuPplyImmediateFlag 0 0
 02 53 50 53 50 49 46 20 30 20 30 03
 0
 5
 
 SEND
-109
+111
 SPSPIF - SetPowerSuPplyImmediateFlag 0 1
 02 53 50 53 50 49 46 20 30 20 31 03
 0
 5
 
 SEND
-110
+112
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-111
+113
 SPSPM - SetPowerSuPplyMode <0,1,...7> <Mode: OFF, ON, TOGGLE, IMPULSE>
 02 53 50 53 50 4D 20 ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
 0
 5
 
 SEND
-112
+114
 SPSPM - SetPowerSuPplyMode 0 <Mode: OFF, ON, TOGGLE, IMPULSE>
 02 53 50 53 50 4D 20 30 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
 0
 5
 
 SEND
-113
+115
 SPSPM - SetPowerSuPplyMode 0 OFF
 02 53 50 53 50 4D 20 30 20 4F 46 46 03
 0
 5
 
 SEND
-114
+116
 SPSPM - SetPowerSuPplyMode 0 ON
 02 53 50 53 50 4D 20 30 20 4F 4E 03
 0
 5
 
 SEND
-115
+117
 SPSPM - SetPowerSuPplyMode 0 TOGGLE
 02 53 50 53 50 4D 20 30 20 54 4F 47 47 4C 45 03
 0
 5
 
 SEND
-116
+118
 SPSPM - SetPowerSuPplyMode 0 IMPULSE
 02 53 50 53 50 4D 20 30 20 49 4D 50 55 4C 53 45 03
 0
 5
 
 SEND
-117
+119
 SPSPM - SetPowerSuPplyMode <0,1,...,7> TOGGLE
 02 53 50 53 50 4D 20 ## 20 54 4F 47 47 4C 45 03
 0
 5
 
 SEND
-118
+120
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-119
+121
 SPSPNF - SetPowerSuPplyNegationFlag <0,1,...7> <0,1>
 02 53 50 53 50 4E 46 20 ## ## 20 ## 03
 0
 5
 
 SEND
-120
+122
 SPSPNF - SetPowerSuPplyNegationFlag 0 0
 02 53 50 53 50 4E 46 20 30 20 30 03
 0
 5
 
 SEND
-121
+123
 SPSPNF - SetPowerSuPplyNegationFlag 0 1
 02 53 50 53 50 4E 46 20 30 20 31 03
 0
 5
 
 SEND
-122
+124
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-123
+125
 SPSPT - SetPowerSuPplyTiming <0,1,...7> <OnTime> <OffTime> <DelayTime>
 02 53 50 53 50 54 20 ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
 0
 5
 
 SEND
-124
+126
 SPSPT - SetPowerSuPplyTiming 0 <OnTime> <OffTime> <DelayTime>
 02 53 50 53 50 54 20 30 20 ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
 0
 5
 
 SEND
-125
+127
 SPSPT - SetPowerSuPplyTiming 0 1000 500 0
 02 53 50 53 50 54 20 30 20 31 30 30 30 20 35 30 30 20 30 03
 0
 5
 
 SEND
-126
+128
 SPSPT - SetPowerSuPplyTiming 0 1000 1000 0
 02 53 50 53 50 54 20 30 20 31 30 30 30 20 31 30 30 30 20 30 03
 0
 5
 
 SEND
-127
+129
 SPSPT - SetPowerSuPplyTiming 0 2000 1000 0
 02 53 50 53 50 54 20 30 20 32 30 30 30 20 31 30 30 30 20 30 03
 0
 5
 
 SEND
-128
+130
 SPSPT - SetPowerSuPplyTiming <0,1,...,7> 1000 1000 0
 02 53 50 53 50 54 20 ## 20 31 30 30 30 20 31 30 30 30 20 30 03
 0
 5
 
 SEND
-129
+131
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-130
+132
 SPSPTF - SetPowerSuPplyTriggerFlag <0,1,...7> <0,1,..,3 - Triggerchannel> <0,1 - Enable>
 02 53 50 53 50 54 46 20 ## ## 20 ## ## 20 ## 03
 0
 5
 
 SEND
-131
+133
 SPSPTF - SetPowerSuPplyTriggerFlag 0 0 0
 02 53 50 53 50 54 46 20 30 20 30 20 30 03
 0
 5
 
 SEND
-132
+134
 SPSPTF - SetPowerSuPplyTriggerFlag 0 0 1
 02 53 50 53 50 54 46 20 30 20 30 20 31 03
 0
 5
 
 SEND
-133
+135
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-134
+136
 SSWAF - SetSWitchAsynchronousFlag <0,1,...7> <0,1>
 02 53 53 57 41 46 20 ## ## 20 ## 03
 0
 5
 
 SEND
-135
+137
 SSWAF - SetSWitchAsynchronousFlag 0 0
 02 53 53 57 41 46 20 30 20 30 03
 0
 5
 
 SEND
-136
+138
 SSWAF - SetSWitchAsynchronousFlag 0 1
 02 53 53 57 41 46 20 30 20 31 03
 0
 5
 
 SEND
-137
+139
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-138
+140
 SSWC - SetSWitchCounter <0,1,...7> <Counter>
 02 53 53 57 43 20 ## ## 20 ## ## ## ## ## ## ## ## 03
 0
 5
 
 SEND
-139
+141
 SSWC - SetSWitchCounter 0 <Counter>
 02 53 53 57 43 20 30 20 ## ## ## ## ## ## ## ## 03
 0
 5
 
 SEND
-140
+142
 SSWC - SetSWitchCounter 0 5
 02 53 53 57 43 20 30 20 35 03
 0
 5
 
 SEND
-141
+143
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-142
+144
 SSWCONFIG - SetSWitchCONFiG <0,1,...7> <ENABLE> <Mode> <OnTime> <OffTime> <OffsetTime> <Counter> <Asynchronous flag> <Immediate flag> <Negation flag> <Triggerkanal> <Trigger flag>
 02 53 53 57 43 4F 4E 46 49 47 20 ## 20 ## 20 ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## 20 ## 20 ## 20 ## ## ## 20 ## 03
 0
 5
 
 SEND
-143
+145
 SSWCONFIG - SetSWitchCONFiG 0 <ENABLE> <Mode> <OnTime> <OffTime> <OffsetTime> <Counter> <Asynchronous flag> <Immediate flag> <Negation flag> <Triggerkanal> <Trigger flag>
 02 53 53 57 43 4F 4E 46 49 47 20 30 20 ## 20 ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## 20 ## 20 ## 20 ## ## ## 20 ## 03
 0
 5
 
 SEND
-144
+146
 SSWCONFIG - SetSWitchCONFiG <0,1,...7> 0 TOGGLE 500 500 0 5 0 1 0 0 0
 02 53 53 57 43 4F 4E 46 49 47 20 ## 20 31 20 54 4F 47 47 4C 45 20 35 30 30 20 35 30 30 20 30 20 35 20 30 20 31 20 30 20 30 20 30 03
 0
 5
 
 SEND
-145
+147
 SSWCONFIG - SetSWitchCONFiG 5 0 TOGGLE 500 500 0 5 0 1 0 0 0
 02 53 53 57 43 4F 4E 46 49 47 20 35 20 31 20 54 4F 47 47 4C 45 20 35 30 30 20 35 30 30 20 30 20 35 20 30 20 31 20 30 20 30 20 30 03
 0
 5
 
 SEND
-146
+148
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-147
+149
 SSWE - SetSWitchEnable <0,1,...7> <0,1>
 02 53 53 57 45 20 ## ## 20 ## 03
 0
 5
 
 SEND
-148
+150
 SSWE - SetSWitchEnable 0 <0,1>
 02 53 53 57 45 20 30 20 ## 03
 0
 5
 
 SEND
-149
+151
 SSWE - SetSWitchEnable 0 0
 02 53 53 57 45 20 30 20 30 03
 0
 5
 
 SEND
-150
+152
 SSWE - SetSWitchEnable 0 1
 02 53 53 57 45 20 30 20 31 03
 0
 5
 
 SEND
-151
+153
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-152
-SSWIF - SetSWitchImmediateFlag <0,1,...7> <0,1>
-02 53 53 57 49 46 20 ## ## 20 ## 03
-0
-5
-
-SEND
-153
-SSWIF - SetSWitchImmediateFlag 0 0
-02 53 53 57 49 46 20 30 20 30 03
-0
-5
-
-SEND
 154
-SSWIF - SetSWitchImmediateFlag 0 1
-02 53 53 57 49 46 20 30 20 31 03
+SSWEA- SetSWitchEnableAll <0,1>
+02 53 53 57 45 41 20 ## 03
 0
 5
 
@@ -1116,78 +1116,78 @@ SEND
 
 SEND
 156
-SSWM - SetSWitchMode <0,1,...7> <Mode: OFF, ON, TOGGLE, IMPULSE>
-02 53 53 57 4D 20 ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
+SSWIF - SetSWitchImmediateFlag <0,1,...7> <0,1>
+02 53 53 57 49 46 20 ## ## 20 ## 03
 0
 5
 
 SEND
 157
-SSWM - SetSWitchMode 0 <Mode: OFF, ON, TOGGLE, IMPULSE>
-02 53 53 57 4D 20 30 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
+SSWIF - SetSWitchImmediateFlag 0 0
+02 53 53 57 49 46 20 30 20 30 03
 0
 5
 
 SEND
 158
-SSWM - SetSWitchMode 0 OFF
-02 53 53 57 4D 20 30 20 4F 46 46 03
+SSWIF - SetSWitchImmediateFlag 0 1
+02 53 53 57 49 46 20 30 20 31 03
 0
 5
 
 SEND
 159
-SSWM - SetSWitchMode 0 ON
-02 53 53 57 4D 20 30 20 4F 4E 03
-0
-5
-
-SEND
-160
-SSWM - SetSWitchMode 0 TOGGLE
-02 53 53 57 4D 20 30 20 54 4F 47 47 4C 45 03
-0
-5
-
-SEND
-161
-SSWM - SetSWitchMode 0 IMPULSE
-02 53 53 57 4D 20 30 20 49 4D 50 55 4C 53 45 03
-0
-5
-
-SEND
-162
-SSWM - SetSWitchMode <0,1,...7> TOGGLE
-02 53 53 57 4D 20 ## 20 54 4F 47 47 4C 45 03
-0
-5
-
-SEND
-163
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
+160
+SSWM - SetSWitchMode <0,1,...7> <Mode: OFF, ON, TOGGLE, IMPULSE>
+02 53 53 57 4D 20 ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
+0
+5
+
+SEND
+161
+SSWM - SetSWitchMode 0 <Mode: OFF, ON, TOGGLE, IMPULSE>
+02 53 53 57 4D 20 30 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
+0
+5
+
+SEND
+162
+SSWM - SetSWitchMode 0 OFF
+02 53 53 57 4D 20 30 20 4F 46 46 03
+0
+5
+
+SEND
+163
+SSWM - SetSWitchMode 0 ON
+02 53 53 57 4D 20 30 20 4F 4E 03
+0
+5
+
+SEND
 164
-SSWNF - SetSWitchNegationFlag <0,1,...7> <0,1>
-02 53 53 57 4E 46 20 ## ## 20 ## 03
+SSWM - SetSWitchMode 0 TOGGLE
+02 53 53 57 4D 20 30 20 54 4F 47 47 4C 45 03
 0
 5
 
 SEND
 165
-SSWNF - SetSWitchNegationFlag 0 0
-02 53 53 57 4E 46 20 30 20 30 03
+SSWM - SetSWitchMode 0 IMPULSE
+02 53 53 57 4D 20 30 20 49 4D 50 55 4C 53 45 03
 0
 5
 
 SEND
 166
-SSWNF - SetSWitchNegationFlag 0 1
-02 53 53 57 4E 46 20 30 20 31 03
+SSWM - SetSWitchMode <0,1,...7> TOGGLE
+02 53 53 57 4D 20 ## 20 54 4F 47 47 4C 45 03
 0
 5
 
@@ -1200,78 +1200,78 @@ SEND
 
 SEND
 168
-SSWT - SetSWitchTiming <0,1,...7> <OnTime> <OffTime> <DelayTime>
-02 53 53 57 54 20 ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
+SSWNF - SetSWitchNegationFlag <0,1,...7> <0,1>
+02 53 53 57 4E 46 20 ## ## 20 ## 03
 0
 5
 
 SEND
 169
-SSWT - SetSWitchTiming 0 <OnTime> <OffTime> <DelayTime>
-02 53 53 57 54 20 30 20 ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
+SSWNF - SetSWitchNegationFlag 0 0
+02 53 53 57 4E 46 20 30 20 30 03
 0
 5
 
 SEND
 170
-SSWT - SetSWitchTiming 0 1000 500 0
-02 53 53 57 54 20 30 20 31 30 30 30 20 35 30 30 20 30 03
+SSWNF - SetSWitchNegationFlag 0 1
+02 53 53 57 4E 46 20 30 20 31 03
 0
 5
 
 SEND
 171
-SSWT - SetSWitchTiming 0 1000 1000 0
-02 53 53 57 54 20 30 20 31 30 30 30 20 31 30 30 30 20 30 03
-0
-5
-
-SEND
-172
-SSWT - SetSWitchTiming 0 2000 1000 0
-02 53 53 57 54 20 30 20 32 30 30 30 20 31 30 30 30 20 30 03
-0
-5
-
-SEND
-173
-SSWT - SetSWitchTiming 1 1000 500 0
-02 53 53 57 54 20 31 20 31 30 30 30 20 35 30 30 20 30 03
-0
-5
-
-SEND
-174
-SSWT - SetSWitchTiming <0,1,...7> 1000 1000 0
-02 53 53 57 54 20 ## 20 31 30 30 30 20 31 30 30 30 20 30 03
-0
-5
-
-SEND
-175
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
+172
+SSWT - SetSWitchTiming <0,1,...7> <OnTime> <OffTime> <DelayTime>
+02 53 53 57 54 20 ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
+0
+5
+
+SEND
+173
+SSWT - SetSWitchTiming 0 <OnTime> <OffTime> <DelayTime>
+02 53 53 57 54 20 30 20 ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
+0
+5
+
+SEND
+174
+SSWT - SetSWitchTiming 0 1000 500 0
+02 53 53 57 54 20 30 20 31 30 30 30 20 35 30 30 20 30 03
+0
+5
+
+SEND
+175
+SSWT - SetSWitchTiming 0 1000 1000 0
+02 53 53 57 54 20 30 20 31 30 30 30 20 31 30 30 30 20 30 03
+0
+5
+
+SEND
 176
-SSWTF - SetSWitchTriggerFlag <0,1,...7> <0,1,..,3 - Triggerchannel> <0,1 - Enable>
-02 53 53 57 54 46 20 ## ## 20 ## ## 20 ## 03
+SSWT - SetSWitchTiming 0 2000 1000 0
+02 53 53 57 54 20 30 20 32 30 30 30 20 31 30 30 30 20 30 03
 0
 5
 
 SEND
 177
-SSWTF - SetSWitchTriggerFlag 0 0 0
-02 53 53 57 54 46 20 30 20 30 20 30 03
+SSWT - SetSWitchTiming 1 1000 500 0
+02 53 53 57 54 20 31 20 31 30 30 30 20 35 30 30 20 30 03
 0
 5
 
 SEND
 178
-SSWTF - SetSWitchTriggerFlag 0 3 1
-02 53 53 57 54 46 20 30 20 33 20 31 03
+SSWT - SetSWitchTiming <0,1,...7> 1000 1000 0
+02 53 53 57 54 20 ## 20 31 30 30 30 20 31 30 30 30 20 30 03
 0
 5
 
@@ -1284,92 +1284,92 @@ SEND
 
 SEND
 180
+SSWTF - SetSWitchTriggerFlag <0,1,...7> <0,1,..,3 - Triggerchannel> <0,1 - Enable>
+02 53 53 57 54 46 20 ## ## 20 ## ## 20 ## 03
+0
+5
+
+SEND
+181
+SSWTF - SetSWitchTriggerFlag 0 0 0
+02 53 53 57 54 46 20 30 20 30 20 30 03
+0
+5
+
+SEND
+182
+SSWTF - SetSWitchTriggerFlag 0 3 1
+02 53 53 57 54 46 20 30 20 33 20 31 03
+0
+5
+
+SEND
+183
+-------------------------------------------------------
+02 03
+0
+5
+
+SEND
+184
 INFO
 02 49 4E 46 4F 03
 0
 5
 
 SEND
-181
+185
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-182
+186
 STRGCONFIG - SetTriggerCONFiGiguration <0,1,...3> <ENABLE> <Mode> <Triggerlevel> <RETRIGGER>
 02 53 54 52 47 43 4F 4E 46 49 47 20 ## 20 ## 20 ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## ## 20 ## ## ## ## ## ## ## ## 20 ## 03
 0
 5
 
 SEND
-183
+187
 STRGCONFIG - SetTriggerCONFiGiguration 0 0 HIGH 2.0 1
 02 53 54 52 47 43 4F 4E 46 49 47 20 30 20 30 20 48 49 47 48 20 32 2E 30 20 31 03
 0
 5
 
 SEND
-184
+188
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-185
+189
 STRGE - SetTriggerEnable <0,1,...3> <0,1>
 02 53 54 52 47 45 20 ## 20 ## 03
 0
 5
 
 SEND
-186
+190
 STRGE - SetTriggerEnable 0 <0,1>
 02 53 54 52 47 45 20 30 20 ## 03
 0
 5
 
 SEND
-187
+191
 STRGE - SetTriggerEnable 0 0
 02 53 54 52 47 45 20 30 20 30 03
 0
 5
 
 SEND
-188
+192
 STRGE - SetTriggerEnable 0 1
 02 53 54 52 47 45 20 30 20 31 03
-0
-5
-
-SEND
-189
--------------------------------------------------------
-02 03
-0
-5
-
-SEND
-190
-STRGL - SetTriggerLevel <0,1,...3> <Level>
-02 53 54 52 47 4C 20 ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
-0
-5
-
-SEND
-191
-STRGL - SetTriggerLevel 0 <Level>
-02 53 54 52 47 4C 20 30 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
-0
-5
-
-SEND
-192
-STRGL - SetTriggerLevel 0 2.5
-02 53 54 52 47 4C 20 30 20 32 2E 35 03
 0
 5
 
@@ -1382,111 +1382,139 @@ SEND
 
 SEND
 194
+STRGL - SetTriggerLevel <0,1,...3> <Level>
+02 53 54 52 47 4C 20 ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
+0
+5
+
+SEND
+195
+STRGL - SetTriggerLevel 0 <Level>
+02 53 54 52 47 4C 20 30 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
+0
+5
+
+SEND
+196
+STRGL - SetTriggerLevel 0 2.5
+02 53 54 52 47 4C 20 30 20 32 2E 35 03
+0
+5
+
+SEND
+197
+-------------------------------------------------------
+02 03
+0
+5
+
+SEND
+198
 STRGM - SetTriggerMode <0,1,...3> <Mode: LOW, HIGH, FALLING, RISING, LEVEL_DOWN, LEVEL_UP, IRQ_DOWN, IRQ_UP>
 02 53 54 52 47 4D 20 ## 20 ## ## ## ## ## ## ## ## ## ## ## ## 03
 0
 5
 
 SEND
-195
+199
 STRGM - SetTriggerMode 0 LOW
 02 53 54 52 47 4D 20 30 20 4C 4F 57 03
 0
 5
 
 SEND
-196
+200
 STRGM - SetTriggerMode 0 IRQ_DOWN
 02 53 54 52 47 4D 20 30 20 49 52 51 5F 44 4F 57 4E 03
 0
 5
 
 SEND
-197
+201
 STRGM - SetTriggerMode 0 LEVEL_UP
 02 53 54 52 47 4D 20 30 20 4C 45 56 45 4C 5F 55 50 03
 0
 5
 
 SEND
-198
+202
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-199
+203
 STRGR - SetTriggerRetrigger <0,1,...3> <0,1>
 02 53 54 52 47 52 20 ## 20 ## 03
 0
 5
 
 SEND
-200
+204
 STRGR - SetTriggerRetrigger 0 <0,1>
 02 53 54 52 47 52 20 30 20 ## 03
 0
 5
 
 SEND
-201
+205
 STRGR - SetTriggerRetrigger 0 0
 02 53 54 52 47 52 20 30 20 30 03
 0
 5
 
 SEND
-202
+206
 STRGR - SetTriggerRetrigger 0 1
 02 53 54 52 47 52 20 30 20 31 03
 0
 5
 
 SEND
-203
+207
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-204
+208
 VERSION
 02 56 45 52 53 49 4F 4E 03
 0
 5
 
 SEND
-205
+209
 -------------------------------------------------------
 02 03
 0
 5
 
 SEND
-206
+210
 TRIG:LEV:<0,1,..,3> <Level>
 54 52 49 47 3A 4C 45 56 3A ## 20 23 23 23 23 23 23 23 23 23 23 23 23
 0
 5
 
 SEND
-207
+211
 TRIG:LEV:<0,1,..,3>?
 54 52 49 47 3A 4C 45 56 3A 23 3F
 0
 5
 
 SEND
-208
+212
 TRIG:MOD:<0,1,..,3> IRQDOWN
 54 52 49 47 3A 4D 4F 44 3A ## 20 49 52 51 44 4F 57 4E
 0
 5
 
 SEND
-209
+213
 TRIG:MOD:<0,1,..,3>?
 54 52 49 47 3A 4D 4F 44 3A 23 3F
 0
