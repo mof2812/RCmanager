@@ -1,0 +1,30 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="RCmanager.Properties" GeneratedClassName="MonitoringSettings">
+  <Profiles />
+  <Settings>
+    <Setting Name="InitCode" Type="System.UInt32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="UserMonitoringTimeBase_ms" Type="System.Int32[]" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="LineColorRGB" Type="System.Drawing.Color[]" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UserMonitoring_Chart_1" Type="System.Boolean[]" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UserMonitoring_Chart_2" Type="System.Boolean[]" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UserMonitoringSeries_Chart_1" Type="System.Int32[]" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UserMonitoringSeries_Chart_2" Type="System.Int32[]" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Test" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>

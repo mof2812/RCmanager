@@ -262,6 +262,7 @@ namespace RCmanager
 
             if (Properties.Settings.Default.InitCode != Constants.INITCODE)
             {
+                Properties.Settings.Default.TriggerLabel = new string[8];
                 SetDefault();
 
                 Properties.Settings.Default.InitCode = Constants.INITCODE;
@@ -340,6 +341,10 @@ namespace RCmanager
         private void SetDefault()
         {
             Properties.Settings.Default.NightMode = false;
+            for (int Index = 0; Index < 8; Index++)
+            {
+                Properties.Settings.Default.TriggerLabel[Index] = $"Trigger {Index + 1}";
+            }
         }
         public void SetupSerial()
         {
@@ -489,6 +494,13 @@ namespace RCmanager
         private void tabMonitoring2_Enter(object sender, EventArgs e)
         {
             ledAllCardChannelsOff.Visible = lblAllCardChannelsOff.Visible = false;
+
+            for (byte Index = 0; Index < Constants.MODULES * Constants.CHANNELS; Index++)
+            {
+                Relay.PARAMS_T RelayParams = new Relay.PARAMS_T();
+                GetRelayParameter(Index, ref RelayParams);
+                //relayCardMonitoring2.SetRelayParams(Index, RelayParams);
+            }
         }
     }
     static class Constants

@@ -60,6 +60,11 @@
       <DependentUpon>MySettings.cs</DependentUpon>
     </Compile>
     <Compile Include="MySettings.user.cs" />
+    <Compile Include="Properties\MonitoringSettings1.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>MonitoringSettings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Properties\SerialSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
@@ -102,6 +107,12 @@
     </Compile>
     <Compile Include="RelaySettingsDlg.designer.cs">
       <DependentUpon>RelaySettingsDlg.cs</DependentUpon>
+    </Compile>
+    <Compile Include="RelayUserMonitoring.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="RelayUserMonitoring.Designer.cs">
+      <DependentUpon>RelayUserMonitoring.cs</DependentUpon>
     </Compile>
     <Compile Include="Serial.cs">
       <SubType>Component</SubType>
@@ -157,12 +168,19 @@
     <EmbeddedResource Include="RelaySettingsDlg.resx">
       <DependentUpon>RelaySettingsDlg.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="RelayUserMonitoring.resx">
+      <DependentUpon>RelayUserMonitoring.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SerialCommunication.resx">
       <DependentUpon>SerialCommunication.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TriggerMonitoring.resx">
       <DependentUpon>TriggerMonitoring.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="Properties\MonitoringSettings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>MonitoringSettings1.Designer.cs</LastGenOutput>
+    </None>
     <None Include="Properties\SerialSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>SerialSettings.Designer.cs</LastGenOutput>

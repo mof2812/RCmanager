@@ -82,5 +82,16 @@ namespace RCmanager.Properties {
                 this["SetupSerialDlg_SmallVersion"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public string[] TriggerLabel {
+            get {
+                return ((string[])(this["TriggerLabel"]));
+            }
+            set {
+                this["TriggerLabel"] = value;
+            }
+        }
     }
 }

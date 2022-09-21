@@ -15,7 +15,7 @@ namespace Relay
     {
         public byte Channel;
         //public Color ChartBColor;
-        //public Color ChartLColor;
+        public Color ChartLColor;
         public string SignalLabel;
         public double MinChartXRange_ms;
         public double MaxChartXRange_ms;
@@ -494,7 +494,7 @@ namespace Relay
             chartRelay.BackColor = Params.NightMode ? MySetup.settings.ChartBColor_NM : MySetup.settings.ChartBColor;
             chartRelay.ForeColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
             chartRelay.ChartAreas[0].BackColor = Params.NightMode ? MySetup.settings.ChartBColor_NM : MySetup.settings.ChartBColor;
-            chartRelay.Series[0].Color = Params.NightMode ? MySetup.settings.ChartLColor_NM : MySetup.settings.ChartLColor;
+            chartRelay.Series[0].Color = Params.ChartLColor = Params.NightMode ? MySetup.settings.ChartLColor_NM : MySetup.settings.ChartLColor;
             chartRelay.Series[0].LabelForeColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
             chartRelay.Legends[0].BackColor = Params.NightMode ? MySetup.settings.ChartBColor_NM : MySetup.settings.ChartBColor;
             chartRelay.Legends[0].BorderColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
