@@ -60,7 +60,7 @@
       <DependentUpon>MySettings.cs</DependentUpon>
     </Compile>
     <Compile Include="MySettings.user.cs" />
-    <Compile Include="Properties\MonitoringSettings1.Designer.cs">
+    <Compile Include="Properties\MonitoringSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>MonitoringSettings.settings</DependentUpon>
