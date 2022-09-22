@@ -56,5 +56,60 @@ namespace RCmanager.Properties {
                 this["LineColorRGB"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public bool[] UserMonitoring_Chart_1 {
+            get {
+                return ((bool[])(this["UserMonitoring_Chart_1"]));
+            }
+            set {
+                this["UserMonitoring_Chart_1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public bool[] UserMonitoring_Chart_2 {
+            get {
+                return ((bool[])(this["UserMonitoring_Chart_2"]));
+            }
+            set {
+                this["UserMonitoring_Chart_2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public int[] UserMonitoringSeries_Chart_1 {
+            get {
+                return ((int[])(this["UserMonitoringSeries_Chart_1"]));
+            }
+            set {
+                this["UserMonitoringSeries_Chart_1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public int[] UserMonitoringSeries_Chart_2 {
+            get {
+                return ((int[])(this["UserMonitoringSeries_Chart_2"]));
+            }
+            set {
+                this["UserMonitoringSeries_Chart_2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public bool Test {
+            get {
+                return ((bool)(this["Test"]));
+            }
+            set {
+                this["Test"] = value;
+            }
+        }
     }
 }
