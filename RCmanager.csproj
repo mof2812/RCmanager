@@ -53,12 +53,19 @@
     <Compile Include="LedBulb.Designer.cs">
       <DependentUpon>LedBulb.cs</DependentUpon>
     </Compile>
+    <Compile Include="MyTriggerSettings.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MyTriggerSettings.designer.cs">
+      <DependentUpon>MyTriggerSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="MySettings.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="MySettings.designer.cs">
       <DependentUpon>MySettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="MyTriggerSettings.user.cs" />
     <Compile Include="MySettings.user.cs" />
     <Compile Include="Properties\MonitoringSettings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -132,6 +139,18 @@
     <Compile Include="SetupSerialDlg.Designer.cs">
       <DependentUpon>SetupSerialDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="Trigger.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Trigger.Designer.cs">
+      <DependentUpon>Trigger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TriggerCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TriggerCard.Designer.cs">
+      <DependentUpon>TriggerCard.cs</DependentUpon>
+    </Compile>
     <Compile Include="TriggerMonitoring.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -174,12 +193,17 @@
     <EmbeddedResource Include="SerialCommunication.resx">
       <DependentUpon>SerialCommunication.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Trigger.resx">
+      <DependentUpon>Trigger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TriggerCard.resx">
+      <DependentUpon>TriggerCard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TriggerMonitoring.resx">
       <DependentUpon>TriggerMonitoring.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\MonitoringSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>MonitoringSettings1.Designer.cs</LastGenOutput>
     </None>
     <None Include="Properties\SerialSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

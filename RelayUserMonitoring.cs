@@ -39,9 +39,11 @@ namespace RelayUserMonitoring
     }
     public partial class RelayUserMonitoring : UserControl
     {
-        private const int Channels = RCmanager.Constants.MODULES * RCmanager.Constants.CHANNELS + 2 * RCmanager.Constants.IRQ_IOS; // 24
+        private const int Channels = 24;//MOF RCmanager.Constants.MODULES * RCmanager.Constants.CHANNELS; // 16
+        private const int TriggerChannels = RCmanager.Constants.IRQ_IOS; // 4
         private PARAM_T Params;
         private Relay.PARAMS_T[] RelayParams = new Relay.PARAMS_T[Channels];
+        private Trigger.PARAMS_T[] TriggerParams = new Trigger.PARAMS_T[TriggerChannels];
         private Stopwatch MonitoringTime = new Stopwatch();
 
         public RelayUserMonitoring()
@@ -287,7 +289,8 @@ namespace RelayUserMonitoring
 
             if (!Error)
             {
-                double Maximum = (double)RCmanager.Properties.MonitoringSettings.Default.UserMonitoringTimeBase_ms[ChartID] / (double)Params.TimebaseUnit[ChartID];
+                double Maximum = 0;
+//MOF                Maximum = (double)RCmanager.Properties.MonitoringSettings.Default.UserMonitoringTimeBase_ms[ChartID] / (double)Params.TimebaseUnit[ChartID];
 
                 chart.ChartAreas[0].AxisX.Minimum = 0;
                 chart.ChartAreas[0].AxisX.Maximum = Maximum;
@@ -295,7 +298,7 @@ namespace RelayUserMonitoring
                 chart.ChartAreas[0].AxisY.Minimum = 0;
                 chart.ChartAreas[0].AxisY.Maximum = 1.1;
                 chart.ChartAreas[0].AxisY.Interval = 1;
-                chart.ChartAreas[0].AxisX.Title = $"Zeit [{Params.TimeUnit[ChartID]}]";
+//MOF                chart.ChartAreas[0].AxisX.Title = $"Zeit [{Params.TimeUnit[ChartID]}]";
                 chart.ChartAreas[0].AxisY.Title = "Status";
 
                 chart.ChartAreas[0].AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dot;
@@ -309,9 +312,10 @@ namespace RelayUserMonitoring
 
                 for (int Index = 0; Index < Channels; Index++)
                 {
-                    if (((ChartID == 0) && (RCmanager.Properties.MonitoringSettings.Default.UserMonitoring_Chart_1[Index])) || ((ChartID == 1) && (RCmanager.Properties.MonitoringSettings.Default.UserMonitoring_Chart_2[Index])))
+//MOF                    if (((ChartID == 0) && (RCmanager.Properties.MonitoringSettings.Default.UserMonitoring_Chart_1[Index])) || ((ChartID == 1) && (RCmanager.Properties.MonitoringSettings.Default.UserMonitoring_Chart_2[Index])))
+if (true)
                     {
-                        chart.Series.Add(new Series(Index < 16 ? RelayParams[Index].SignalLabel : RelayCard16.RelaySettings.Default.TriggerName[Index-16]));
+//MOF                        chart.Series.Add(new Series(Index < 16 ? RelayParams[Index].SignalLabel : RelayCard16.RelaySettings.Default.TriggerName[Index-16]));
 
                         SeriesID = chart.Series.Count() - 1;
                         chart.Series[SeriesID].Color = RelayParams[Index].ChartLColor;
@@ -529,7 +533,7 @@ namespace RelayUserMonitoring
                 }
                 else
                 {
-                    if (Name == RelayCard16.RelaySettings.Default.TriggerName[Index-16])
+                    if (true)// MOF Name == RelayCard16.RelaySettings.Default.TriggerName[Index-16])
                     {
                         RetVal = Index;
                         break;
@@ -584,7 +588,7 @@ namespace RelayUserMonitoring
                         }
                         else
                         {
-                            lb.Items.Add(RelayCard16.RelaySettings.Default.TriggerName[Index-16]);
+// MOF                            lb.Items.Add(RelayCard16.RelaySettings.Default.TriggerName[Index-16]);
                         }
                         Count++;
                     }
@@ -599,7 +603,7 @@ namespace RelayUserMonitoring
                         }
                         else
                         {
-                            lb.Items.Add(RelayCard16.RelaySettings.Default.TriggerName[Index-16]);
+// MOF                            lb.Items.Add(RelayCard16.RelaySettings.Default.TriggerName[Index-16]);
                         }
                         Count++;
                     }
@@ -614,7 +618,7 @@ namespace RelayUserMonitoring
 
             Error = false;
 
-            if (Channel < RCmanager.Constants.MODULES * RCmanager.Constants.CHANNELS + RCmanager.Constants.IRQ_IOS)
+            if (Channel < RCmanager.Constants.MODULES * RCmanager.Constants.CHANNELS)
             {
                 RelayParams[Channel] = Params;
             }
@@ -665,6 +669,23 @@ namespace RelayUserMonitoring
                 }
                 chart.ChartAreas[0].AxisX.Title = $"Zeit [{Params.TimeUnit[ChartID]}]";
             }
+        }
+        public bool SetTriggerParams(byte Channel, Trigger.PARAMS_T Params)
+        {
+            bool Error;
+
+            Error = false;
+
+            if (Channel < RCmanager.Constants.IRQ_IOS)
+            {
+                TriggerParams[Channel] = Params;
+            }
+            else
+            {
+                Error = true;
+            }
+
+            return Error;
         }
         private void StartStopMonitoring()
         {

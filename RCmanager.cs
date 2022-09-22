@@ -123,6 +123,23 @@ namespace RCmanager
 
             return Return;
         }
+        //private RETURN_T GetTriggerName(byte Channel, ref string TriggerName)
+        //{
+        //    RETURN_T Return;
+
+        //    Return = RETURN_T.OKAY;
+
+        //    if (Channel < Constants.IRQ_IOS)
+        //    {
+        //        TriggerName = TriggerChannel[Channel].TriggerLabel;
+        //    }
+        //    else
+        //    {
+        //        Return = RETURN_T.INVALIDE_CHANNEL;
+        //    }
+
+        //    return Return;
+        //}
         private RETURN_T Init()
         {
             RETURN_T Return;
@@ -131,26 +148,35 @@ namespace RCmanager
 
             this.Text = $"{this.Text} - {SW_Version}";
 
-            if (Init_Settings() == RETURN_T.OKAY)
-            {
-                if (Init_RelayCards() == RETURN_T.OKAY)
-                {
-                    if (Init_Menu() == RETURN_T.OKAY)
-                    {
-                        if (Init_Communication() == RETURN_T.OKAY)
-                        {
-                            Return = RETURN_T.OKAY;
-                        }
-                    }
-                }
-            }
+            Return = Init_Settings();
 
+            if (Return == RETURN_T.OKAY)
+            {
+                Return = Init_RelayCards();
+            }
+            if (Return == RETURN_T.OKAY)
+            {
+                Return = Init_TriggerCard();
+            }
+            if (Return == RETURN_T.OKAY)
+            {
+                Return = Init_Menu();
+            }
+            if (Return == RETURN_T.OKAY)
+            {
+                Return = Init_Communication();
+            }
             if (Return == RETURN_T.OKAY)
             {
                 // Init the monitoring routines
                 Init_Monitoring();
                 // Get the configuration of all relays
                 GetConfig(255);
+            }
+
+            if (Return != RETURN_T.OKAY)
+            {
+                Return = RETURN_T.INITIALIZE_ERROR;
             }
             return Return;
         }
@@ -270,6 +296,31 @@ namespace RCmanager
             }
             return Return;
         }
+        private RETURN_T Init_TriggerCard()
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+
+            if (triggerCard.Init(Properties.Settings.Default.NightMode) != TriggerCard.RETURN_T.OKAY)
+            {
+                Return = RETURN_T.INITIALIZE_ERROR;
+            }
+
+            return Return;
+        }
+        //private RETURN_T Init_Trigger()
+        //{
+        //    RETURN_T Return;
+
+        //    Return = RETURN_T.OKAY;
+
+        //    for (byte Index = 0; (Index < Constants.IRQ_IOS) && (Return == RETURN_T.OKAY); Index++)
+        //    {
+        //        Return = TriggerChannel[Index].Init(Index) ? RETURN_T.INITIALIZE_ERROR : RETURN_T.OKAY;
+        //    }
+        //    return Return;
+        //}
         private void NightMode(bool Set)
         {
             Properties.Settings.Default.NightMode = Set;
