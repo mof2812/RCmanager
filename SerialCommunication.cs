@@ -450,7 +450,10 @@ namespace SerialCommunication
         }
         private void CommunicationTask_ClearReceiveBuffer()
         {
-            ComPort.DiscardInBuffer();
+            if (ComPort.IsOpen)
+            {
+                ComPort.DiscardInBuffer();
+            }
         }
         private bool CommunicationTask_Evaluate(ref PARAMS_T Params)
         {
@@ -748,12 +751,19 @@ namespace SerialCommunication
             Error = false;
             Frame = Send(Params);
 
-            if (!Error)
+            if (ComPort.IsOpen)
             {
-                // Clear input buffer
-                CommunicationTask_ClearReceiveBuffer();
+                if (!Error)
+                {
+                    // Clear input buffer
+                    CommunicationTask_ClearReceiveBuffer();
 
-                Write(Frame);
+                    Write(Frame);
+                }
+            }
+            else
+            {
+                Error = true;
             }
 
             return Error;

@@ -27,6 +27,8 @@ namespace RCmanager
             public bool Initialized;
             public double MaxChartXRange_ms;
             public double MinChartXRange_ms;
+            public Relay.PARAMS_T[] RelayParams;
+            public Trigger.PARAMS_T[] TriggerParams;
         }
 
         #region Members
@@ -140,6 +142,28 @@ namespace RCmanager
 
         //    return Return;
         //}
+        private RETURN_T GetTriggerParameter(byte Channel, ref Trigger.PARAMS_T TriggerParams)
+        {
+            RETURN_T Return;
+            byte Module;
+            byte RelayChannel;
+            Trigger.Trigger tm;
+
+            Return = RETURN_T.OKAY;
+            Module = (byte)(Channel / Constants.CHANNELS);
+            RelayChannel = (byte)(Channel % Constants.CHANNELS);
+
+            if (Channel < Constants.IRQ_IOS)
+            {
+                TriggerParams = relayCardMonitoring.GetTriggerMonitoring(Channel).GetParams();
+            }
+            else
+            {
+                Return = RETURN_T.INVALIDE_CHANNEL;
+            }
+
+            return Return;
+        }
         private RETURN_T Init()
         {
             RETURN_T Return;
@@ -147,6 +171,9 @@ namespace RCmanager
             Return = RETURN_T.INITIALIZE_ERROR;
 
             this.Text = $"{this.Text} - {SW_Version}";
+
+            Params.RelayParams = new Relay.PARAMS_T[Constants.MODULES * Constants.CHANNELS];
+            Params.TriggerParams = new Trigger.PARAMS_T[Constants.IRQ_IOS];
 
             Return = Init_Settings();
 
@@ -156,7 +183,7 @@ namespace RCmanager
             }
             if (Return == RETURN_T.OKAY)
             {
-                Return = Init_TriggerCard();
+                Return = Init_Triggers(Properties.Settings.Default.NightMode);
             }
             if (Return == RETURN_T.OKAY)
             {
@@ -232,18 +259,33 @@ namespace RCmanager
             Return = RETURN_T.OKAY;
             SignalName = "";
 
-            relayCardMonitoring1.InitMonitoring(menuMainSettingsViewNightMode.Checked);
-//            relayCardMonitoring2.InitMonitoring(menuMainSettingsViewNightMode.Checked);
+            relayCardMonitoring.InitMonitoring(menuMainSettingsViewNightMode.Checked);
+            //relayCardUserMonitoring.InitMonitoring(menuMainSettingsViewNightMode.Checked);
 
             for (Index = 0; (Index < Constants.MODULES * Constants.CHANNELS) && (Return == RETURN_T.OKAY); Index++)
             {
                 if (Return == RETURN_T.OKAY)
                 {
-                    Return = GetRelayParameter(Index, ref RelayParams);
+                    Return = GetRelayParameter(Index, ref Params.RelayParams[Index]);
 
                     if (Return == RETURN_T.OKAY)
                     {
-                        relayCardMonitoring1.InitRelayMonitoring(Index, RelayParams);
+                        relayCardMonitoring.InitRelayMonitoring(Index, Params.RelayParams[Index]);
+                    }
+                }
+            }
+
+            //relayCardUserMonitoring.InitMonitoring(menuMainSettingsViewNightMode.Checked);
+
+            for (Index = 0; (Index < Constants.IRQ_IOS) && (Return == RETURN_T.OKAY); Index++)
+            {
+                if (Return == RETURN_T.OKAY)
+                {
+                    Return = GetTriggerParameter(Index, ref Params.TriggerParams[Index]);
+
+                    if (Return == RETURN_T.OKAY)
+                    {
+                        //relayCardUserMonitoring.Init_TriggerMonitoring(Index, Params.TriggerParams[Index]);
                     }
                 }
             }
@@ -293,6 +335,58 @@ namespace RCmanager
 
                 Properties.Settings.Default.InitCode = Constants.INITCODE;
                 Properties.Settings.Default.Save();
+            }
+            return Return;
+        }
+        private RETURN_T Init_Triggers(bool NightMode)
+        {
+            RETURN_T Return;
+            byte Channel;
+
+            Return = RETURN_T.INITIALIZE_ERROR;
+            Channel = 0;
+
+            if ((RETURN_T)relayCardMonitoring.GetTriggerMonitoring(Channel).Init(Channel, NightMode) == RETURN_T.OKAY)
+            {
+                Channel++;
+                if ((RETURN_T)relayCardMonitoring.GetTriggerMonitoring(Channel).Init(Channel, NightMode) == RETURN_T.OKAY)
+                {
+                    Channel++;
+                    if ((RETURN_T)relayCardMonitoring.GetTriggerMonitoring(Channel).Init(Channel, NightMode) == RETURN_T.OKAY)
+                    {
+                        Channel++;
+                        if ((RETURN_T)relayCardMonitoring.GetTriggerMonitoring(Channel).Init(Channel, NightMode) == RETURN_T.OKAY)
+                        {
+/*
+                            Channel++;
+                            if ((RETURN_T)relayCardMonitoring.GetTriggerMonitoring(Channel).Init(Channel, NightMode) == RETURN_T.OKAY)
+                            {
+                                Channel++;
+                                if ((RETURN_T)relayCardMonitoring.GetTriggerMonitoring(Channel).Init(Channel, NightMode) == RETURN_T.OKAY)
+                                {
+                                    Channel++;
+                                    if ((RETURN_T)relayCardMonitoring.GetTriggerMonitoring(Channel).Init(Channel, NightMode) == RETURN_T.OKAY)
+                                    {
+                                        Channel++;
+                                        if ((RETURN_T)relayCardMonitoring.GetTriggerMonitoring(Channel).Init(Channel, NightMode) == RETURN_T.OKAY)
+                                        {
+*/
+                                            Return = RETURN_T.OKAY;
+/*
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+*/
+                        }
+
+                    }
+
+                }
+
             }
             return Return;
         }
@@ -446,7 +540,7 @@ namespace RCmanager
                     }
                     break;
                     case SerialCommunication.ACTION_T.GET_OUTPUT_STATES:
-                        relayCardMonitoring1.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
+                        relayCardMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
                     break;
                 default:
                     break;
@@ -550,7 +644,14 @@ namespace RCmanager
             {
                 Relay.PARAMS_T RelayParams = new Relay.PARAMS_T();
                 GetRelayParameter(Index, ref RelayParams);
-                //relayCardMonitoring2.SetRelayParams(Index, RelayParams);
+                relayCardUserMonitoring.SetRelayParams(Index, RelayParams);
+            }
+            
+            for (byte Index = 0; Index < Constants.MODULES * Constants.CHANNELS; Index++)
+            {
+                Trigger.PARAMS_T TriggerParams = new Trigger.PARAMS_T();
+                GetTriggerParameter(Index, ref TriggerParams);
+                relayCardUserMonitoring.SetTriggerParams(Index, TriggerParams);
             }
         }
     }

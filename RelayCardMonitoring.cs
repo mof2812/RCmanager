@@ -33,6 +33,9 @@ namespace RelayCardMonitoring
         public void InitMonitoring(bool NightMode)
         {
             this.NightMode = NightMode;
+
+            TriggerBackground.BackColor = NightMode ? Color.Black : Color.White;
+            TriggerBackground.ForeColor = NightMode ? Color.White : Color.Black;
         }
         public bool InitRelayMonitoring(byte Index, Relay.PARAMS_T Params)
         {
@@ -53,7 +56,8 @@ namespace RelayCardMonitoring
                 RelayStates >>= 1;
             }
             RelayStates >>= 8;
-            for (byte Index = 0; Index < 8; Index++)
+            //for (byte Index = 0; Index < 8; Index++)
+            for (byte Index = 0; Index < 4; Index++)
             {
                 GetTriggerMonitoring(Index).TriggerStatus = Convert.ToBoolean(RelayStates & 0x00000001);
                 RelayStates >>= 1;
@@ -73,7 +77,7 @@ namespace RelayCardMonitoring
                     GetRelayMonitoring(Channel).NightMode = value;
                 }
 
-                for (byte Channel = 0; Channel < 8; Channel++)
+                for (byte Channel = 0; Channel < RCmanager.Constants.IRQ_IOS; Channel++)
                 {
                     GetTriggerMonitoring(Channel).NightMode = value;
                 }
@@ -152,9 +156,9 @@ namespace RelayCardMonitoring
 
             return rm;
         }
-        private TriggerMonitoring.TriggerMonitoring GetTriggerMonitoring(byte Channel)
+        public Trigger.Trigger GetTriggerMonitoring(byte Channel)
         {
-            TriggerMonitoring.TriggerMonitoring tm;
+            Trigger.Trigger tm;
 
             tm = null;
 
@@ -174,6 +178,7 @@ namespace RelayCardMonitoring
                     case 3:
                         tm = tm_CH4;
                         break;
+/*
                     case 4:
                         tm = tm_CH5;
                         break;
@@ -186,6 +191,7 @@ namespace RelayCardMonitoring
                     case 7:
                         tm = tm_CH8;
                         break;
+*/
                     default:
                         break;
                 }

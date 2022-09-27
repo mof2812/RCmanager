@@ -28,14 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tm_CH8 = new TriggerMonitoring.TriggerMonitoring();
-            this.tm_CH4 = new TriggerMonitoring.TriggerMonitoring();
-            this.tm_CH7 = new TriggerMonitoring.TriggerMonitoring();
-            this.tm_CH3 = new TriggerMonitoring.TriggerMonitoring();
-            this.tm_CH6 = new TriggerMonitoring.TriggerMonitoring();
-            this.tm_CH2 = new TriggerMonitoring.TriggerMonitoring();
-            this.tm_CH5 = new TriggerMonitoring.TriggerMonitoring();
-            this.tm_CH1 = new TriggerMonitoring.TriggerMonitoring();
             this.rmM2_CH8 = new RelayMonitoring.RelayMonitoring();
             this.rmM2_CH7 = new RelayMonitoring.RelayMonitoring();
             this.rmM2_CH6 = new RelayMonitoring.RelayMonitoring();
@@ -52,95 +44,12 @@
             this.rmM1_CH3 = new RelayMonitoring.RelayMonitoring();
             this.rmM1_CH2 = new RelayMonitoring.RelayMonitoring();
             this.rmM1_CH1 = new RelayMonitoring.RelayMonitoring();
+            this.TriggerBackground = new System.Windows.Forms.Label();
+            this.tm_CH4 = new Trigger.Trigger();
+            this.tm_CH3 = new Trigger.Trigger();
+            this.tm_CH2 = new Trigger.Trigger();
+            this.tm_CH1 = new Trigger.Trigger();
             this.SuspendLayout();
-            // 
-            // tm_CH8
-            // 
-            this.tm_CH8.BackColor = System.Drawing.Color.White;
-            this.tm_CH8.Location = new System.Drawing.Point(1053, 506);
-            this.tm_CH8.Name = "tm_CH8";
-            this.tm_CH8.NightMode = false;
-            this.tm_CH8.Size = new System.Drawing.Size(350, 100);
-            this.tm_CH8.TabIndex = 23;
-            this.tm_CH8.TriggerName = "Trigger 1";
-            this.tm_CH8.TriggerStatus = false;
-            // 
-            // tm_CH4
-            // 
-            this.tm_CH4.BackColor = System.Drawing.Color.White;
-            this.tm_CH4.Location = new System.Drawing.Point(1053, 406);
-            this.tm_CH4.Name = "tm_CH4";
-            this.tm_CH4.NightMode = false;
-            this.tm_CH4.Size = new System.Drawing.Size(350, 100);
-            this.tm_CH4.TabIndex = 22;
-            this.tm_CH4.TriggerName = "Trigger 1";
-            this.tm_CH4.TriggerStatus = false;
-            // 
-            // tm_CH7
-            // 
-            this.tm_CH7.BackColor = System.Drawing.Color.White;
-            this.tm_CH7.Location = new System.Drawing.Point(703, 506);
-            this.tm_CH7.Name = "tm_CH7";
-            this.tm_CH7.NightMode = false;
-            this.tm_CH7.Size = new System.Drawing.Size(350, 100);
-            this.tm_CH7.TabIndex = 21;
-            this.tm_CH7.TriggerName = "Trigger 1";
-            this.tm_CH7.TriggerStatus = false;
-            // 
-            // tm_CH3
-            // 
-            this.tm_CH3.BackColor = System.Drawing.Color.White;
-            this.tm_CH3.Location = new System.Drawing.Point(703, 406);
-            this.tm_CH3.Name = "tm_CH3";
-            this.tm_CH3.NightMode = false;
-            this.tm_CH3.Size = new System.Drawing.Size(350, 100);
-            this.tm_CH3.TabIndex = 20;
-            this.tm_CH3.TriggerName = "Trigger 1";
-            this.tm_CH3.TriggerStatus = false;
-            // 
-            // tm_CH6
-            // 
-            this.tm_CH6.BackColor = System.Drawing.Color.White;
-            this.tm_CH6.Location = new System.Drawing.Point(353, 506);
-            this.tm_CH6.Name = "tm_CH6";
-            this.tm_CH6.NightMode = false;
-            this.tm_CH6.Size = new System.Drawing.Size(350, 100);
-            this.tm_CH6.TabIndex = 19;
-            this.tm_CH6.TriggerName = "Trigger 1";
-            this.tm_CH6.TriggerStatus = false;
-            // 
-            // tm_CH2
-            // 
-            this.tm_CH2.BackColor = System.Drawing.Color.White;
-            this.tm_CH2.Location = new System.Drawing.Point(353, 406);
-            this.tm_CH2.Name = "tm_CH2";
-            this.tm_CH2.NightMode = false;
-            this.tm_CH2.Size = new System.Drawing.Size(350, 100);
-            this.tm_CH2.TabIndex = 18;
-            this.tm_CH2.TriggerName = "Trigger 1";
-            this.tm_CH2.TriggerStatus = false;
-            // 
-            // tm_CH5
-            // 
-            this.tm_CH5.BackColor = System.Drawing.Color.White;
-            this.tm_CH5.Location = new System.Drawing.Point(3, 506);
-            this.tm_CH5.Name = "tm_CH5";
-            this.tm_CH5.NightMode = false;
-            this.tm_CH5.Size = new System.Drawing.Size(350, 100);
-            this.tm_CH5.TabIndex = 17;
-            this.tm_CH5.TriggerName = "Trigger 1";
-            this.tm_CH5.TriggerStatus = false;
-            // 
-            // tm_CH1
-            // 
-            this.tm_CH1.BackColor = System.Drawing.Color.White;
-            this.tm_CH1.Location = new System.Drawing.Point(3, 406);
-            this.tm_CH1.Name = "tm_CH1";
-            this.tm_CH1.NightMode = false;
-            this.tm_CH1.Size = new System.Drawing.Size(350, 100);
-            this.tm_CH1.TabIndex = 16;
-            this.tm_CH1.TriggerName = "Trigger 1";
-            this.tm_CH1.TriggerStatus = false;
             // 
             // rmM2_CH8
             // 
@@ -318,19 +227,68 @@
             this.rmM1_CH1.Size = new System.Drawing.Size(700, 100);
             this.rmM1_CH1.TabIndex = 0;
             // 
+            // TriggerBackground
+            // 
+            this.TriggerBackground.BackColor = System.Drawing.Color.Black;
+            this.TriggerBackground.Location = new System.Drawing.Point(3, 406);
+            this.TriggerBackground.Name = "TriggerBackground";
+            this.TriggerBackground.Size = new System.Drawing.Size(1399, 198);
+            this.TriggerBackground.TabIndex = 36;
+            // 
+            // tm_CH4
+            // 
+            this.tm_CH4.BackColor = System.Drawing.Color.White;
+            this.tm_CH4.Location = new System.Drawing.Point(1053, 456);
+            this.tm_CH4.Name = "tm_CH4";
+            this.tm_CH4.NightMode = false;
+            this.tm_CH4.Size = new System.Drawing.Size(350, 100);
+            this.tm_CH4.TabIndex = 40;
+            this.tm_CH4.TriggerName = "Trigger 4";
+            this.tm_CH4.TriggerStatus = false;
+            // 
+            // tm_CH3
+            // 
+            this.tm_CH3.BackColor = System.Drawing.Color.White;
+            this.tm_CH3.Location = new System.Drawing.Point(703, 456);
+            this.tm_CH3.Name = "tm_CH3";
+            this.tm_CH3.NightMode = false;
+            this.tm_CH3.Size = new System.Drawing.Size(350, 100);
+            this.tm_CH3.TabIndex = 39;
+            this.tm_CH3.TriggerName = "Trigger 3";
+            this.tm_CH3.TriggerStatus = false;
+            // 
+            // tm_CH2
+            // 
+            this.tm_CH2.BackColor = System.Drawing.Color.White;
+            this.tm_CH2.Location = new System.Drawing.Point(353, 456);
+            this.tm_CH2.Name = "tm_CH2";
+            this.tm_CH2.NightMode = false;
+            this.tm_CH2.Size = new System.Drawing.Size(350, 100);
+            this.tm_CH2.TabIndex = 38;
+            this.tm_CH2.TriggerName = "Trigger 2";
+            this.tm_CH2.TriggerStatus = false;
+            // 
+            // tm_CH1
+            // 
+            this.tm_CH1.BackColor = System.Drawing.Color.White;
+            this.tm_CH1.Location = new System.Drawing.Point(3, 456);
+            this.tm_CH1.Name = "tm_CH1";
+            this.tm_CH1.NightMode = false;
+            this.tm_CH1.Size = new System.Drawing.Size(350, 100);
+            this.tm_CH1.TabIndex = 37;
+            this.tm_CH1.TriggerName = "Trigger 1";
+            this.tm_CH1.TriggerStatus = false;
+            // 
             // RelayCardMonitoring
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.Red;
-            this.Controls.Add(this.tm_CH8);
             this.Controls.Add(this.tm_CH4);
-            this.Controls.Add(this.tm_CH7);
             this.Controls.Add(this.tm_CH3);
-            this.Controls.Add(this.tm_CH6);
             this.Controls.Add(this.tm_CH2);
-            this.Controls.Add(this.tm_CH5);
             this.Controls.Add(this.tm_CH1);
+            this.Controls.Add(this.TriggerBackground);
             this.Controls.Add(this.rmM2_CH8);
             this.Controls.Add(this.rmM2_CH7);
             this.Controls.Add(this.rmM2_CH6);
@@ -369,13 +327,10 @@
         private RelayMonitoring.RelayMonitoring rmM2_CH2;
         private RelayMonitoring.RelayMonitoring rmM2_CH1;
         private RelayMonitoring.RelayMonitoring rmM1_CH1;
-        private TriggerMonitoring.TriggerMonitoring tm_CH1;
-        private TriggerMonitoring.TriggerMonitoring tm_CH5;
-        private TriggerMonitoring.TriggerMonitoring tm_CH6;
-        private TriggerMonitoring.TriggerMonitoring tm_CH2;
-        private TriggerMonitoring.TriggerMonitoring tm_CH8;
-        private TriggerMonitoring.TriggerMonitoring tm_CH4;
-        private TriggerMonitoring.TriggerMonitoring tm_CH7;
-        private TriggerMonitoring.TriggerMonitoring tm_CH3;
+        private System.Windows.Forms.Label TriggerBackground;
+        private Trigger.Trigger tm_CH4;
+        private Trigger.Trigger tm_CH3;
+        private Trigger.Trigger tm_CH2;
+        private Trigger.Trigger tm_CH1;
     }
 }
