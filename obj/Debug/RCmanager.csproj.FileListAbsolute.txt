@@ -13,6 +13,9 @@ F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager - V1.000
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager - V1.000\V2.000\bin\Debug\RCmanager.exe.config
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager - V1.000\V2.000\bin\Debug\RCmanager.exe
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager - V1.000\V2.000\bin\Debug\RCmanager.pdb
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\bin\Debug\RCmanager.exe.config
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\bin\Debug\RCmanager.exe
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\bin\Debug\RCmanager.pdb
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RCmanager.csproj.AssemblyReference.cache
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RCmanager.csproj.SuggestedBindingRedirects.cache
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RCmanager.Properties.Resources.resources
@@ -28,8 +31,5 @@ F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\o
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\Trigger.Trigger.resources
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RCmanager.csproj.GenerateResource.cache
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RCmanager.csproj.CoreCompileInputs.cache
-F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\bin\Debug\RCmanager.exe.config
-F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\bin\Debug\RCmanager.exe
-F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\bin\Debug\RCmanager.pdb
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RCmanager.exe
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RCmanager.pdb

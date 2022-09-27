@@ -336,6 +336,7 @@ namespace RCmanager
                 Properties.Settings.Default.InitCode = Constants.INITCODE;
                 Properties.Settings.Default.Save();
             }
+
             return Return;
         }
         private RETURN_T Init_Triggers(bool NightMode)

@@ -67,6 +67,15 @@
     </Compile>
     <Compile Include="MyTriggerSettings.user.cs" />
     <Compile Include="MySettings.user.cs" />
+    <Compile Include="MyUserMonitoringSettings.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="MyUserMonitoringSettings.designer.cs">
+      <DependentUpon>MyUserMonitoringSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="MyUserMonitoringSettings.user.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Properties\MonitoringSettings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
