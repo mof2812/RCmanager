@@ -51,6 +51,9 @@
             this.btnAddSignal_Chart_2 = new System.Windows.Forms.Button();
             this.btnStartStopMonitoring = new System.Windows.Forms.Button();
             this.MyUserMonitoringSettings = new MyUserMonitoringSettings.MyUserMonitoringSettings(this.components);
+            this.txtStates = new System.Windows.Forms.TextBox();
+            this.txtElapsed = new System.Windows.Forms.TextBox();
+            this.ledSeries0 = new Bulb.LedBulb();
             ((System.ComponentModel.ISupportInitialize)(this.UserChart_1)).BeginInit();
             this.grpMonitor_1.SuspendLayout();
             this.grpMonitor_2.SuspendLayout();
@@ -274,15 +277,42 @@
             this.btnStartStopMonitoring.TabIndex = 25;
             this.btnStartStopMonitoring.Text = "Start";
             this.btnStartStopMonitoring.UseVisualStyleBackColor = true;
+            this.btnStartStopMonitoring.Click += new System.EventHandler(this.btnStartStopMonitoring_Click);
             // 
             // MyUserMonitoringSettings
             // 
             this.MyUserMonitoringSettings.DefaultDataFileName = null;
             // 
+            // txtStates
+            // 
+            this.txtStates.Location = new System.Drawing.Point(25, 476);
+            this.txtStates.Name = "txtStates";
+            this.txtStates.Size = new System.Drawing.Size(129, 26);
+            this.txtStates.TabIndex = 26;
+            // 
+            // txtElapsed
+            // 
+            this.txtElapsed.Location = new System.Drawing.Point(25, 508);
+            this.txtElapsed.Name = "txtElapsed";
+            this.txtElapsed.Size = new System.Drawing.Size(129, 26);
+            this.txtElapsed.TabIndex = 27;
+            // 
+            // ledSeries0
+            // 
+            this.ledSeries0.Location = new System.Drawing.Point(176, 475);
+            this.ledSeries0.Name = "ledSeries0";
+            this.ledSeries0.On = true;
+            this.ledSeries0.Size = new System.Drawing.Size(75, 23);
+            this.ledSeries0.TabIndex = 28;
+            this.ledSeries0.Text = "ledBulb1";
+            // 
             // RelayCardUserMonitoring
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.ledSeries0);
+            this.Controls.Add(this.txtElapsed);
+            this.Controls.Add(this.txtStates);
             this.Controls.Add(this.grpMonitor_1);
             this.Controls.Add(this.grpMonitor_2);
             this.Controls.Add(this.btnStartStopMonitoring);
@@ -293,6 +323,7 @@
             this.grpMonitor_2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.UserChart_2)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -314,5 +345,8 @@
         private System.Windows.Forms.Button btnAddSignal_Chart_2;
         private System.Windows.Forms.Button btnStartStopMonitoring;
         private MyUserMonitoringSettings.MyUserMonitoringSettings MyUserMonitoringSettings;
+        private System.Windows.Forms.TextBox txtStates;
+        private System.Windows.Forms.TextBox txtElapsed;
+        private Bulb.LedBulb ledSeries0;
     }
 }

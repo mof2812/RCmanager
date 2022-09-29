@@ -30,7 +30,7 @@ namespace RelayCardUserMonitoring
         //public byte CardIndex;
         public bool AddButton;
         //public int[,] LastValue;
-        //public bool MonitoringRunning;
+        public bool MonitoringRunning;
         public TIMEBASE_UNIT_T[] TimebaseUnit;
         public string[] TimeUnit;
         public int RelayChannels;
@@ -77,10 +77,14 @@ namespace RelayCardUserMonitoring
             Params.TimebaseUnit = new TIMEBASE_UNIT_T[2];
             Params.TimeUnit = new string[2];
 
+            Params.MonitoringRunning = false;
+
             Init_Settings();
 
             Init_ListBoxes();
             Init_ComboBoxes();
+
+            Init_Graphs();
 
             return Return;
         }
@@ -238,16 +242,31 @@ namespace RelayCardUserMonitoring
         }
         private bool Init_Graphs()
         {
-            return Init_Graph(0) | Init_Graph(1);
+            bool Error;
+
+            Error = false;
+
+            if ((Params.SignalName[0] == null) || (Params.TriggerName[0] == null))
+            {
+                Error = true;
+            }
+            else
+            {
+                Error = Init_Graph(0) | Init_Graph(1);
+            }
+            return Error;
         }
         private void Init_ListBoxes()
         {
             lbSignalSelect_Chart_1.Items.Clear();
             lbSignalSelect_Chart_2.Items.Clear();
         }
-        public void InitMonitoring(bool NightMode)
+        public void Init_Monitoring(bool NightMode)
         {
             this.NightMode = NightMode;
+
+            UserChart_1.Series.Clear();
+            UserChart_2.Series.Clear();
         }
         public bool Init_RelayMonitoring(byte Index, Relay.PARAMS_T Params)
         {
@@ -302,6 +321,63 @@ namespace RelayCardUserMonitoring
 
             return Error;
         }
+        public void Monitoring(UInt32 RelayStates)
+        {
+            int SeriesID;
+            int BitState;
+            long Time_ms;
+
+            Time_ms = MonitoringTime.ElapsedMilliseconds;
+
+            txtStates.Text = RelayStates.ToString();
+            txtElapsed.Text = Time_ms.ToString();
+
+            if (Params.MonitoringRunning)
+            {
+                for (byte Chart = 0; Chart < 2; Chart++)
+                {
+                    for (int BitPos = 0; BitPos < Params.RelayChannels + Params.TriggerChannels; BitPos++)
+                    {
+                        SeriesID = MyUserMonitoringSettings.settings.SeriesInChart[Chart, BitPos];
+
+                        if (SeriesID >= 0)
+                        {
+                            BitState = (RelayStates & (0x00000001 << BitPos)) == 0 ? 0 : 1; 
+                            if (Chart == 0)
+                            {
+                                if (SeriesID == 0)
+                                {
+                                    ledSeries0.On = (BitState == 1);
+                                }
+                                if (UserChart_1.ChartAreas[0].AxisX.Maximum < Time_ms)
+                                {
+                                    UserChart_1.ChartAreas[0].AxisX.Maximum = Time_ms;
+                                }
+                                UserChart_1.Series[SeriesID].Points.AddXY(Time_ms, BitState);
+                            }
+                            else
+                            {
+                                UserChart_2.Series[SeriesID].Points.AddXY(Time_ms, BitState);
+                            }
+                        }
+                    }
+                }
+            }
+            // chart.Series[SeriesID].Points.AddXY(0, 0);
+
+            //for (byte Index = 0; Index < 16; Index++)
+            //{
+            //    GetRelayMonitoring(Index).RelayStatus = Convert.ToBoolean(RelayStates & 0x00000001);
+            //    RelayStates >>= 1;
+            //}
+            //RelayStates >>= 8;
+            ////for (byte Index = 0; Index < 8; Index++)
+            //for (byte Index = 0; Index < 4; Index++)
+            //{
+            //    GetTriggerMonitoring(Index).TriggerStatus = Convert.ToBoolean(RelayStates & 0x00000001);
+            //    RelayStates >>= 1;
+            //}
+        }
         public bool NightMode
         {
             get
@@ -310,9 +386,11 @@ namespace RelayCardUserMonitoring
             }
             set
             {
-                this.BackColor = value ? Color.White : Color.Black;
-                this.ForeColor = !value ? Color.White : Color.Black;
+                this.BackColor = value ? Color.Black : Color.White;
+                this.ForeColor = value ? Color.White : Color.Black;
                 grpMonitor_1.ForeColor = grpMonitor_2.ForeColor = this.ForeColor;
+                UserChart_1.ChartAreas[0].BackColor = UserChart_2.ChartAreas[0].BackColor = value ? Color.Black : Color.White;
+                UserChart_1.BackColor = UserChart_2.BackColor = value ? Color.Black : Color.White;
             }
         }
         private int SelectedToIndex(string Name)
@@ -600,6 +678,24 @@ namespace RelayCardUserMonitoring
             else if (e.KeyChar == 0x1B)
             {
                 lbSignalSelect_Chart_2.Visible = false;
+            }
+        }
+
+        private void btnStartStopMonitoring_Click(object sender, EventArgs e)
+        {
+            Params.MonitoringRunning = !Params.MonitoringRunning;
+
+            if (Params.MonitoringRunning)
+            {
+                btnStartStopMonitoring.Text = "Stop";
+                MonitoringTime.Restart();
+
+                Init_Graphs();
+            }
+            else
+            {
+                btnStartStopMonitoring.Text = "Start";
+                MonitoringTime.Stop();
             }
         }
     }

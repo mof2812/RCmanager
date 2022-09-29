@@ -259,8 +259,8 @@ namespace RCmanager
             Return = RETURN_T.OKAY;
             SignalName = "";
 
-            relayCardMonitoring.InitMonitoring(menuMainSettingsViewNightMode.Checked);
-            //relayCardUserMonitoring.InitMonitoring(menuMainSettingsViewNightMode.Checked);
+            relayCardMonitoring.Init_Monitoring(menuMainSettingsViewNightMode.Checked);
+            relayCardUserMonitoring.Init_Monitoring(menuMainSettingsViewNightMode.Checked);
 
             for (Index = 0; (Index < Constants.MODULES * Constants.CHANNELS) && (Return == RETURN_T.OKAY); Index++)
             {
@@ -274,8 +274,6 @@ namespace RCmanager
                     }
                 }
             }
-
-            //relayCardUserMonitoring.InitMonitoring(menuMainSettingsViewNightMode.Checked);
 
             for (Index = 0; (Index < Constants.IRQ_IOS) && (Return == RETURN_T.OKAY); Index++)
             {
@@ -542,6 +540,7 @@ namespace RCmanager
                     break;
                     case SerialCommunication.ACTION_T.GET_OUTPUT_STATES:
                         relayCardMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
+                        relayCardUserMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
                     break;
                 default:
                     break;

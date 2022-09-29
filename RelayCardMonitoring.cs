@@ -30,7 +30,7 @@ namespace RelayCardMonitoring
         private void Init()
         {
         }
-        public void InitMonitoring(bool NightMode)
+        public void Init_Monitoring(bool NightMode)
         {
             this.NightMode = NightMode;
 
