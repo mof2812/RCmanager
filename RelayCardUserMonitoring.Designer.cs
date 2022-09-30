@@ -54,6 +54,7 @@
             this.txtStates = new System.Windows.Forms.TextBox();
             this.txtElapsed = new System.Windows.Forms.TextBox();
             this.ledSeries0 = new Bulb.LedBulb();
+            this.btnPauseMonitoring = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.UserChart_1)).BeginInit();
             this.grpMonitor_1.SuspendLayout();
             this.grpMonitor_2.SuspendLayout();
@@ -128,6 +129,7 @@
             this.cmbTimebaseChart_2.Name = "cmbTimebaseChart_2";
             this.cmbTimebaseChart_2.Size = new System.Drawing.Size(239, 28);
             this.cmbTimebaseChart_2.TabIndex = 16;
+            this.cmbTimebaseChart_2.SelectedIndexChanged += new System.EventHandler(this.cmbTimebaseChart_2_SelectedIndexChanged);
             // 
             // grpMonitor_1
             // 
@@ -182,6 +184,7 @@
             this.cmbTimebaseChart_1.Name = "cmbTimebaseChart_1";
             this.cmbTimebaseChart_1.Size = new System.Drawing.Size(239, 28);
             this.cmbTimebaseChart_1.TabIndex = 22;
+            this.cmbTimebaseChart_1.SelectedIndexChanged += new System.EventHandler(this.cmbTimebaseChart_1_SelectedIndexChanged);
             // 
             // btnAddSignal_Chart_1
             // 
@@ -306,10 +309,23 @@
             this.ledSeries0.TabIndex = 28;
             this.ledSeries0.Text = "ledBulb1";
             // 
+            // btnPauseMonitoring
+            // 
+            this.btnPauseMonitoring.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.btnPauseMonitoring.Location = new System.Drawing.Point(788, 476);
+            this.btnPauseMonitoring.Name = "btnPauseMonitoring";
+            this.btnPauseMonitoring.Size = new System.Drawing.Size(201, 70);
+            this.btnPauseMonitoring.TabIndex = 29;
+            this.btnPauseMonitoring.Text = "Pause";
+            this.btnPauseMonitoring.UseVisualStyleBackColor = true;
+            this.btnPauseMonitoring.Visible = false;
+            this.btnPauseMonitoring.Click += new System.EventHandler(this.btnPauseMonitoring_Click);
+            // 
             // RelayCardUserMonitoring
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.btnPauseMonitoring);
             this.Controls.Add(this.ledSeries0);
             this.Controls.Add(this.txtElapsed);
             this.Controls.Add(this.txtStates);
@@ -318,6 +334,7 @@
             this.Controls.Add(this.btnStartStopMonitoring);
             this.Name = "RelayCardUserMonitoring";
             this.Size = new System.Drawing.Size(1406, 1013);
+            this.Load += new System.EventHandler(this.RelayCardUserMonitoring_Load);
             ((System.ComponentModel.ISupportInitialize)(this.UserChart_1)).EndInit();
             this.grpMonitor_1.ResumeLayout(false);
             this.grpMonitor_2.ResumeLayout(false);
@@ -348,5 +365,6 @@
         private System.Windows.Forms.TextBox txtStates;
         private System.Windows.Forms.TextBox txtElapsed;
         private Bulb.LedBulb ledSeries0;
+        private System.Windows.Forms.Button btnPauseMonitoring;
     }
 }
