@@ -135,6 +135,12 @@
     <Compile Include="RelaySettingsDlg.designer.cs">
       <DependentUpon>RelaySettingsDlg.cs</DependentUpon>
     </Compile>
+    <Compile Include="RelayTriggerSettingsDlg.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="RelayTriggerSettingsDlg.Designer.cs">
+      <DependentUpon>RelayTriggerSettingsDlg.cs</DependentUpon>
+    </Compile>
     <Compile Include="Serial.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -197,6 +203,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="RelaySettingsDlg.resx">
       <DependentUpon>RelaySettingsDlg.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="RelayTriggerSettingsDlg.resx">
+      <DependentUpon>RelayTriggerSettingsDlg.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="SerialCommunication.resx">
       <DependentUpon>SerialCommunication.cs</DependentUpon>

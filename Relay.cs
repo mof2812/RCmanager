@@ -745,6 +745,93 @@ namespace Relay
 
             OnSetParmeterRelay(Args);
         }
+
+        private void chartRelay_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            DialogResult Result;
+
+            RelaySettingsDlg AddSettingsDlg = new RelaySettingsDlg();
+
+            AddSettingsDlg.SetParameter += SetParameter;
+
+            Params.SignalLabel = MySetup.settings.SignalLabel;
+
+            AddSettingsDlg.Parameter = Params;
+
+            Result = AddSettingsDlg.ShowDialog();
+
+            if (Result == DialogResult.OK)
+            {
+                Params = AddSettingsDlg.Parameter;
+
+                if (MySetup.settings.SignalLabel != Params.SignalLabel)
+                {
+                    MySetup.settings.SignalLabel = Params.SignalLabel;
+                    MySetup.Save();
+                }
+
+                SetSettings();
+                Draw();
+            }
+        }
+
+        private void ledTriggerMode_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            DialogResult Result;
+
+            RelayTriggerSettingsDlg AddTriggerSettingsDlg = new RelayTriggerSettingsDlg();
+
+            //AddTriggerSettingsDlg.SetParameter += SetParameter;
+
+            //Params.SignalLabel = MySetup.settings.SignalLabel;
+
+            //AddTriggerSettingsDlg.Parameter = Params;
+
+            Result = AddTriggerSettingsDlg.ShowDialog();
+
+            if (Result == DialogResult.OK)
+            {
+                //Params = AddTriggerSettingsDlg.Parameter;
+
+                //if (MySetup.settings.SignalLabel != Params.SignalLabel)
+                //{
+                //    MySetup.settings.SignalLabel = Params.SignalLabel;
+                //    MySetup.Save();
+                //}
+
+                //SetSettings();
+                //Draw();
+            }
+        }
+
+        private void TriggerSettingsMenuItem_Click(object sender, EventArgs e)
+        {
+            DialogResult Result;
+
+            RelayTriggerSettingsDlg AddTriggerSettingsDlg = new RelayTriggerSettingsDlg();
+
+            //AddTriggerSettingsDlg.SetParameter += SetParameter;
+
+            //Params.SignalLabel = MySetup.settings.SignalLabel;
+
+            //AddTriggerSettingsDlg.Parameter = Params;
+
+            Result = AddTriggerSettingsDlg.ShowDialog();
+
+            if (Result == DialogResult.OK)
+            {
+                //Params = AddTriggerSettingsDlg.Parameter;
+
+                //if (MySetup.settings.SignalLabel != Params.SignalLabel)
+                //{
+                //    MySetup.settings.SignalLabel = Params.SignalLabel;
+                //    MySetup.Save();
+                //}
+
+                //SetSettings();
+                //Draw();
+            }
+        }
     }
     public class SetParameterRelayEventArgs : EventArgs
     {

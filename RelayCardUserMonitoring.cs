@@ -38,15 +38,15 @@ namespace RelayCardUserMonitoring
         public Color[] SignalChartLColor;
         public string[] TriggerName;
         public Color[] TriggerChartLColor;
-        //public SerialPort ComPort;
-        //public byte CardIndex;
         public bool AddButton;
-        //public int[,] LastValue;
         public MONITORING_STATE_T MonitoringState;
         public TIMEBASE_UNIT_T[] TimebaseUnit;
         public string[] TimeUnit;
         public int RelayChannels;
         public int TriggerChannels;
+        public PointF[,] LastPoint;
+        public int[,] CursorSet;
+        public double[] PauseEndsAt;
     }
     public enum RETURN_T
     {
@@ -89,16 +89,38 @@ namespace RelayCardUserMonitoring
             Params.TimebaseUnit = new TIMEBASE_UNIT_T[2];
             Params.TimeUnit = new string[2];
 
+            Params.LastPoint = new PointF[2, Params.RelayChannels + Params.TriggerChannels];
+            for (byte Index = 0; Index < Params.RelayChannels + Params.TriggerChannels; Index++)
+            {
+                Params.LastPoint[0, Index] = Params.LastPoint[1, Index] = new PointF(0.0f, 0.0f);
+            }
+
+            Params.CursorSet = new int[,] { { 0, 0}, { 0, 0} };
+
             Params.MonitoringState = MONITORING_STATE_T.STOPPED;
+
+            Params.PauseEndsAt = new double[2] { 0, 0 }; 
 
             Init_Settings();
 
             Init_ListBoxes();
             Init_ComboBoxes();
+            Init_CheckBoxes();
 
             Init_Graphs();
 
             return Return;
+        }
+        private bool Init_CheckBoxes()
+        {
+            bool Error;
+
+            Error = false;
+
+            cbRectangleChart1.Checked = MyUserMonitoringSettings.settings.RectangleMode[0];
+            cbRectangleChart2.Checked = MyUserMonitoringSettings.settings.RectangleMode[1];
+
+            return Error;
         }
         private bool Init_ComboBoxes()
         {
@@ -174,6 +196,32 @@ namespace RelayCardUserMonitoring
 
             return Error;
         }
+        private void Init_Cursor(byte ChartID)
+        {
+            Chart chart = new Chart();
+
+            chart = ChartID == 0 ? UserChart_1 : UserChart_2;
+
+            if (Params.CursorSet[ChartID, 1] > 0)
+            {
+                chart.Series.RemoveAt(Params.CursorSet[ChartID, 1]);
+                Params.CursorSet[ChartID, 1] = 255;
+                Params.PauseEndsAt[ChartID] = 0;
+            }
+            if (Params.CursorSet[ChartID, 0] > 0)
+            {
+                chart.Series.RemoveAt(Params.CursorSet[ChartID, 0]);
+                Params.CursorSet[ChartID, 0] = 255;
+                Params.PauseEndsAt[ChartID] = 0;
+            }
+
+            
+        }
+        private void Init_Cursors()
+        {
+            Params.CursorSet = new int[,] { { 255, 255 }, { 255, 255 } };
+            Params.PauseEndsAt[0] = Params.PauseEndsAt[1] = 0;
+        }
         private bool Init_Graph(byte ChartID)
         {
             bool Error;
@@ -202,7 +250,6 @@ namespace RelayCardUserMonitoring
 
                 chart.ChartAreas[0].AxisX.Minimum = 0;
                 chart.ChartAreas[0].AxisX.Maximum = Maximum;
-                //chart.ChartAreas[0].AxisX.Maximum = RelayCard16.RelaySettings.Default.UserMonitoringTimeBase_ms[ChartID];
                 chart.ChartAreas[0].AxisY.Minimum = 0;
                 chart.ChartAreas[0].AxisY.Maximum = 1.1;
                 chart.ChartAreas[0].AxisY.Interval = 1;
@@ -239,25 +286,7 @@ namespace RelayCardUserMonitoring
 
                 }
 
-                //chart.Series.Add(new Series("Trennlinie"));
-                //SeriesID = chart.Series.Count() - 1;
-                //chart.Series[SeriesID].Color = Color.Gray;
-                //chart.Series[SeriesID].LabelForeColor = Color.Gray;
-                //chart.Series[SeriesID].ChartType = SeriesChartType.Line;
-                //chart.Series[SeriesID].IsValueShownAsLabel = false;
-                chart.ChartAreas[0].CursorX.LineColor = Color.Green;
-                chart.ChartAreas[0].CursorX.LineWidth = 1;
-                chart.ChartAreas[0].CursorX.LineDashStyle = ChartDashStyle.Dot;
-                chart.ChartAreas[0].CursorX.Interval = 0;
-                chart.ChartAreas[0].CursorX.SetCursorPosition((chart.ChartAreas[0].AxisX.Maximum + chart.ChartAreas[0].AxisX.Minimum) / 2);
-                chart.ChartAreas[0].CursorX.SetCursorPosition(6);
-
                 MyUserMonitoringSettings.Save();
-
-
-                //                SetSettings();
-
-                //                Draw();
             }
             else
             {
@@ -279,6 +308,7 @@ namespace RelayCardUserMonitoring
             else
             {
                 Error = Init_Graph(0) | Init_Graph(1);
+                Init_Cursors();
             }
             return Error;
         }
@@ -318,21 +348,7 @@ namespace RelayCardUserMonitoring
                 // Set default values
                 SetDefaults();
             }
-
-            //if (RCmanager.Properties.MonitoringSettings.Default.InitCode != Constants.INITCODE)  /* Initcode not found -> set default values */
-            //{
-            //    RCmanager.Properties.UserMonitoringSettings.Default.UserMonitoringTimeBase_ms = new UInt64[2];
-            //    RCmanager.Properties.UserMonitoringSettings.Default.UsedInChart = new bool[2, Params.RelayChannels + Params.TriggerChannels];
-            //    RCmanager.Properties.MonitoringSettings.Default.UserMonitoring_Chart_1 = new bool[Params.RelayChannels + Params.TriggerChannels];
-
-            //    RCmanager.Properties.MonitoringSettings.Default.InitCode = Constants.INITCODE;
-
-            //    // Set default values
-            //    SetDefaults();
-
-            //    RCmanager.Properties.MonitoringSettings.Default.Save();
-            //}
-            return Return;
+           return Return;
         }
         public bool Init_TriggerMonitoring(byte Index, Trigger.PARAMS_T Params)
         {
@@ -351,8 +367,9 @@ namespace RelayCardUserMonitoring
         {
             int SeriesID;
             int BitState;
-            double Time_ms;
+            double ElapsedTime;
             Chart chart = new Chart();
+            CheckBox cbRectangle = new CheckBox();
 
             txtStates.Text = RelayStates.ToString();
             
@@ -362,10 +379,11 @@ namespace RelayCardUserMonitoring
                 for (byte ChartID = 0; ChartID < 2; ChartID++)
                 {
                     chart = ChartID == 0 ? UserChart_1 : UserChart_2;
+                    cbRectangle = ChartID == 0 ? cbRectangleChart1 : cbRectangleChart2;
 
-                    Time_ms = (double)MonitoringTime.ElapsedMilliseconds / (double)Params.TimebaseUnit[ChartID];
+                    ElapsedTime = (double)MonitoringTime.ElapsedMilliseconds / (double)Params.TimebaseUnit[ChartID];
 
-                    txtElapsed.Text = Convert.ToString(Time_ms);
+                    txtElapsed.Text = Convert.ToString(ElapsedTime);
 
                     for (int BitPos = 0; BitPos < Params.RelayChannels + Params.TriggerChannels; BitPos++)
                     {
@@ -379,12 +397,24 @@ namespace RelayCardUserMonitoring
                             {
                                 ledSeries0.On = (BitState == 1);
                             }
-                            if (chart.ChartAreas[0].AxisX.Maximum < Time_ms)
+                            if (chart.ChartAreas[0].AxisX.Maximum < ElapsedTime)
                             {
-                                chart.ChartAreas[0].AxisX.Maximum = Time_ms;
-                                chart.ChartAreas[0].AxisX.Minimum = UserChart_1.ChartAreas[0].AxisX.Maximum - (double)MyUserMonitoringSettings.settings.UserMonitoringTimeBase_ms[ChartID] / (double)Params.TimebaseUnit[ChartID];
+                                chart.ChartAreas[0].AxisX.Maximum = ElapsedTime;
+                                chart.ChartAreas[0].AxisX.Minimum = chart.ChartAreas[0].AxisX.Maximum - (double)MyUserMonitoringSettings.settings.UserMonitoringTimeBase_ms[ChartID] / (double)Params.TimebaseUnit[ChartID];
+
+                                if ((Params.PauseEndsAt[ChartID] < chart.ChartAreas[0].AxisX.Minimum) && (Params.PauseEndsAt[ChartID] > 0))
+                                {
+                                    Init_Cursor(ChartID);
+                                }
                             }
-                            chart.Series[SeriesID].Points.AddXY(Time_ms, BitState);
+
+                            if (cbRectangle.Checked)
+                            {
+                                chart.Series[SeriesID].Points.AddXY(ElapsedTime, Params.LastPoint[ChartID, SeriesID].Y);
+                            }
+                            chart.Series[SeriesID].Points.AddXY(ElapsedTime, BitState);
+
+                            Params.LastPoint[ChartID, SeriesID] = new PointF((float)ElapsedTime, (float)BitState);
                         }
                     }
                 }
@@ -482,7 +512,6 @@ namespace RelayCardUserMonitoring
             }
             return Timebase;
         }
-
         private int SelectedToIndex(string Name)
         {
             int RetVal;
@@ -512,22 +541,82 @@ namespace RelayCardUserMonitoring
 
             return RetVal;
         }
+        private bool SetCursor(bool PauseStart)
+        {
+            bool Error;
+            byte ChartID;
+            byte SeriesID;
+            double ElapsedTime;
+            Chart chart = new Chart();
+
+            Error = false;
+            SeriesID = PauseStart ? (byte)0 : (byte)1;
+
+            for (ChartID = 0; ChartID < 2; ChartID++)
+            {
+                chart = ChartID == 0 ? UserChart_1 : UserChart_2;
+
+                if ((!PauseStart) && (Params.CursorSet[ChartID, 0] == 255))
+                {
+                    Error = true;
+                }
+                else
+                {
+                    if (Params.CursorSet[ChartID, SeriesID] == 255)
+                    {
+                        chart.Series.Add(new Series(SeriesID == 0 ? "Pause 'Start'" : "Pause 'Ende'"));
+
+                        Params.CursorSet[ChartID, SeriesID] = chart.Series.Count() - 1;
+                        chart.Series[Params.CursorSet[ChartID, SeriesID]].Color = NightMode ? Color.Gray : Color.DarkGray;
+                        chart.Series[Params.CursorSet[ChartID, SeriesID]].BorderWidth = 1;
+                        chart.Series[Params.CursorSet[ChartID, SeriesID]].ChartType = SeriesChartType.Line;
+                        chart.Series[Params.CursorSet[ChartID, SeriesID]].BorderDashStyle = ChartDashStyle.DashDot;
+                    }
+
+                    // Drawing
+                    ElapsedTime = (double)MonitoringTime.ElapsedMilliseconds / (double)Params.TimebaseUnit[ChartID];
+
+                    if (ElapsedTime > chart.ChartAreas[0].AxisX.Maximum)
+                    {
+                        chart.ChartAreas[0].AxisX.Maximum = ElapsedTime;
+                    }
+
+                    chart.Series[Params.CursorSet[ChartID, SeriesID]].Points.AddXY(ElapsedTime, 0);
+                    chart.Series[Params.CursorSet[ChartID, SeriesID]].Points.AddXY(ElapsedTime, 1.1);
+                    if (PauseStart)
+                    {
+                        chart.Series[Params.CursorSet[ChartID, SeriesID]].Points.AddXY(ElapsedTime + (chart.ChartAreas[0].AxisX.Maximum - chart.ChartAreas[0].AxisX.Minimum) / 50, 1.1);
+                    }
+                    else
+                    {
+                        chart.Series[Params.CursorSet[ChartID, SeriesID]].Points.AddXY(ElapsedTime - (chart.ChartAreas[0].AxisX.Maximum - chart.ChartAreas[0].AxisX.Minimum) / 50, 1.1);
+                    }
+                    chart.Series[Params.CursorSet[ChartID, SeriesID]].Points.AddXY(ElapsedTime, 1.1);
+                    chart.Series[Params.CursorSet[ChartID, SeriesID]].Points.AddXY(ElapsedTime, 0);
+
+                    if (!PauseStart)
+                    {
+                        Params.PauseEndsAt[ChartID] = ElapsedTime;
+                    }
+
+                }
+            }
+            return Error;
+        }
         public void SetDefaults()
         {
             for (int Chart = 0; Chart < 2; Chart++)
             {
                 MyUserMonitoringSettings.settings.UserMonitoringTimeBase_ms[Chart] = 10000;
-//                RCmanager.Properties.UserMonitoringSettings.Default.UserMonitoringTimeBase_ms[Chart] = 10000;
+                MyUserMonitoringSettings.settings.RectangleMode[0] = MyUserMonitoringSettings.settings.RectangleMode[1] = false;
                 for (int Index = 0; Index < Params.RelayChannels + Params.TriggerChannels; Index++)
                 {
                     MyUserMonitoringSettings.settings.UsedInChart[Chart, Index] = false;
                     MyUserMonitoringSettings.settings.SeriesInChart[Chart, Index] = -1;
-                    //RCmanager.Properties.UserMonitoringSettings.Default.UsedInChart[Chart, Index] = false;
                 }
             }
 
             MyUserMonitoringSettings.Save();
-            //RCmanager.Properties.UserMonitoringSettings.Default.Save();
         }
         private void SetListBox(bool Chart1, bool Add)
         {
@@ -596,18 +685,6 @@ namespace RelayCardUserMonitoring
             {
                 Params.SignalName[Index] = RelayParams.SignalLabel;
                 Params.SignalChartLColor[Index] = RelayParams.ChartLColor;
-
-                ////if (RCmanager.Properties.UserMonitoringSettings.Default.UsedInChart[0, Index] == false)
-                //if (MyUserMonitoringSettings.settings.UsedInChart[0, Index] == false)
-                //{
-                //    lbSignalSelect_Chart_1.Items.Add($"({Index}) {Params.SignalName[Index]}");
-                //}
-
-                ////if (RCmanager.Properties.UserMonitoringSettings.Default.UsedInChart[1, Index] == false)
-                //if (MyUserMonitoringSettings.settings.UsedInChart[0, Index] == false)
-                //{
-                //    lbSignalSelect_Chart_2.Items.Add($"({Index}) {Params.SignalName[Index]}");
-                //}
             }
             else
             {
@@ -630,7 +707,6 @@ namespace RelayCardUserMonitoring
 
                     if (Maximum < chart.ChartAreas[0].AxisX.Maximum)
                     {
-                        //Maximum = chart.ChartAreas[0].AxisX.Maximum;
                         chart.ChartAreas[0].AxisX.Maximum = Maximum;
                     }
 
@@ -670,18 +746,6 @@ namespace RelayCardUserMonitoring
             {
                 Params.TriggerName[Index] = TriggerParams.TriggerLabel;
                 Params.TriggerChartLColor[Index] = TriggerParams.ChartLColor;
-
-                ////if (RCmanager.Properties.UserMonitoringSettings.Default.UsedInChart[0, Index2] == false)
-                //if (MyUserMonitoringSettings.settings.UsedInChart[0, Index2] == false)
-                //{
-                //    lbSignalSelect_Chart_1.Items.Add($"(T{Index}) {Params.TriggerName[Index]}");
-                //}
-
-                ////if (RCmanager.Properties.UserMonitoringSettings.Default.UsedInChart[1, Index2] == false)
-                //if (MyUserMonitoringSettings.settings.UsedInChart[0, Index2] == false)
-                //{
-                //    lbSignalSelect_Chart_2.Items.Add($"(T{Index}) {Params.TriggerName[Index]}");
-                //}
             }
             else
             {
@@ -845,12 +909,15 @@ namespace RelayCardUserMonitoring
             {
                 btnPauseMonitoring.Text = "Fortsetzen";
                 Params.MonitoringState = MONITORING_STATE_T.PAUSED;
+
+                SetCursor(true);
             }
             else if (Params.MonitoringState == MONITORING_STATE_T.PAUSED)
             {
                 btnPauseMonitoring.Text = "Pause";
-                //btnPauseMonitoring.Visible = false;
                 Params.MonitoringState = MONITORING_STATE_T.RUNNING;
+
+                SetCursor(false);
             }
         }
         private void RelayCardUserMonitoring_Load(object sender, EventArgs e)
@@ -899,7 +966,19 @@ namespace RelayCardUserMonitoring
                 MyUserMonitoringSettings.Save();
             }
         }
-   }
+
+        private void cbRectangleChart1_CheckedChanged(object sender, EventArgs e)
+        {
+            MyUserMonitoringSettings.settings.RectangleMode[0] = cbRectangleChart1.Checked;
+            MyUserMonitoringSettings.Save();
+        }
+
+        private void cbRectangleChart2_CheckedChanged(object sender, EventArgs e)
+        {
+            MyUserMonitoringSettings.settings.RectangleMode[1] = cbRectangleChart2.Checked;
+            MyUserMonitoringSettings.Save();
+        }
+    }
     static class Constants
     {
         public const uint INITCODE = 0x55AA55AB;

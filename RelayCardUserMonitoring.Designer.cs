@@ -40,21 +40,23 @@
             this.btnDelSignal_Chart_1 = new System.Windows.Forms.Button();
             this.cmbTimebaseChart_2 = new System.Windows.Forms.ComboBox();
             this.grpMonitor_1 = new System.Windows.Forms.GroupBox();
+            this.cbRectangleChart1 = new System.Windows.Forms.CheckBox();
             this.lblTimebase_1 = new System.Windows.Forms.Label();
             this.cmbTimebaseChart_1 = new System.Windows.Forms.ComboBox();
             this.btnAddSignal_Chart_1 = new System.Windows.Forms.Button();
             this.grpMonitor_2 = new System.Windows.Forms.GroupBox();
+            this.cbRectangleChart2 = new System.Windows.Forms.CheckBox();
             this.lblTimebase_2 = new System.Windows.Forms.Label();
             this.lbSignalSelect_Chart_2 = new System.Windows.Forms.ListBox();
             this.UserChart_2 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.btnDelSignal_Chart_2 = new System.Windows.Forms.Button();
             this.btnAddSignal_Chart_2 = new System.Windows.Forms.Button();
             this.btnStartStopMonitoring = new System.Windows.Forms.Button();
-            this.MyUserMonitoringSettings = new MyUserMonitoringSettings.MyUserMonitoringSettings(this.components);
             this.txtStates = new System.Windows.Forms.TextBox();
             this.txtElapsed = new System.Windows.Forms.TextBox();
-            this.ledSeries0 = new Bulb.LedBulb();
             this.btnPauseMonitoring = new System.Windows.Forms.Button();
+            this.ledSeries0 = new Bulb.LedBulb();
+            this.MyUserMonitoringSettings = new MyUserMonitoringSettings.MyUserMonitoringSettings(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.UserChart_1)).BeginInit();
             this.grpMonitor_1.SuspendLayout();
             this.grpMonitor_2.SuspendLayout();
@@ -104,8 +106,6 @@
             // 
             this.cmbTimebaseChart_2.FormattingEnabled = true;
             this.cmbTimebaseChart_2.Items.AddRange(new object[] {
-            "100ms",
-            "200ms",
             "500ms",
             "1s",
             "2s",
@@ -133,6 +133,7 @@
             // 
             // grpMonitor_1
             // 
+            this.grpMonitor_1.Controls.Add(this.cbRectangleChart1);
             this.grpMonitor_1.Controls.Add(this.lblTimebase_1);
             this.grpMonitor_1.Controls.Add(this.cmbTimebaseChart_1);
             this.grpMonitor_1.Controls.Add(this.btnAddSignal_Chart_1);
@@ -145,6 +146,17 @@
             this.grpMonitor_1.TabIndex = 23;
             this.grpMonitor_1.TabStop = false;
             this.grpMonitor_1.Text = "Monitor 1";
+            // 
+            // cbRectangleChart1
+            // 
+            this.cbRectangleChart1.AutoSize = true;
+            this.cbRectangleChart1.Location = new System.Drawing.Point(953, 367);
+            this.cbRectangleChart1.Name = "cbRectangleChart1";
+            this.cbRectangleChart1.Size = new System.Drawing.Size(108, 24);
+            this.cbRectangleChart1.TabIndex = 24;
+            this.cbRectangleChart1.Text = "rechteckig";
+            this.cbRectangleChart1.UseVisualStyleBackColor = true;
+            this.cbRectangleChart1.CheckedChanged += new System.EventHandler(this.cbRectangleChart1_CheckedChanged);
             // 
             // lblTimebase_1
             // 
@@ -159,8 +171,6 @@
             // 
             this.cmbTimebaseChart_1.FormattingEnabled = true;
             this.cmbTimebaseChart_1.Items.AddRange(new object[] {
-            "100ms",
-            "200ms",
             "500ms",
             "1s",
             "2s",
@@ -199,6 +209,7 @@
             // 
             // grpMonitor_2
             // 
+            this.grpMonitor_2.Controls.Add(this.cbRectangleChart2);
             this.grpMonitor_2.Controls.Add(this.lblTimebase_2);
             this.grpMonitor_2.Controls.Add(this.lbSignalSelect_Chart_2);
             this.grpMonitor_2.Controls.Add(this.cmbTimebaseChart_2);
@@ -211,6 +222,17 @@
             this.grpMonitor_2.TabIndex = 24;
             this.grpMonitor_2.TabStop = false;
             this.grpMonitor_2.Text = "Monitor 2";
+            // 
+            // cbRectangleChart2
+            // 
+            this.cbRectangleChart2.AutoSize = true;
+            this.cbRectangleChart2.Location = new System.Drawing.Point(953, 367);
+            this.cbRectangleChart2.Name = "cbRectangleChart2";
+            this.cbRectangleChart2.Size = new System.Drawing.Size(108, 24);
+            this.cbRectangleChart2.TabIndex = 26;
+            this.cbRectangleChart2.Text = "rechteckig";
+            this.cbRectangleChart2.UseVisualStyleBackColor = true;
+            this.cbRectangleChart2.CheckedChanged += new System.EventHandler(this.cbRectangleChart2_CheckedChanged);
             // 
             // lblTimebase_2
             // 
@@ -273,18 +295,16 @@
             // 
             // btnStartStopMonitoring
             // 
+            this.btnStartStopMonitoring.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.btnStartStopMonitoring.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.btnStartStopMonitoring.Location = new System.Drawing.Point(581, 475);
+            this.btnStartStopMonitoring.Location = new System.Drawing.Point(454, 475);
             this.btnStartStopMonitoring.Name = "btnStartStopMonitoring";
             this.btnStartStopMonitoring.Size = new System.Drawing.Size(201, 70);
             this.btnStartStopMonitoring.TabIndex = 25;
             this.btnStartStopMonitoring.Text = "Start";
+            this.btnStartStopMonitoring.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnStartStopMonitoring.UseVisualStyleBackColor = true;
             this.btnStartStopMonitoring.Click += new System.EventHandler(this.btnStartStopMonitoring_Click);
-            // 
-            // MyUserMonitoringSettings
-            // 
-            this.MyUserMonitoringSettings.DefaultDataFileName = null;
             // 
             // txtStates
             // 
@@ -292,6 +312,7 @@
             this.txtStates.Name = "txtStates";
             this.txtStates.Size = new System.Drawing.Size(129, 26);
             this.txtStates.TabIndex = 26;
+            this.txtStates.Visible = false;
             // 
             // txtElapsed
             // 
@@ -299,6 +320,19 @@
             this.txtElapsed.Name = "txtElapsed";
             this.txtElapsed.Size = new System.Drawing.Size(129, 26);
             this.txtElapsed.TabIndex = 27;
+            this.txtElapsed.Visible = false;
+            // 
+            // btnPauseMonitoring
+            // 
+            this.btnPauseMonitoring.ForeColor = System.Drawing.SystemColors.WindowText;
+            this.btnPauseMonitoring.Location = new System.Drawing.Point(661, 476);
+            this.btnPauseMonitoring.Name = "btnPauseMonitoring";
+            this.btnPauseMonitoring.Size = new System.Drawing.Size(201, 70);
+            this.btnPauseMonitoring.TabIndex = 29;
+            this.btnPauseMonitoring.Text = "Pause";
+            this.btnPauseMonitoring.UseVisualStyleBackColor = true;
+            this.btnPauseMonitoring.Visible = false;
+            this.btnPauseMonitoring.Click += new System.EventHandler(this.btnPauseMonitoring_Click);
             // 
             // ledSeries0
             // 
@@ -308,18 +342,11 @@
             this.ledSeries0.Size = new System.Drawing.Size(75, 23);
             this.ledSeries0.TabIndex = 28;
             this.ledSeries0.Text = "ledBulb1";
+            this.ledSeries0.Visible = false;
             // 
-            // btnPauseMonitoring
+            // MyUserMonitoringSettings
             // 
-            this.btnPauseMonitoring.ForeColor = System.Drawing.SystemColors.WindowText;
-            this.btnPauseMonitoring.Location = new System.Drawing.Point(788, 476);
-            this.btnPauseMonitoring.Name = "btnPauseMonitoring";
-            this.btnPauseMonitoring.Size = new System.Drawing.Size(201, 70);
-            this.btnPauseMonitoring.TabIndex = 29;
-            this.btnPauseMonitoring.Text = "Pause";
-            this.btnPauseMonitoring.UseVisualStyleBackColor = true;
-            this.btnPauseMonitoring.Visible = false;
-            this.btnPauseMonitoring.Click += new System.EventHandler(this.btnPauseMonitoring_Click);
+            this.MyUserMonitoringSettings.DefaultDataFileName = null;
             // 
             // RelayCardUserMonitoring
             // 
@@ -337,7 +364,9 @@
             this.Load += new System.EventHandler(this.RelayCardUserMonitoring_Load);
             ((System.ComponentModel.ISupportInitialize)(this.UserChart_1)).EndInit();
             this.grpMonitor_1.ResumeLayout(false);
+            this.grpMonitor_1.PerformLayout();
             this.grpMonitor_2.ResumeLayout(false);
+            this.grpMonitor_2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.UserChart_2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -366,5 +395,7 @@
         private System.Windows.Forms.TextBox txtElapsed;
         private Bulb.LedBulb ledSeries0;
         private System.Windows.Forms.Button btnPauseMonitoring;
+        private System.Windows.Forms.CheckBox cbRectangleChart1;
+        private System.Windows.Forms.CheckBox cbRectangleChart2;
     }
 }

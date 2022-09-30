@@ -33,3 +33,4 @@ F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\o
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RCmanager.csproj.CoreCompileInputs.cache
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RCmanager.exe
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RCmanager.pdb
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\Relay.RelayTriggerSettingsDlg.resources

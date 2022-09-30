@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.conMenuRelay = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.AddSettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.TriggerSettingsMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -54,7 +54,7 @@
             this.AddSettingsMenuItem,
             this.TriggerSettingsMenuItem});
             this.conMenuRelay.Name = "conMenuRelay";
-            this.conMenuRelay.Size = new System.Drawing.Size(244, 68);
+            this.conMenuRelay.Size = new System.Drawing.Size(244, 101);
             // 
             // AddSettingsMenuItem
             // 
@@ -68,6 +68,7 @@
             this.TriggerSettingsMenuItem.Name = "TriggerSettingsMenuItem";
             this.TriggerSettingsMenuItem.Size = new System.Drawing.Size(243, 32);
             this.TriggerSettingsMenuItem.Text = "Triggereinstellungen";
+            this.TriggerSettingsMenuItem.Click += new System.EventHandler(this.TriggerSettingsMenuItem_Click);
             // 
             // lblTriggerMode
             // 
@@ -78,6 +79,7 @@
             this.lblTriggerMode.TabIndex = 27;
             this.lblTriggerMode.Text = "Triggerung";
             this.lblTriggerMode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTriggerMode.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ledTriggerMode_MouseDoubleClick);
             // 
             // lblInvertingMode
             // 
@@ -104,21 +106,22 @@
             // chartRelay
             // 
             this.chartRelay.BackColor = System.Drawing.Color.Black;
-            chartArea2.Name = "ChartArea1";
-            this.chartRelay.ChartAreas.Add(chartArea2);
+            chartArea1.Name = "ChartArea1";
+            this.chartRelay.ChartAreas.Add(chartArea1);
             this.chartRelay.ContextMenuStrip = this.conMenuRelay;
-            legend2.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
-            legend2.Name = "Legend1";
-            this.chartRelay.Legends.Add(legend2);
+            legend1.Docking = System.Windows.Forms.DataVisualization.Charting.Docking.Top;
+            legend1.Name = "Legend1";
+            this.chartRelay.Legends.Add(legend1);
             this.chartRelay.Location = new System.Drawing.Point(0, 0);
             this.chartRelay.Name = "chartRelay";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.chartRelay.Series.Add(series2);
+            series1.ChartArea = "ChartArea1";
+            series1.Legend = "Legend1";
+            series1.Name = "Series1";
+            this.chartRelay.Series.Add(series1);
             this.chartRelay.Size = new System.Drawing.Size(700, 250);
             this.chartRelay.TabIndex = 29;
             this.chartRelay.Text = "chart1";
+            this.chartRelay.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.chartRelay_MouseDoubleClick);
             // 
             // ledTriggerMode
             // 
@@ -128,6 +131,7 @@
             this.ledTriggerMode.Size = new System.Drawing.Size(23, 23);
             this.ledTriggerMode.TabIndex = 28;
             this.ledTriggerMode.Text = "ledBulb1";
+            this.ledTriggerMode.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ledTriggerMode_MouseDoubleClick);
             // 
             // ledInvertingMode
             // 

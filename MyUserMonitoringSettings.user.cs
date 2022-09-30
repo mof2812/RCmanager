@@ -13,6 +13,7 @@ namespace MyUserMonitoringSettings
         public int[] UserMonitoringTimeBase_ms { get; set; }     // Signal name
         public bool[,] UsedInChart { get; set; }     // Flag, that signal/trigger is used in a chart
         public int [,] SeriesInChart { get; set; }     // signals/triggers is used in a chart
+        public bool[] RectangleMode { get; set; }   // Monitor signals in rectangle mode
         public Color ChartBColor { get; set; }      // Chart background color
         public Color ChartLColor { get; set; }      // Signalcolor
         public Color ChartTColor { get; set; }      // Textcolor
@@ -27,6 +28,7 @@ namespace MyUserMonitoringSettings
             settings.UserMonitoringTimeBase_ms = new int[2];
             settings.UsedInChart = new bool[2, RCmanager.Constants.MODULES * RCmanager.Constants.CHANNELS + RCmanager.Constants.IRQ_IOS];
             settings.SeriesInChart = new int[2, RCmanager.Constants.MODULES * RCmanager.Constants.CHANNELS + RCmanager.Constants.IRQ_IOS];
+            settings.RectangleMode = new bool[2]; 
         }
     }
 }
