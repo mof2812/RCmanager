@@ -177,8 +177,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.ContextMenuStrip conMenuRelay;
         private System.Windows.Forms.ToolStripMenuItem AddSettingsMenuItem;
         private System.Windows.Forms.ToolStripMenuItem TriggerSettingsMenuItem;
         private Bulb.LedBulb ledTriggerMode;
@@ -189,5 +187,6 @@
         private System.Windows.Forms.Label lblEnable;
         private System.Windows.Forms.DataVisualization.Charting.Chart chartRelay;
         private MySettings.MySettings MySetup;
+        public System.Windows.Forms.ContextMenuStrip conMenuRelay;
     }
 }

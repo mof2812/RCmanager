@@ -83,6 +83,7 @@ namespace Relay
     public partial class Relay : UserControl
     {
         public event EventHandler<SetParameterRelayEventArgs> SetParameterRelay;
+        public event EventHandler<OpenTriggerSettingsDlgEventArgs> OpenTriggerSettingsDlg;
 
         #region Members
         PARAMS_T Params;
@@ -562,6 +563,11 @@ namespace Relay
             EventHandler<SetParameterRelayEventArgs> handler = SetParameterRelay;
             handler?.Invoke(this, e);
         }
+        protected virtual void OnOpenTriggerSettingsDlg(OpenTriggerSettingsDlgEventArgs e)
+        {
+            EventHandler<OpenTriggerSettingsDlgEventArgs> handler = OpenTriggerSettingsDlg;
+            handler?.Invoke(this, e);
+        }
         public RETURN_T SetAxisLimit(AXIS_SELECT_T Axis, double Limit, bool Minimum)
         {
             RETURN_T Return;
@@ -778,8 +784,11 @@ namespace Relay
         private void ledTriggerMode_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             DialogResult Result;
+            OpenTriggerSettingsDlgEventArgs Args = new OpenTriggerSettingsDlgEventArgs();
 
-            RelayTriggerSettingsDlg AddTriggerSettingsDlg = new RelayTriggerSettingsDlg();
+            OnOpenTriggerSettingsDlg(Args);
+
+            RelayTriggerSettingsDlg.RelayTriggerSettingsDlg AddTriggerSettingsDlg = new RelayTriggerSettingsDlg.RelayTriggerSettingsDlg();
 
             //AddTriggerSettingsDlg.SetParameter += SetParameter;
 
@@ -787,28 +796,31 @@ namespace Relay
 
             //AddTriggerSettingsDlg.Parameter = Params;
 
-            Result = AddTriggerSettingsDlg.ShowDialog();
+            //Result = AddTriggerSettingsDlg.ShowDialog();
 
-            if (Result == DialogResult.OK)
-            {
-                //Params = AddTriggerSettingsDlg.Parameter;
+            //if (Result == DialogResult.OK)
+            //{
+            //    //Params = AddTriggerSettingsDlg.Parameter;
 
-                //if (MySetup.settings.SignalLabel != Params.SignalLabel)
-                //{
-                //    MySetup.settings.SignalLabel = Params.SignalLabel;
-                //    MySetup.Save();
-                //}
+            //    //if (MySetup.settings.SignalLabel != Params.SignalLabel)
+            //    //{
+            //    //    MySetup.settings.SignalLabel = Params.SignalLabel;
+            //    //    MySetup.Save();
+            //    //}
 
-                //SetSettings();
-                //Draw();
-            }
+            //    //SetSettings();
+            //    //Draw();
+            //}
         }
 
         private void TriggerSettingsMenuItem_Click(object sender, EventArgs e)
         {
             DialogResult Result;
+            OpenTriggerSettingsDlgEventArgs Args = new OpenTriggerSettingsDlgEventArgs();
 
-            RelayTriggerSettingsDlg AddTriggerSettingsDlg = new RelayTriggerSettingsDlg();
+            OnOpenTriggerSettingsDlg(Args);
+
+//            RelayTriggerSettingsDlg.RelayTriggerSettingsDlg AddTriggerSettingsDlg = new RelayTriggerSettingsDlg.RelayTriggerSettingsDlg();
 
             //AddTriggerSettingsDlg.SetParameter += SetParameter;
 
@@ -816,9 +828,9 @@ namespace Relay
 
             //AddTriggerSettingsDlg.Parameter = Params;
 
-            Result = AddTriggerSettingsDlg.ShowDialog();
+//            Result = AddTriggerSettingsDlg.ShowDialog();
 
-            if (Result == DialogResult.OK)
+//            if (Result == DialogResult.OK)
             {
                 //Params = AddTriggerSettingsDlg.Parameter;
 
@@ -839,6 +851,9 @@ namespace Relay
         public WHICH_PARAMETER_T Parameter { get; set; }
         public MODE_T Mode { get; set; }
         public PARAMS_T Params { get; set; }
+    }
+    public class OpenTriggerSettingsDlgEventArgs : EventArgs
+    { 
     }
     static class Constants
     {

@@ -94,7 +94,7 @@ namespace RelayCard
 
             return Return;
         }
-        private Relay.Relay GetRelay(byte Channel)
+        public Relay.Relay GetRelay(byte Channel)
         {
             Relay.Relay relay = new Relay.Relay();
 

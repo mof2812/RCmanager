@@ -47,9 +47,11 @@ namespace SerialCommunication
                 case ACTION_T.ENABLE_ALL:
                 case ACTION_T.SET_ENABLE:
                 case ACTION_T.SET_ENABLE_CARD:
+                case ACTION_T.SET_TRIGGER_CONFIG:
                     WaitFor = RECEIVE_WAIT_FOR_T.OK;
                     break;
                 case ACTION_T.GET_CONFIG:
+                case ACTION_T.GET_TRIGGER_CONFIG:
                     WaitFor = RECEIVE_WAIT_FOR_T.DATA;
                     break;
                 case ACTION_T.GET_OUTPUT_STATES:
@@ -61,7 +63,7 @@ namespace SerialCommunication
             }
             return WaitFor;
         }
-       public string Send(PARAMS_T Params)
+        public string Send(PARAMS_T Params)
         {
             string Frame;
             byte Channel;
@@ -100,6 +102,11 @@ namespace SerialCommunication
                 #region ACTION_T.GET_CONFIG
                 case ACTION_T.GET_CONFIG:
                     Frame = Channel < 8 ? $"GSWCONFIG {Channel}" : $"GPSPCONFIG {Channel % 8}";
+                    break;
+                #endregion
+                #region ACTION_T.GET_TRIGGER_CONFIG
+                case ACTION_T.GET_TRIGGER_CONFIG:
+                    Frame = $"GTRGCONFIG {Channel % 8}";
                     break;
                 #endregion
                 #region GET_OUTPUT_STATES
@@ -265,12 +272,65 @@ namespace SerialCommunication
                     }
                     break;
                 #endregion
+                #region ACTION_T.SET_TRIGGER_CONFIG
+                case ACTION_T.SET_TRIGGER_CONFIG:
+                    Params.ParameterExecuting[2] = TriggerModeToString((TriggerSettings.TRIGGER_MODE_T)Convert.ToInt32(Params.ParameterExecuting[2]));
+                    Params.ParameterExecuting[3] = Params.ParameterExecuting[3].Insert(Params.ParameterExecuting[3].Length - 3, ".");
+                    Frame = $"STRGCONFIG {Channel} {Params.ParameterExecuting[1]} {Params.ParameterExecuting[2]} {Params.ParameterExecuting[3]} {Params.ParameterExecuting[4]}";
+                    break;
+                #endregion
                 #endregion
                 default:
                     break;
             }
 
             return Frame;
+        }
+        private string TriggerModeToString(TriggerSettings.TRIGGER_MODE_T TriggerMode)
+        {
+            string Mode;
+
+            Mode = "";
+
+            switch (TriggerMode)
+            {
+                case TriggerSettings.TRIGGER_MODE_T.TRIGGER_MODE_LOW:
+                    Mode = "LOW";
+                    break;
+
+                case TriggerSettings.TRIGGER_MODE_T.TRIGGER_MODE_HIGH:
+                    Mode = "HIGH";
+                    break;
+
+                case TriggerSettings.TRIGGER_MODE_T.TRIGGER_MODE_FALLING:
+                    Mode = "FALLING";
+                    break;
+
+                case TriggerSettings.TRIGGER_MODE_T.TRIGGER_MODE_RISING:
+                    Mode = "RISING";
+                    break;
+
+                case TriggerSettings.TRIGGER_MODE_T.TRIGGER_MODE_LEVEL_DOWN:
+                    Mode = "LEVEL_DOWN";
+                    break;
+
+                case TriggerSettings.TRIGGER_MODE_T.TRIGGER_MODE_LEVEL_UP:
+                    Mode = "LEVEL_UP";
+                    break;
+
+                case TriggerSettings.TRIGGER_MODE_T.TRIGGER_MODE_IRQ_DOWN:
+                    Mode = "IRQ_DOWN";
+                    break;
+
+                case TriggerSettings.TRIGGER_MODE_T.TRIGGER_MODE_IRQ_UP:
+                    Mode = "IRQ_UP";
+                    break;
+
+                default:
+                    Mode = "LOW";
+                    break;
+            }
+            return Mode;
         }
     }
 }

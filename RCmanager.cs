@@ -20,6 +20,7 @@ namespace RCmanager
         PARAM_OUT_OF_RANGE,
         INVALIDE_CHANNEL,
     }
+
     public partial class RCmanager : Form
     {
         public struct PARAMS_T
@@ -29,6 +30,7 @@ namespace RCmanager
             public double MinChartXRange_ms;
             public Relay.PARAMS_T[] RelayParams;
             public Trigger.PARAMS_T[] TriggerParams;
+            public TriggerSettings.PARAMS_T[] TriggerSettings;
         }
 
         #region Members
@@ -46,6 +48,50 @@ namespace RCmanager
         }
         #endregion
         #region Methods
+        public RETURN_T EvaluateTriggerConfigurationString(byte TriggerChannel, string ConfigurationString)
+        {
+            RETURN_T Return;
+            TriggerSettings.PARAMS_T TriggerParams;
+            TriggerSettings.TriggerSettings triggerSettings = new TriggerSettings.TriggerSettings();
+            int Pos;
+
+            Return = RETURN_T.OKAY;
+            Pos = 0;
+
+            for (int Index = 0; Index < 4; Index++)
+            {
+                Pos = ConfigurationString.IndexOf(" ");
+                switch (Index)
+                {
+                    case 0:
+                        Params.TriggerSettings[TriggerChannel].Enabled = ConfigurationString.Substring(0, Pos) == "0" ? false : true;
+                        break;
+
+                    case 1:
+                        Params.TriggerSettings[TriggerChannel].TriggerMode = (TriggerSettings.TRIGGER_MODE_T)Convert.ToInt32(ConfigurationString.Substring(0, Pos));
+                        break;
+
+                    case 2:
+                        ConfigurationString = ConfigurationString.Replace('.', ',');
+                        Params.TriggerSettings[TriggerChannel].TriggerLevel = (float)Convert.ToDouble(ConfigurationString.Substring(0, Pos));
+                        break;
+
+                    case 3:
+                        Params.TriggerSettings[TriggerChannel].Retrigger = ConfigurationString == "0" ? false : true;
+                        break;
+
+                    default:
+                        Return = RETURN_T.ERROR;
+                        break;
+                }
+
+                ConfigurationString = ConfigurationString.Remove(0, Pos + 1);
+            }
+
+
+
+            return Return;
+        }
         private RETURN_T GetConfig(byte Channel)
         {
             RETURN_T Return;
@@ -125,6 +171,30 @@ namespace RCmanager
 
             return Return;
         }
+        private RETURN_T GetTriggerConfig(byte Channel)
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+
+            if (Channel == 255)
+            {
+                for (Channel = 0; Channel < Constants.IRQ_IOS; Channel++)
+                {
+                    serialCommunication.SetAction(SerialCommunication.ACTION_T.GET_TRIGGER_CONFIG, Channel, 0, 0, 0, 0, false);
+                }
+            }
+            else if (Channel < Constants.IRQ_IOS)
+            {
+                serialCommunication.SetAction(SerialCommunication.ACTION_T.GET_TRIGGER_CONFIG, Channel, 0, 0, 0, 0, false);
+            }
+            else
+            {
+                Return = RETURN_T.INVALIDE_CHANNEL;
+            }
+
+            return Return;
+        }
         //private RETURN_T GetTriggerName(byte Channel, ref string TriggerName)
         //{
         //    RETURN_T Return;
@@ -174,6 +244,7 @@ namespace RCmanager
 
             Params.RelayParams = new Relay.PARAMS_T[Constants.MODULES * Constants.CHANNELS];
             Params.TriggerParams = new Trigger.PARAMS_T[Constants.IRQ_IOS];
+            Params.TriggerSettings = new TriggerSettings.PARAMS_T[Constants.IRQ_IOS];
 
             Return = Init_Settings();
 
@@ -199,6 +270,9 @@ namespace RCmanager
                 Init_Monitoring();
                 // Get the configuration of all relays
                 GetConfig(255);
+
+                // Get the configuration of all triggers
+                GetTriggerConfig(255);
             }
 
             if (Return != RETURN_T.OKAY)
@@ -341,6 +415,7 @@ namespace RCmanager
         {
             RETURN_T Return;
             byte Channel;
+            RelayCard.RelayCard Card = new RelayCard.RelayCard();
 
             Return = RETURN_T.INITIALIZE_ERROR;
             Channel = 0;
@@ -387,6 +462,19 @@ namespace RCmanager
                 }
 
             }
+
+
+            for (byte Module = 0; Module < Constants.MODULES; Module++)
+            {
+                Card = Module == 0 ? relayCard : relayCardPowerSupply;
+
+                for (Channel = 0; Channel < Constants.CHANNELS; Channel++)
+                {
+                    Card.GetRelay(Channel).OpenTriggerSettingsDlg += OpenTriggerSettingsDlg;
+                }
+
+            }
+
             return Return;
         }
         private RETURN_T Init_TriggerCard()
@@ -402,18 +490,6 @@ namespace RCmanager
 
             return Return;
         }
-        //private RETURN_T Init_Trigger()
-        //{
-        //    RETURN_T Return;
-
-        //    Return = RETURN_T.OKAY;
-
-        //    for (byte Index = 0; (Index < Constants.IRQ_IOS) && (Return == RETURN_T.OKAY); Index++)
-        //    {
-        //        Return = TriggerChannel[Index].Init(Index) ? RETURN_T.INITIALIZE_ERROR : RETURN_T.OKAY;
-        //    }
-        //    return Return;
-        //}
         private void NightMode(bool Set)
         {
             Properties.Settings.Default.NightMode = Set;
@@ -526,13 +602,6 @@ namespace RCmanager
                             break;
                         case 1:
                             relayCardPowerSupply.EvaluateConfigurationString(Channel, e.Parameter.ReceivedData);
-
-                            if (Channel == 7)
-                            {
-                                Initialized = true;
-
-                                Init_Part_2();
-                            }
                             break;
                         default:
                             break;
@@ -542,6 +611,18 @@ namespace RCmanager
                         relayCardMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
                         relayCardUserMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
                     break;
+
+                    case SerialCommunication.ACTION_T.GET_TRIGGER_CONFIG:
+                    Channel = (byte)(Convert.ToInt32(e.Parameter.ParameterExecuting[0]));
+                    EvaluateTriggerConfigurationString(Channel, e.Parameter.ReceivedData);
+                    if (Channel == 3)
+                    {
+                        Initialized = true;
+
+                        Init_Part_2();
+                    }
+                    break;
+
                 default:
                     break;
             }
@@ -598,7 +679,25 @@ namespace RCmanager
                     break;
             }
         }
-        #endregion
+        private void OpenTriggerSettingsDlg(object sender, Relay.OpenTriggerSettingsDlgEventArgs e)
+        {
+            DialogResult Result;
+            RelayTriggerSettingsDlg.RelayTriggerSettingsDlg AddTriggerSettingsDlg = new RelayTriggerSettingsDlg.RelayTriggerSettingsDlg();
+
+            AddTriggerSettingsDlg.Settings = Params.TriggerSettings;
+
+            Result = AddTriggerSettingsDlg.ShowDialog();
+
+            if (Result == DialogResult.OK)
+            {
+                Params.TriggerSettings = AddTriggerSettingsDlg.Settings;
+
+                for (byte TriggerChannel = 0; TriggerChannel < Constants.IRQ_IOS; TriggerChannel++)
+                {
+                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER_CONFIG, TriggerChannel, Params.TriggerSettings[TriggerChannel].Enabled ? 1 : 0, (int)Params.TriggerSettings[TriggerChannel].TriggerMode, (int)(Params.TriggerSettings[TriggerChannel].TriggerLevel * 1000), Params.TriggerSettings[TriggerChannel].Retrigger ? 1 : 0, false);
+                }
+            }
+        }
         private void RCmanager_Load(object sender, EventArgs e)
         {
             //Init();
@@ -654,6 +753,7 @@ namespace RCmanager
                 relayCardUserMonitoring.SetTriggerParams(Index, TriggerParams);
             }
         }
+        #endregion
     }
     static class Constants
     {

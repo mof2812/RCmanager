@@ -171,6 +171,12 @@
     <Compile Include="Trigger.Designer.cs">
       <DependentUpon>Trigger.cs</DependentUpon>
     </Compile>
+    <Compile Include="TriggerSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="TriggerSettings.Designer.cs">
+      <DependentUpon>TriggerSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Version.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -215,6 +221,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Trigger.resx">
       <DependentUpon>Trigger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TriggerSettings.resx">
+      <DependentUpon>TriggerSettings.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\MonitoringSettings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

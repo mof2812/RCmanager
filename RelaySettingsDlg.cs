@@ -25,6 +25,7 @@ namespace Relay
         TIME_ON_MS,
         IMPULSE_COUNTER,
         TRIGGER,
+        TRIGGER_CONFIG,
     }
     public struct RELAY_SETTINGS_T
     {
