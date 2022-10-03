@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace RelayTriggerSettingsDlg
+namespace TriggerSettingsDlg
 
 {
     public enum RETURN_T
@@ -21,10 +21,10 @@ namespace RelayTriggerSettingsDlg
         PARAM_OUT_OF_RANGE,
         INVALIDE_CHANNEL,
     }
-    public partial class RelayTriggerSettingsDlg : Form
+    public partial class TriggerSettingsDlg : Form
     {
         TriggerSettings.PARAMS_T[] TriggerSettings;
-        public RelayTriggerSettingsDlg()
+        public TriggerSettingsDlg()
         {
             InitializeComponent();
 

@@ -1,9 +1,9 @@
 ﻿using System.Drawing;
 
-namespace MyUserMonitoringSettings
+namespace ProjectSettings
 {
 
-    partial class MyUserMonitoringSettings
+    partial class ProjectSettings
     {
         /// <summary>
         /// Erforderliche Designervariable.
@@ -31,7 +31,7 @@ namespace MyUserMonitoringSettings
         /// </summary>
         private void InitializeComponent()
         {
-
+            components = new System.ComponentModel.Container();
         }
 
         #endregion

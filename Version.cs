@@ -8,14 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace RCmanager
+namespace Version
 {
-    public partial class RCmanager : Form
+    public partial class Version : Form
     {
-        private string SWVersion = "V2.000 - 30.09.2022";
+        private string SWVersion = "V2.000 - 03.10.2022";
         public string SW_Version
         {
             get { return SWVersion; }
+        }
+
+        public Version()
+        {
+            InitializeComponent();
+
+            lblVersion.Text = SWVersion;
         }
     }
 }

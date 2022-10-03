@@ -237,10 +237,11 @@ namespace RCmanager
         private RETURN_T Init()
         {
             RETURN_T Return;
+            Version.Version Version = new Version.Version();
 
             Return = RETURN_T.INITIALIZE_ERROR;
 
-            this.Text = $"{this.Text} - {SW_Version}";
+            this.Text = $"{this.Text} - {Version.SW_Version}";
 
             Params.RelayParams = new Relay.PARAMS_T[Constants.MODULES * Constants.CHANNELS];
             Params.TriggerParams = new Trigger.PARAMS_T[Constants.IRQ_IOS];
@@ -682,7 +683,7 @@ namespace RCmanager
         private void OpenTriggerSettingsDlg(object sender, Relay.OpenTriggerSettingsDlgEventArgs e)
         {
             DialogResult Result;
-            RelayTriggerSettingsDlg.RelayTriggerSettingsDlg AddTriggerSettingsDlg = new RelayTriggerSettingsDlg.RelayTriggerSettingsDlg();
+            TriggerSettingsDlg.TriggerSettingsDlg AddTriggerSettingsDlg = new TriggerSettingsDlg.TriggerSettingsDlg();
 
             AddTriggerSettingsDlg.Settings = Params.TriggerSettings;
 
@@ -754,6 +755,63 @@ namespace RCmanager
             }
         }
         #endregion
+
+        private void MenuFileOpenProject(object sender, EventArgs e)
+        {
+            DialogResult Result;
+            string Path;
+
+            Path = Properties.Settings.Default.ProjectPath;
+
+            Result = projectSettings.Open(ref Path);
+
+            if (Result == DialogResult.OK)
+            {
+                Properties.Settings.Default.ProjectPath = Path;
+
+                Properties.Settings.Default.Save();
+            }
+
+            projektSichernToolStripMenuItem.Enabled = (Result == DialogResult.OK);
+        }
+
+        private void MenuFileSaveProject(object sender, EventArgs e)
+        {
+            DialogResult Result;
+            string Path;
+
+            projectSettings.SetData(Params.RelayParams, Params.TriggerSettings);
+
+            Path = Properties.Settings.Default.ProjectPath;
+
+            Result = projectSettings.Save();
+        }
+
+        private void MenuFileSaveAsProject(object sender, EventArgs e)
+        {
+            DialogResult Result;
+            string Path;
+
+            projectSettings.SetData(Params.RelayParams, Params.TriggerSettings);
+
+            Path = Properties.Settings.Default.ProjectPath;
+
+            Result = projectSettings.SaveAs(ref Path);
+
+            if (Result == DialogResult.OK)
+            {
+                Properties.Settings.Default.ProjectPath = Path;
+
+                Properties.Settings.Default.Save();
+            }
+        }
+
+        private void MenuAbout_Click(object sender, EventArgs e)
+        {
+            Version.Version Dlg = new Version.Version();
+
+            Dlg.ShowDialog();
+        }
     }
     static class Constants
     {

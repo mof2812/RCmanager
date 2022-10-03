@@ -11,6 +11,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 
 namespace Relay
 {
+    [Serializable]
     public struct PARAMS_T
     {
         public byte Channel;
@@ -788,7 +789,7 @@ namespace Relay
 
             OnOpenTriggerSettingsDlg(Args);
 
-            RelayTriggerSettingsDlg.RelayTriggerSettingsDlg AddTriggerSettingsDlg = new RelayTriggerSettingsDlg.RelayTriggerSettingsDlg();
+            TriggerSettingsDlg.TriggerSettingsDlg AddTriggerSettingsDlg = new TriggerSettingsDlg.TriggerSettingsDlg();
 
             //AddTriggerSettingsDlg.SetParameter += SetParameter;
 
@@ -820,7 +821,7 @@ namespace Relay
 
             OnOpenTriggerSettingsDlg(Args);
 
-//            RelayTriggerSettingsDlg.RelayTriggerSettingsDlg AddTriggerSettingsDlg = new RelayTriggerSettingsDlg.RelayTriggerSettingsDlg();
+//            TriggerSettingsDlg.TriggerSettingsDlg AddTriggerSettingsDlg = new TriggerSettingsDlg.TriggerSettingsDlg();
 
             //AddTriggerSettingsDlg.SetParameter += SetParameter;
 

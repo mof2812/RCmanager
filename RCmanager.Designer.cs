@@ -42,6 +42,9 @@
             this.relayCardUserMonitoring = new RelayCardUserMonitoring.RelayCardUserMonitoring();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projektÖffnenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projektSichernToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projektSichernUnterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMainSettings = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMainSettingsSerialInterface = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMainSettingsView = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +55,8 @@
             this.ledAllCardChannelsOff = new Bulb.LedBulb();
             this.ledAllOff = new Bulb.LedBulb();
             this.serialCommunication = new SerialCommunication.SerialCommunication(this.components);
+            this.projectSettings = new ProjectSettings.ProjectSettings(this.components);
+            this.überToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabRelayCard.SuspendLayout();
             this.tabSheetSwitchingCard.SuspendLayout();
             this.tabSheetPowerSupply.SuspendLayout();
@@ -158,7 +163,8 @@
             // 
             // relayCardUserMonitoring
             // 
-            this.relayCardUserMonitoring.BackColor = System.Drawing.Color.Black;
+            this.relayCardUserMonitoring.BackColor = System.Drawing.Color.White;
+            this.relayCardUserMonitoring.ForeColor = System.Drawing.Color.Black;
             this.relayCardUserMonitoring.Location = new System.Drawing.Point(7, 7);
             this.relayCardUserMonitoring.Name = "relayCardUserMonitoring";
             this.relayCardUserMonitoring.NightMode = false;
@@ -171,7 +177,8 @@
             this.menuMain.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dateiToolStripMenuItem,
-            this.menuMainSettings});
+            this.menuMainSettings,
+            this.überToolStripMenuItem});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
             this.menuMain.Size = new System.Drawing.Size(1438, 33);
@@ -180,9 +187,35 @@
             // 
             // dateiToolStripMenuItem
             // 
+            this.dateiToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.projektÖffnenToolStripMenuItem,
+            this.projektSichernToolStripMenuItem,
+            this.projektSichernUnterToolStripMenuItem});
             this.dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
             this.dateiToolStripMenuItem.Size = new System.Drawing.Size(69, 29);
             this.dateiToolStripMenuItem.Text = "Datei";
+            // 
+            // projektÖffnenToolStripMenuItem
+            // 
+            this.projektÖffnenToolStripMenuItem.Name = "projektÖffnenToolStripMenuItem";
+            this.projektÖffnenToolStripMenuItem.Size = new System.Drawing.Size(287, 34);
+            this.projektÖffnenToolStripMenuItem.Text = "Projekt öffnen...";
+            this.projektÖffnenToolStripMenuItem.Click += new System.EventHandler(this.MenuFileOpenProject);
+            // 
+            // projektSichernToolStripMenuItem
+            // 
+            this.projektSichernToolStripMenuItem.Enabled = false;
+            this.projektSichernToolStripMenuItem.Name = "projektSichernToolStripMenuItem";
+            this.projektSichernToolStripMenuItem.Size = new System.Drawing.Size(287, 34);
+            this.projektSichernToolStripMenuItem.Text = "Projekt sichern";
+            this.projektSichernToolStripMenuItem.Click += new System.EventHandler(this.MenuFileSaveProject);
+            // 
+            // projektSichernUnterToolStripMenuItem
+            // 
+            this.projektSichernUnterToolStripMenuItem.Name = "projektSichernUnterToolStripMenuItem";
+            this.projektSichernUnterToolStripMenuItem.Size = new System.Drawing.Size(287, 34);
+            this.projektSichernUnterToolStripMenuItem.Text = "Projekt sichern unter...";
+            this.projektSichernUnterToolStripMenuItem.Click += new System.EventHandler(this.MenuFileSaveAsProject);
             // 
             // menuMainSettings
             // 
@@ -275,6 +308,17 @@
             this.serialCommunication.SmallVersion = true;
             this.serialCommunication.UseDelimiters = true;
             // 
+            // projectSettings
+            // 
+            this.projectSettings.DefaultDataFileName = null;
+            // 
+            // überToolStripMenuItem
+            // 
+            this.überToolStripMenuItem.Name = "überToolStripMenuItem";
+            this.überToolStripMenuItem.Size = new System.Drawing.Size(66, 29);
+            this.überToolStripMenuItem.Text = "Über";
+            this.überToolStripMenuItem.Click += new System.EventHandler(this.MenuAbout_Click);
+            // 
             // RCmanager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -328,6 +372,11 @@
         private Bulb.LedBulb ledAllCardChannelsOff;
         private TriggerCard.TriggerCard triggerCard;
         private RelayCardUserMonitoring.RelayCardUserMonitoring relayCardUserMonitoring;
+        private System.Windows.Forms.ToolStripMenuItem projektÖffnenToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem projektSichernToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem projektSichernUnterToolStripMenuItem;
+        private ProjectSettings.ProjectSettings projectSettings;
+        private System.Windows.Forms.ToolStripMenuItem überToolStripMenuItem;
     }
 }
 

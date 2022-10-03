@@ -1,6 +1,6 @@
-﻿namespace RelayTriggerSettingsDlg
+﻿namespace TriggerSettingsDlg
 {
-    partial class RelayTriggerSettingsDlg
+    partial class TriggerSettingsDlg
     {
         /// <summary>
         /// Required designer variable.
@@ -100,7 +100,7 @@
             this.Trigger2Settings.TriggerLevel = 0F;
             this.Trigger2Settings.TriggerName = "Trigger #";
             // 
-            // RelayTriggerSettingsDlg
+            // TriggerSettingsDlg
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -111,7 +111,7 @@
             this.Controls.Add(this.Trigger1Settings);
             this.Controls.Add(this.btnOkay);
             this.Controls.Add(this.btnCancel);
-            this.Name = "RelayTriggerSettingsDlg";
+            this.Name = "TriggerSettingsDlg";
             this.Text = "Trigger-Einstellungen";
             this.Load += new System.EventHandler(this.RelayTriggerSettingsDlg_Load);
             this.ResumeLayout(false);
