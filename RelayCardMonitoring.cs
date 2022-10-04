@@ -37,14 +37,14 @@ namespace RelayCardMonitoring
             TriggerBackground.BackColor = NightMode ? Color.Black : Color.White;
             TriggerBackground.ForeColor = NightMode ? Color.White : Color.Black;
         }
-        public bool InitRelayMonitoring(byte Index, Relay.PARAMS_T Params)
+        public bool InitRelayMonitoring(byte Index, Relay.SETTINGS_T Settings)
         {
             bool Error;
 
             Error = false;
 
-            GetRelayMonitoring(Index).Params = Params;
-            GetRelayMonitoring(Index).SignalName = Params.SignalLabel;
+            GetRelayMonitoring(Index).Settings = Settings;
+            GetRelayMonitoring(Index).SignalName = Settings.SignalLabel;
 
             return Error;
         }

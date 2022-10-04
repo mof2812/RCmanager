@@ -26,7 +26,6 @@ F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\o
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RelayCardMonitoring.RelayCardMonitoring.resources
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RelayCardUserMonitoring.RelayCardUserMonitoring.resources
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RelayMonitoring.RelayMonitoring.resources
-F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\Relay.RelaySettingsDlg.resources
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\TriggerSettingsDlg.TriggerSettingsDlg.resources
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\SerialCommunication.SerialCommunication.resources
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\TriggerCard.TriggerCard.resources
@@ -37,3 +36,4 @@ F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\o
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RCmanager.exe
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RCmanager.pdb
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\Version.Version.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RCmanager.RelaySettingsDlg.resources

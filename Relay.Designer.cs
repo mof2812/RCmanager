@@ -54,7 +54,7 @@
             this.AddSettingsMenuItem,
             this.TriggerSettingsMenuItem});
             this.conMenuRelay.Name = "conMenuRelay";
-            this.conMenuRelay.Size = new System.Drawing.Size(244, 101);
+            this.conMenuRelay.Size = new System.Drawing.Size(244, 68);
             // 
             // AddSettingsMenuItem
             // 

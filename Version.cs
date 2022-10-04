@@ -12,7 +12,7 @@ namespace Version
 {
     public partial class Version : Form
     {
-        private string SWVersion = "V2.000 - 03.10.2022";
+        private string SWVersion = "V2.000 - 04.10.2022";
         public string SW_Version
         {
             get { return SWVersion; }

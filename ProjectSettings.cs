@@ -41,6 +41,8 @@ namespace ProjectSettings
             container.Add(this);
 
             InitializeComponent();
+
+            Init_Data();
         }
         public bool Init(string Filename)
         {

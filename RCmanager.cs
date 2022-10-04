@@ -28,9 +28,9 @@ namespace RCmanager
             public bool Initialized;
             public double MaxChartXRange_ms;
             public double MinChartXRange_ms;
-            public Relay.PARAMS_T[] RelayParams;
+            //public Relay.PARAMS_T[] RelayParams;
             public Trigger.PARAMS_T[] TriggerParams;
-            public TriggerSettings.PARAMS_T[] TriggerSettings;
+            //public TriggerSettings.PARAMS_T[] TriggerSettings;
         }
 
         #region Members
@@ -48,11 +48,101 @@ namespace RCmanager
         }
         #endregion
         #region Methods
+        public RETURN_T EvaluateRelayConfigurationString(byte Module, byte Channel, string ConfigurationString)
+        {
+            RETURN_T Return;
+            int Pos;
+
+            Return = RETURN_T.OKAY;
+            Pos = 0;
+
+            for (int Index = 0; Index < 13; Index++)
+            {
+                Pos = ConfigurationString.IndexOf(" ");
+                switch (Index)
+                {
+                    case 0:
+                        projectSettings.settings.RelaySettings[Module, Channel].Enabled = ConfigurationString.Substring(0, Pos) == "0" ? false : true;
+                        break;
+
+                    case 1:
+                        projectSettings.settings.RelaySettings[Module, Channel].Mode = (Relay.MODE_T)Convert.ToInt32(ConfigurationString.Substring(0, Pos));
+                        break;
+
+                    case 2:
+                        projectSettings.settings.RelaySettings[Module, Channel].TimeOn_ms = Convert.ToUInt32(ConfigurationString.Substring(0, Pos));
+                        break;
+
+                    case 3:
+                        projectSettings.settings.RelaySettings[Module, Channel].TimeOff_ms = Convert.ToUInt32(ConfigurationString.Substring(0, Pos));
+                        break;
+
+                    case 4:
+                        projectSettings.settings.RelaySettings[Module, Channel].DelayTime_ms = Convert.ToUInt32(ConfigurationString.Substring(0, Pos));
+                        break;
+
+                    case 5:
+                        projectSettings.settings.RelaySettings[Module, Channel].ImpulseCounter = Convert.ToInt32(ConfigurationString.Substring(0, Pos));
+                        break;
+
+                    case 6:
+                        projectSettings.settings.RelaySettings[Module, Channel].ImpulseCounterActual = Convert.ToInt32(ConfigurationString.Substring(0, Pos));
+                        break;
+
+                    case 7:
+                        projectSettings.settings.RelaySettings[Module, Channel].AsynchronousMode = ConfigurationString.Substring(0, Pos) == "0" ? false : true;
+                        break;
+
+                    case 8:
+                        projectSettings.settings.RelaySettings[Module, Channel].ImmediateMode = ConfigurationString.Substring(0, Pos) == "0" ? false : true;
+                        break;
+
+                    case 9:
+                        projectSettings.settings.RelaySettings[Module, Channel].InvertedMode = ConfigurationString.Substring(0, Pos) == "0" ? false : true;
+                        break;
+
+                    case 10:
+                        projectSettings.settings.RelaySettings[Module, Channel].TriggerChannel = Convert.ToUInt16(ConfigurationString.Substring(0, Pos));
+                        break;
+
+                    case 11:
+                        projectSettings.settings.RelaySettings[Module, Channel].Triggering = ConfigurationString == "0" ? false : true;
+                        break;
+
+                    case 12:
+                        GetSignalName(Module, Channel);
+                        break;
+
+                    default:
+                        Return = RETURN_T.ERROR;
+                        break;
+                }
+
+                ConfigurationString = ConfigurationString.Remove(0, Pos + 1);
+            }
+
+            if (Return == RETURN_T.OKAY)
+            {
+                if (Module == 0)
+                {
+                    relayCard.SetRelaySettings(Channel, projectSettings.settings.RelaySettings[Module, Channel]);
+                    relayCard.GetRelay(Channel).MaxChartXRange_ms = projectSettings.settings.RelaySettings[Module, Channel].DelayTime_ms + projectSettings.settings.RelaySettings[Module, Channel].TimeOn_ms + projectSettings.settings.RelaySettings[Module, Channel].TimeOff_ms;
+                    relayCard.GetRelay(Channel).MinChartXRange_ms = projectSettings.settings.RelaySettings[Module, Channel].DelayTime_ms;
+                }
+                else
+                {
+                    relayCardPowerSupply.SetRelaySettings(Channel, projectSettings.settings.RelaySettings[Module, Channel]);
+                    relayCardPowerSupply.GetRelay(Channel).MaxChartXRange_ms = projectSettings.settings.RelaySettings[Module, Channel].DelayTime_ms + projectSettings.settings.RelaySettings[Module, Channel].TimeOn_ms + projectSettings.settings.RelaySettings[Module, Channel].TimeOff_ms;
+                    relayCardPowerSupply.GetRelay(Channel).MinChartXRange_ms = projectSettings.settings.RelaySettings[Module, Channel].DelayTime_ms;
+                }
+            }
+            return Return;
+        }
         public RETURN_T EvaluateTriggerConfigurationString(byte TriggerChannel, string ConfigurationString)
         {
             RETURN_T Return;
-            TriggerSettings.PARAMS_T TriggerParams;
-            TriggerSettings.TriggerSettings triggerSettings = new TriggerSettings.TriggerSettings();
+            //TriggerSettings.PARAMS_T TriggerParams;
+            //TriggerSettings.TriggerSettings triggerSettings = new TriggerSettings.TriggerSettings();
             int Pos;
 
             Return = RETURN_T.OKAY;
@@ -64,20 +154,20 @@ namespace RCmanager
                 switch (Index)
                 {
                     case 0:
-                        Params.TriggerSettings[TriggerChannel].Enabled = ConfigurationString.Substring(0, Pos) == "0" ? false : true;
+                        projectSettings.settings.TriggerSettings[TriggerChannel].Enabled = ConfigurationString.Substring(0, Pos) == "0" ? false : true;
                         break;
 
                     case 1:
-                        Params.TriggerSettings[TriggerChannel].TriggerMode = (TriggerSettings.TRIGGER_MODE_T)Convert.ToInt32(ConfigurationString.Substring(0, Pos));
+                        projectSettings.settings.TriggerSettings[TriggerChannel].TriggerMode = (TriggerSettings.TRIGGER_MODE_T)Convert.ToInt32(ConfigurationString.Substring(0, Pos));
                         break;
 
                     case 2:
                         ConfigurationString = ConfigurationString.Replace('.', ',');
-                        Params.TriggerSettings[TriggerChannel].TriggerLevel = (float)Convert.ToDouble(ConfigurationString.Substring(0, Pos));
+                        projectSettings.settings.TriggerSettings[TriggerChannel].TriggerLevel = (float)Convert.ToDouble(ConfigurationString.Substring(0, Pos));
                         break;
 
                     case 3:
-                        Params.TriggerSettings[TriggerChannel].Retrigger = ConfigurationString == "0" ? false : true;
+                        projectSettings.settings.TriggerSettings[TriggerChannel].Retrigger = ConfigurationString == "0" ? false : true;
                         break;
 
                     default:
@@ -171,6 +261,31 @@ namespace RCmanager
 
             return Return;
         }
+        private RETURN_T GetSignalName(byte Module, byte Channel)
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+
+            projectSettings.settings.RelaySettings[Module, Channel].SignalLabel = "";
+
+            switch (Module)
+            {
+                case 0:
+                    Return = (RETURN_T)relayCard.GetSignalName(Channel, ref projectSettings.settings.RelaySettings[Module, Channel].SignalLabel);
+                    break;
+
+                case 1:
+                    Return = (RETURN_T)relayCardPowerSupply.GetSignalName(Channel, ref projectSettings.settings.RelaySettings[Module, Channel].SignalLabel);
+                    break;
+
+                default:
+                    Return = RETURN_T.INVALIDE_CHANNEL;
+                    break;
+            }
+
+            return Return;
+        }
         private RETURN_T GetTriggerConfig(byte Channel)
         {
             RETURN_T Return;
@@ -243,9 +358,7 @@ namespace RCmanager
 
             this.Text = $"{this.Text} - {Version.SW_Version}";
 
-            Params.RelayParams = new Relay.PARAMS_T[Constants.MODULES * Constants.CHANNELS];
             Params.TriggerParams = new Trigger.PARAMS_T[Constants.IRQ_IOS];
-            Params.TriggerSettings = new TriggerSettings.PARAMS_T[Constants.IRQ_IOS];
 
             Return = Init_Settings();
 
@@ -330,6 +443,7 @@ namespace RCmanager
             string SignalName;
             byte Index;
             Relay.PARAMS_T RelayParams = new Relay.PARAMS_T();
+            Relay.SETTINGS_T RelaySettings = new Relay.SETTINGS_T();
 
             Return = RETURN_T.OKAY;
             SignalName = "";
@@ -337,31 +451,32 @@ namespace RCmanager
             relayCardMonitoring.Init_Monitoring(menuMainSettingsViewNightMode.Checked);
             relayCardUserMonitoring.Init_Monitoring(menuMainSettingsViewNightMode.Checked);
 
-            for (Index = 0; (Index < Constants.MODULES * Constants.CHANNELS) && (Return == RETURN_T.OKAY); Index++)
-            {
-                if (Return == RETURN_T.OKAY)
-                {
-                    Return = GetRelayParameter(Index, ref Params.RelayParams[Index]);
+            //for (Index = 0; (Index < Constants.MODULES * Constants.CHANNELS) && (Return == RETURN_T.OKAY); Index++)
+            //{
+            //    if (Return == RETURN_T.OKAY)
+            //    {
+            //        if (Return == RETURN_T.OKAY)
+            //        {
+            //            byte Module = (byte)(Index / Constants.CHANNELS);
+            //            byte Channel = (byte)(Index % Constants.CHANNELS);
 
-                    if (Return == RETURN_T.OKAY)
-                    {
-                        relayCardMonitoring.InitRelayMonitoring(Index, Params.RelayParams[Index]);
-                    }
-                }
-            }
+            //            relayCardMonitoring.InitRelayMonitoring(Index, projectSettings.settings.RelaySettings[Module, Channel]);
+            //        }
+            //    }
+            //}
 
-            for (Index = 0; (Index < Constants.IRQ_IOS) && (Return == RETURN_T.OKAY); Index++)
-            {
-                if (Return == RETURN_T.OKAY)
-                {
-                    Return = GetTriggerParameter(Index, ref Params.TriggerParams[Index]);
+            //for (Index = 0; (Index < Constants.IRQ_IOS) && (Return == RETURN_T.OKAY); Index++)
+            //{
+            //    if (Return == RETURN_T.OKAY)
+            //    {
+            //        Return = GetTriggerParameter(Index, ref Params.TriggerParams[Index]);
 
-                    if (Return == RETURN_T.OKAY)
-                    {
-                        //relayCardUserMonitoring.Init_TriggerMonitoring(Index, Params.TriggerParams[Index]);
-                    }
-                }
-            }
+            //        if (Return == RETURN_T.OKAY)
+            //        {
+            //            //relayCardUserMonitoring.Init_TriggerMonitoring(Index, Params.TriggerParams[Index]);
+            //        }
+            //    }
+            //}
 
             return Return;
         }
@@ -384,11 +499,9 @@ namespace RCmanager
 
             if (relayCard.Init(0, Properties.Settings.Default.NightMode) == RelayCard.RETURN_T.OKAY)
             {
-                relayCard.SetParameterRelayCard += SetParameter;
-
                 if (relayCardPowerSupply.Init(1, Properties.Settings.Default.NightMode) == RelayCard.RETURN_T.OKAY)
                 {
-                    relayCardPowerSupply.SetParameterRelayCard += SetParameter;
+//                    relayCardPowerSupply.SetParameterRelayCard += SetParameter;
 
                     return RETURN_T.OKAY;
                 }
@@ -472,6 +585,7 @@ namespace RCmanager
                 for (Channel = 0; Channel < Constants.CHANNELS; Channel++)
                 {
                     Card.GetRelay(Channel).OpenTriggerSettingsDlg += OpenTriggerSettingsDlg;
+                    Card.GetRelay(Channel).OpenRelaySettingsDlg += OpenRelaySettingsDlg;
                 }
 
             }
@@ -596,33 +710,24 @@ namespace RCmanager
                     Module = (byte)(Convert.ToInt32(e.Parameter.ParameterExecuting[0]) / 8);
                     Channel = (byte)(Convert.ToInt32(e.Parameter.ParameterExecuting[0]) % 8);
 
-                    switch (Module)
-                    {
-                        case 0:
-                            relayCard.EvaluateConfigurationString(Channel, e.Parameter.ReceivedData);
-                            break;
-                        case 1:
-                            relayCardPowerSupply.EvaluateConfigurationString(Channel, e.Parameter.ReceivedData);
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                    case SerialCommunication.ACTION_T.GET_OUTPUT_STATES:
-                        relayCardMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
-                        relayCardUserMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
+                    EvaluateRelayConfigurationString(Module, Channel, e.Parameter.ReceivedData);
                     break;
 
-                    case SerialCommunication.ACTION_T.GET_TRIGGER_CONFIG:
-                    Channel = (byte)(Convert.ToInt32(e.Parameter.ParameterExecuting[0]));
-                    EvaluateTriggerConfigurationString(Channel, e.Parameter.ReceivedData);
-                    if (Channel == 3)
-                    {
-                        Initialized = true;
+                case SerialCommunication.ACTION_T.GET_OUTPUT_STATES:
+                    relayCardMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
+                    relayCardUserMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
+                break;
 
-                        Init_Part_2();
-                    }
-                    break;
+                case SerialCommunication.ACTION_T.GET_TRIGGER_CONFIG:
+                Channel = (byte)(Convert.ToInt32(e.Parameter.ParameterExecuting[0]));
+                EvaluateTriggerConfigurationString(Channel, e.Parameter.ReceivedData);
+                if (Channel == 3)
+                {
+                    Initialized = true;
+
+                    Init_Part_2();
+                }
+                break;
 
                 default:
                     break;
@@ -639,45 +744,68 @@ namespace RCmanager
             NightMode(menuMainSettingsViewNightMode.Checked);
 
         }
-        private void SetParameter(object sender, RelayCard.SetParameterRelayCardEventArgs e)
+        //private void SetParameter(object sender, RelayCard.SetParameterRelayCardEventArgs e)
+        //{
+        //    Relay.Relay relay = new Relay.Relay();
+
+        //    switch (e.Parameter)
+        //    {
+        //        case Relay.WHICH_PARAMETER_T.ASYNCHRONOUS_MODE:
+        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_ASYNCHRONOUS_MODE, e.Channel, e.Params.AsynchronousMode ? 1 : 0, 0, 0, 0, false);
+        //            break;
+        //        case Relay.WHICH_PARAMETER_T.DELAY_TIME_MS:
+        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
+        //            break;
+        //        case Relay.WHICH_PARAMETER_T.ENABLE:
+        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_ENABLE, e.Channel, e.Params.Enabled ? 1 : 0, 0, 0, 0, false);
+        //            break;
+        //        case Relay.WHICH_PARAMETER_T.IMMEDIATE_MODE:
+        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_IMMEDIATE_MODE, e.Channel, e.Params.ImmediateMode ? 1 : 0, 0, 0, 0, false);
+        //            break;
+        //        case Relay.WHICH_PARAMETER_T.IMPULSE_COUNTER:
+        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_COUNTER, e.Channel, e.Params.ImpulseCounter, 0, 0, 0, false);
+        //            break;
+        //        case Relay.WHICH_PARAMETER_T.INVERTING_MODE:
+        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_INVERTING_MODE, e.Channel, e.Params.InvertedMode ? 1 : 0, 0, 0, 0, false);
+        //            break;
+        //        case Relay.WHICH_PARAMETER_T.MODE:
+        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_MODE, e.Channel, relay.ModeToString(e.Mode), 0, 0, 0, false);
+        //            break;
+        //        case Relay.WHICH_PARAMETER_T.TIME_OFF_MS:
+        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
+        //            break;
+        //        case Relay.WHICH_PARAMETER_T.TIME_ON_MS:
+        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
+        //            break;
+        //        case Relay.WHICH_PARAMETER_T.TRIGGER:
+        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER, e.Channel, e.Params.TriggerChannel, e.Params.Triggering ? 1 : 0, 0, 0, false);
+        //            break;
+
+        //        default:
+        //            break;
+        //    }
+        //}
+        private void OpenRelaySettingsDlg(object sender, Relay.OpenRelaySettingsDlgEventArgs e)
         {
-            Relay.Relay relay = new Relay.Relay();
+            DialogResult Result;
 
-            switch (e.Parameter)
+            RelaySettingsDlg AddSettingsDlg = new RelaySettingsDlg(projectSettings.settings.RelaySettings[e.Module, e.Channel]);
+
+            //Params.SignalLabel = MySetup.settings.SignalLabel;
+
+            //AddSettingsDlg.Parameter = Params;
+
+            Result = AddSettingsDlg.ShowDialog();
+
+            if (Result == DialogResult.OK)
             {
-                case Relay.WHICH_PARAMETER_T.ASYNCHRONOUS_MODE:
-                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_ASYNCHRONOUS_MODE, e.Channel, e.Params.AsynchronousMode ? 1 : 0, 0, 0, 0, false);
-                    break;
-                case Relay.WHICH_PARAMETER_T.DELAY_TIME_MS:
-                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
-                    break;
-                case Relay.WHICH_PARAMETER_T.ENABLE:
-                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_ENABLE, e.Channel, e.Params.Enabled ? 1 : 0, 0, 0, 0, false);
-                    break;
-                case Relay.WHICH_PARAMETER_T.IMMEDIATE_MODE:
-                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_IMMEDIATE_MODE, e.Channel, e.Params.ImmediateMode ? 1 : 0, 0, 0, 0, false);
-                    break;
-                case Relay.WHICH_PARAMETER_T.IMPULSE_COUNTER:
-                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_COUNTER, e.Channel, e.Params.ImpulseCounter, 0, 0, 0, false);
-                    break;
-                case Relay.WHICH_PARAMETER_T.INVERTING_MODE:
-                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_INVERTING_MODE, e.Channel, e.Params.InvertedMode ? 1 : 0, 0, 0, 0, false);
-                    break;
-                case Relay.WHICH_PARAMETER_T.MODE:
-                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_MODE, e.Channel, relay.ModeToString(e.Mode), 0, 0, 0, false);
-                    break;
-                case Relay.WHICH_PARAMETER_T.TIME_OFF_MS:
-                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
-                    break;
-                case Relay.WHICH_PARAMETER_T.TIME_ON_MS:
-                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
-                    break;
-                case Relay.WHICH_PARAMETER_T.TRIGGER:
-                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER, e.Channel, e.Params.TriggerChannel, e.Params.Triggering ? 1 : 0, 0, 0, false);
-                    break;
+                projectSettings.settings.RelaySettings[e.Module, e.Channel] = AddSettingsDlg.settings;
 
-                default:
-                    break;
+                RelayCard.RelayCard Card = new RelayCard.RelayCard();
+
+                Card = e.Module == 0 ? relayCard : relayCardPowerSupply;
+
+                Card.GetRelay(e.Channel).ChartDataName = projectSettings.settings.RelaySettings[e.Module, e.Channel].SignalLabel;
             }
         }
         private void OpenTriggerSettingsDlg(object sender, Relay.OpenTriggerSettingsDlgEventArgs e)
@@ -685,17 +813,17 @@ namespace RCmanager
             DialogResult Result;
             TriggerSettingsDlg.TriggerSettingsDlg AddTriggerSettingsDlg = new TriggerSettingsDlg.TriggerSettingsDlg();
 
-            AddTriggerSettingsDlg.Settings = Params.TriggerSettings;
+            AddTriggerSettingsDlg.Settings = projectSettings.settings.TriggerSettings;
 
             Result = AddTriggerSettingsDlg.ShowDialog();
 
             if (Result == DialogResult.OK)
             {
-                Params.TriggerSettings = AddTriggerSettingsDlg.Settings;
+                projectSettings.settings.TriggerSettings = AddTriggerSettingsDlg.Settings;
 
                 for (byte TriggerChannel = 0; TriggerChannel < Constants.IRQ_IOS; TriggerChannel++)
                 {
-                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER_CONFIG, TriggerChannel, Params.TriggerSettings[TriggerChannel].Enabled ? 1 : 0, (int)Params.TriggerSettings[TriggerChannel].TriggerMode, (int)(Params.TriggerSettings[TriggerChannel].TriggerLevel * 1000), Params.TriggerSettings[TriggerChannel].Retrigger ? 1 : 0, false);
+                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER_CONFIG, TriggerChannel, projectSettings.settings.TriggerSettings[TriggerChannel].Enabled ? 1 : 0, (int)projectSettings.settings.TriggerSettings[TriggerChannel].TriggerMode, (int)(projectSettings.settings.TriggerSettings[TriggerChannel].TriggerLevel * 1000), projectSettings.settings.TriggerSettings[TriggerChannel].Retrigger ? 1 : 0, false);
                 }
             }
         }
@@ -742,9 +870,10 @@ namespace RCmanager
 
             for (byte Index = 0; Index < Constants.MODULES * Constants.CHANNELS; Index++)
             {
-                Relay.PARAMS_T RelayParams = new Relay.PARAMS_T();
-                GetRelayParameter(Index, ref RelayParams);
-                relayCardUserMonitoring.SetRelayParams(Index, RelayParams);
+                byte Module = (byte)(Index / Constants.CHANNELS);
+                byte Channel = (byte)(Index % Constants.CHANNELS);
+
+                relayCardUserMonitoring.SetRelayData(Index, projectSettings.settings.RelaySettings[Module, Channel]);
             }
             
             for (byte Index = 0; Index < Constants.MODULES * Constants.CHANNELS; Index++)
@@ -754,8 +883,6 @@ namespace RCmanager
                 relayCardUserMonitoring.SetTriggerParams(Index, TriggerParams);
             }
         }
-        #endregion
-
         private void MenuFileOpenProject(object sender, EventArgs e)
         {
             DialogResult Result;
@@ -774,25 +901,19 @@ namespace RCmanager
 
             projektSichernToolStripMenuItem.Enabled = (Result == DialogResult.OK);
         }
-
         private void MenuFileSaveProject(object sender, EventArgs e)
         {
             DialogResult Result;
             string Path;
 
-            projectSettings.SetData(Params.RelayParams, Params.TriggerSettings);
-
             Path = Properties.Settings.Default.ProjectPath;
 
             Result = projectSettings.Save();
         }
-
         private void MenuFileSaveAsProject(object sender, EventArgs e)
         {
             DialogResult Result;
             string Path;
-
-            projectSettings.SetData(Params.RelayParams, Params.TriggerSettings);
 
             Path = Properties.Settings.Default.ProjectPath;
 
@@ -805,15 +926,15 @@ namespace RCmanager
                 Properties.Settings.Default.Save();
             }
         }
-
         private void MenuAbout_Click(object sender, EventArgs e)
         {
             Version.Version Dlg = new Version.Version();
 
             Dlg.ShowDialog();
         }
+        #endregion
     }
-    static class Constants
+        static class Constants
     {
         public const uint INITCODE = 0x55AA55AA;
         public const byte MODULES = 2;          // Number of relaycards  

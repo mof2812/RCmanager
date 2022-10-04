@@ -324,7 +324,7 @@ namespace RelayCardUserMonitoring
             UserChart_1.Series.Clear();
             UserChart_2.Series.Clear();
         }
-        public bool Init_RelayMonitoring(byte Index, Relay.PARAMS_T Params)
+        public bool Init_RelayMonitoring(byte Index, Relay.SETTINGS_T Params)
         {
             bool Error;
 
@@ -675,7 +675,7 @@ namespace RelayCardUserMonitoring
 
             btn.Visible = Count > 0;
         }
-        public bool SetRelayParams(byte Index, Relay.PARAMS_T RelayParams)
+        public bool SetRelayData(byte Index, Relay.SETTINGS_T RelaySettings)
         {
             bool Error;
 
@@ -683,8 +683,8 @@ namespace RelayCardUserMonitoring
 
             if (Index < Params.RelayChannels)
             {
-                Params.SignalName[Index] = RelayParams.SignalLabel;
-                Params.SignalChartLColor[Index] = RelayParams.ChartLColor;
+                Params.SignalName[Index] = RelaySettings.SignalLabel;
+                Params.SignalChartLColor[Index] = RelaySettings.ChartLColor;
             }
             else
             {

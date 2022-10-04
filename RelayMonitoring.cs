@@ -16,7 +16,7 @@ namespace RelayMonitoring
     }
     public partial class RelayMonitoring : UserControl
     {
-        public Relay.PARAMS_T Params;
+        public Relay.SETTINGS_T Settings;
 
         public RelayMonitoring()
         {
@@ -34,10 +34,6 @@ namespace RelayMonitoring
         }
         public bool NightMode
         {
-            get
-            {
-                return Params.NightMode;
-            }
             set
             {
                 this.BackColor = value ? Color.Black : Color.White;
@@ -53,17 +49,6 @@ namespace RelayMonitoring
             set 
             { 
                 ledStatus.On = value; 
-            }
-        }
-        public Relay.PARAMS_T Parameter
-        {
-            get
-            {
-                return Params;
-            }
-            set 
-            { 
-                Params = value;
             }
         }
         public string SignalName

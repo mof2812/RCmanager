@@ -10,19 +10,19 @@ namespace ProjectSettings
     [Serializable]
     public struct PROJECT_SETTINGS_T
     {
-        public Relay.PARAMS_T[] RelayParams { get; set; }     // Relay parameters
+        public Relay.SETTINGS_T[,] RelaySettings { get; set; }     // Relay parameters
         public TriggerSettings.PARAMS_T[] TriggerSettings { get; set; }     // Trigger settings
     }
     partial class ProjectSettings
     {
-        public void SetDefault()
+        public void Init_Data()
         {
-            settings.RelayParams = new Relay.PARAMS_T[RCmanager.Constants.MODULES * RCmanager.Constants.CHANNELS];
+            settings.RelaySettings = new Relay.SETTINGS_T[RCmanager.Constants.MODULES, RCmanager.Constants.CHANNELS];
             settings.TriggerSettings = new TriggerSettings.PARAMS_T[RCmanager.Constants.IRQ_IOS];
         }
-        public void SetData(Relay.PARAMS_T[] RelayParams, TriggerSettings.PARAMS_T[] TriggerSettings)
+        public void SetData(Relay.SETTINGS_T[,] RelaySettings, TriggerSettings.PARAMS_T[] TriggerSettings)
         {
-            settings.RelayParams = RelayParams;
+            settings.RelaySettings = RelaySettings;
             settings.TriggerSettings = TriggerSettings;
         }
     }

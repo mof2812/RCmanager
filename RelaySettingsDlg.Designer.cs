@@ -1,4 +1,4 @@
-﻿namespace Relay
+﻿namespace RCmanager
 {
     partial class RelaySettingsDlg
     {

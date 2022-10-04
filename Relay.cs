@@ -12,20 +12,12 @@ using System.Windows.Forms.DataVisualization.Charting;
 namespace Relay
 {
     [Serializable]
-    public struct PARAMS_T
+    public struct SETTINGS_T
     {
-        public byte Channel;
-        //public Color ChartBColor;
-        public Color ChartLColor;
         public string SignalLabel;
-        public double MinChartXRange_ms;
-        public double MaxChartXRange_ms;
-        public double MinChartYRange_ms;
-        public double MaxChartYRange_ms;
         public UInt32 DelayTime_ms;
         public UInt32 TimeOn_ms;
         public UInt32 TimeOff_ms;
-        //public UInt32 OutputStates;
         public Int32 ImpulseCounter;
         public Int32 ImpulseCounterActual;
         public MODE_T Mode;
@@ -36,18 +28,21 @@ namespace Relay
         public TRIGGERMODE_T TriggerMode;
         public bool Triggering;
         public UInt16 TriggerChannel;
-        //public float TriggerLevel;
-        public bool NightMode;
-        //public bool ChannelInitialized;
-        /* Communication */
-        //public STATE_T State;
-        //public ACTION_T ActionExecuting;
-        //public string[] ParameterExecuting;
-        //public string ReceivedData;
-        //public SerialPort ComPort;
-        /* End - Communication */
+        /* Add data */
+        public Color ChartLColor;
+        //public Color ChartBColor;
+        /* End - Add data */
     }
-    public enum AXIS_SELECT_T
+    public struct PARAMS_T
+    {
+        public byte Channel;
+        public double MinChartXRange_ms;
+        public double MaxChartXRange_ms;
+        public double MinChartYRange_ms;
+        public double MaxChartYRange_ms;
+        public bool NightMode;
+    }
+        public enum AXIS_SELECT_T
     {
         X = 0,
         Y = 1,
@@ -84,10 +79,12 @@ namespace Relay
     public partial class Relay : UserControl
     {
         public event EventHandler<SetParameterRelayEventArgs> SetParameterRelay;
+        public event EventHandler<OpenRelaySettingsDlgEventArgs> OpenRelaySettingsDlg;
         public event EventHandler<OpenTriggerSettingsDlgEventArgs> OpenTriggerSettingsDlg;
 
         #region Members
-        PARAMS_T Params;
+        private PARAMS_T Params;
+        private SETTINGS_T Settings;
         private Color[] LineColorDefault = new Color[] { Color.Red, Color.Yellow, Color.Blue, Color.Green, Color.Cyan, Color.Magenta, Color.Gray, Color.White, Color.Red, Color.Yellow, Color.Blue, Color.Green, Color.Cyan, Color.Magenta, Color.Gray, Color.White, Color.Red, Color.Yellow, Color.Blue, Color.Green, Color.Cyan, Color.Magenta, Color.Gray, Color.White };
         #endregion
         #region Properties
@@ -128,7 +125,7 @@ namespace Relay
             {
                 if (MySetup.settings.SignalLabel != value)
                 {
-                    MySetup.settings.SignalLabel = Params.SignalLabel = value;
+                    MySetup.settings.SignalLabel = Settings.SignalLabel = value;
                     chartRelay.Series[0].Label = MySetup.settings.SignalLabel;
 
                     MySetup.Save();
@@ -160,23 +157,24 @@ namespace Relay
         {
             get
             {
-                return (Params.MaxChartXRange_ms);
+                return Params.MaxChartXRange_ms;
             }
-            //set
-            //{
-
-            //}
+            set
+            {
+                Params.MaxChartXRange_ms = value;
+            }
         }
+
         public double MinChartXRange_ms
         {
             get
             {
-                return (Params.MinChartXRange_ms);
+                return Params.MinChartXRange_ms;
             }
-            //set
-            //{
-
-            //}
+            set
+            {
+                Params.MinChartXRange_ms = value;
+            }
         }
         public bool NightMode
         {
@@ -212,7 +210,7 @@ namespace Relay
             uint Time;
 
             // Set line style
-            if (Params.Enabled)
+            if (Settings.Enabled)
             {
                 chartRelay.Series[0].BorderDashStyle = ChartDashStyle.Solid;
             }
@@ -238,68 +236,68 @@ namespace Relay
                 chartRelay.ChartAreas[0].AxisX.Interval *= 2;
             }
 
-            switch (Params.Mode)
+            switch (Settings.Mode)
             {
                 case MODE_T.ON:
                     #region MODE_T.ON
-                    AddData(0, 0f, Params.InvertedMode == false ? 1f : 0f);
-                    AddData(0, Params.MaxChartXRange_ms, Params.InvertedMode == false ? 1f : 0f);
+                    AddData(0, 0f, Settings.InvertedMode == false ? 1f : 0f);
+                    AddData(0, Params.MaxChartXRange_ms, Settings.InvertedMode == false ? 1f : 0f);
                     break;
                 #endregion
                 case MODE_T.OFF:
                     #region MODE_T.OFF
-                    AddData(0, 0f, Params.InvertedMode == false ? 0f : 1f);
-                    AddData(0, Params.MaxChartXRange_ms, Params.InvertedMode == false ? 0f : 1f);
+                    AddData(0, 0f, Settings.InvertedMode == false ? 0f : 1f);
+                    AddData(0, Params.MaxChartXRange_ms, Settings.InvertedMode == false ? 0f : 1f);
                     break;
                 #endregion
                 case MODE_T.TOGGLE:
                     #region MODE_T.TOGGLE
-                    AddData(0, 0f, Params.InvertedMode == false ? 0f : 1f);
-                    Time = Params.DelayTime_ms;
+                    AddData(0, 0f, Settings.InvertedMode == false ? 0f : 1f);
+                    Time = Settings.DelayTime_ms;
                     if (Time > Params.MaxChartXRange_ms)
                     {
                         Time = Convert.ToUInt32(Params.MaxChartXRange_ms);
                     }
-                    AddData(0, Time, Params.InvertedMode == false ? 0f : 1f);
+                    AddData(0, Time, Settings.InvertedMode == false ? 0f : 1f);
 
-                    if ((Params.TimeOn_ms + Params.TimeOff_ms) > 0)
+                    if ((Settings.TimeOn_ms + Settings.TimeOff_ms) > 0)
                     {
                         while (Time < Params.MaxChartXRange_ms)
                         {
-                            AddData(0, Time, Params.InvertedMode == false ? 1f : 0f);
+                            AddData(0, Time, Settings.InvertedMode == false ? 1f : 0f);
 
-                            Time += Params.TimeOn_ms;
+                            Time += Settings.TimeOn_ms;
                             if (Time >= Params.MaxChartXRange_ms)
                             {
                                 if (Time == Params.MaxChartXRange_ms)
                                 {
-                                    AddData(0, Time, Params.InvertedMode == false ? 1f : 0f);
-                                    AddData(0, Time, Params.InvertedMode == false ? 0f : 1f);
+                                    AddData(0, Time, Settings.InvertedMode == false ? 1f : 0f);
+                                    AddData(0, Time, Settings.InvertedMode == false ? 0f : 1f);
                                 }
                                 else
                                 {
                                     Time = Convert.ToUInt32(Params.MaxChartXRange_ms);
-                                    AddData(0, Time, Params.InvertedMode == false ? 1f : 0f);
+                                    AddData(0, Time, Settings.InvertedMode == false ? 1f : 0f);
                                 }
                             }
                             else
                             {
-                                AddData(0, Time, Params.InvertedMode == false ? 1f : 0f);
-                                AddData(0, Time, Params.InvertedMode == false ? 0f : 1f);
+                                AddData(0, Time, Settings.InvertedMode == false ? 1f : 0f);
+                                AddData(0, Time, Settings.InvertedMode == false ? 0f : 1f);
 
-                                Time += Params.TimeOff_ms;
+                                Time += Settings.TimeOff_ms;
                                 if (Time >= Params.MaxChartXRange_ms)
                                 {
                                     if (Time == Params.MaxChartXRange_ms)
                                     {
-                                        AddData(0, Time, Params.InvertedMode == false ? 0f : 1f);
+                                        AddData(0, Time, Settings.InvertedMode == false ? 0f : 1f);
                                     }
                                     Time = Convert.ToUInt32(Params.MaxChartXRange_ms);
 
                                 }
                                 else
                                 {
-                                    AddData(0, Time, Params.InvertedMode == false ? 0f : 1f);
+                                    AddData(0, Time, Settings.InvertedMode == false ? 0f : 1f);
                                     //AddData(0, Time, Params.InvertedMode == false ? 1f : 0f);
                                 }
                             }
@@ -310,42 +308,42 @@ namespace Relay
 
                 case MODE_T.IMPULSE:
                     #region MODE_T.IMPULSE
-                    AddData(0, 0f, Params.InvertedMode == false ? 0f : 1f);
-                    Time = Params.DelayTime_ms;
+                    AddData(0, 0f, Settings.InvertedMode == false ? 0f : 1f);
+                    Time = Settings.DelayTime_ms;
                     if (Time > Convert.ToUInt32(Params.MaxChartXRange_ms))
                     {
                         Time = Convert.ToUInt32(Params.MaxChartXRange_ms);
                     }
-                    AddData(0, Time, Params.InvertedMode == false ? 0f : 1f);
+                    AddData(0, Time, Settings.InvertedMode == false ? 0f : 1f);
 
-                    if ((Params.TimeOn_ms + Params.TimeOff_ms) > 0)
+                    if ((Settings.TimeOn_ms + Settings.TimeOff_ms) > 0)
                     {
                         if (Time < Convert.ToUInt32(Params.MaxChartXRange_ms))
                         {
-                            AddData(0, Time, Params.InvertedMode == false ? 1f : 0f);
+                            AddData(0, Time, Settings.InvertedMode == false ? 1f : 0f);
 
-                            Time += Params.TimeOn_ms;
+                            Time += Settings.TimeOn_ms;
                             if (Time >= Convert.ToUInt32(Params.MaxChartXRange_ms))
                             {
                                 if (Time == Convert.ToUInt32(Params.MaxChartXRange_ms))
                                 {
-                                    AddData(0, Time, Params.InvertedMode == false ? 1f : 0f);
-                                    AddData(0, Time, Params.InvertedMode == false ? 0f : 1f);
+                                    AddData(0, Time, Settings.InvertedMode == false ? 1f : 0f);
+                                    AddData(0, Time, Settings.InvertedMode == false ? 0f : 1f);
                                 }
                                 else
                                 {
                                     Time = Convert.ToUInt32(Params.MaxChartXRange_ms);
-                                    AddData(0, Time, Params.InvertedMode == false ? 1f : 0f);
+                                    AddData(0, Time, Settings.InvertedMode == false ? 1f : 0f);
                                     //AddData(0, Time, Params.InvertedMode == false ? 0f : 1f);
                                 }
                             }
                             else
                             {
-                                AddData(0, Time, Params.InvertedMode == false ? 1f : 0f);
-                                AddData(0, Time, Params.InvertedMode == false ? 0f : 1f);
+                                AddData(0, Time, Settings.InvertedMode == false ? 1f : 0f);
+                                AddData(0, Time, Settings.InvertedMode == false ? 0f : 1f);
 
                                 Time = Convert.ToUInt32(Params.MaxChartXRange_ms);
-                                AddData(0, Time, Params.InvertedMode == false ? 0f : 1f);
+                                AddData(0, Time, Settings.InvertedMode == false ? 0f : 1f);
                             }
                         }
                     }
@@ -356,93 +354,13 @@ namespace Relay
                     break;
             }
         }
-        public RETURN_T EvaluateConfigurationString(string ConfigurationString)
-        {
-            RETURN_T Return;
-            int Pos;
-
-            Return = RETURN_T.OKAY;
-            Pos = 0;
-
-            for (int Index = 0; Index < 12; Index++)
-            {
-                Pos = ConfigurationString.IndexOf(" ");
-                switch (Index)
-                {
-                    case 0:
-                        Params.Enabled = ConfigurationString.Substring(0, Pos) == "0" ? false : true;
-                        break;
-
-                    case 1:
-                        Params.Mode = (MODE_T)Convert.ToInt32(ConfigurationString.Substring(0, Pos));
-                        break;
-
-                    case 2:
-                        Params.TimeOn_ms = Convert.ToUInt32(ConfigurationString.Substring(0, Pos));
-                        break;
-
-                    case 3:
-                        Params.TimeOff_ms = Convert.ToUInt32(ConfigurationString.Substring(0, Pos));
-                        break;
-
-                    case 4:
-                        Params.DelayTime_ms = Convert.ToUInt32(ConfigurationString.Substring(0, Pos));
-                        break;
-
-                    case 5:
-                        Params.ImpulseCounter = Convert.ToInt32(ConfigurationString.Substring(0, Pos));
-                        break;
-
-                    case 6:
-                        Params.ImpulseCounterActual = Convert.ToInt32(ConfigurationString.Substring(0, Pos));
-                        break;
-
-                    case 7:
-                        Params.AsynchronousMode = ConfigurationString.Substring(0, Pos) == "0" ? false : true;
-                        break;
-
-                    case 8:
-                        Params.ImmediateMode = ConfigurationString.Substring(0, Pos) == "0" ? false : true;
-                        break;
-
-                    case 9:
-                        Params.InvertedMode = ConfigurationString.Substring(0, Pos) == "0" ? false : true;
-                        break;
-
-                    case 10:
-                        Params.TriggerChannel = Convert.ToUInt16(ConfigurationString.Substring(0, Pos));
-                        break;
-
-                    case 11:
-                        Params.Triggering = ConfigurationString == "0" ? false : true;
-                        break;
-
-                    default:
-                        Return = RETURN_T.ERROR;
-                        break;
-                }
-
-                ConfigurationString = ConfigurationString.Remove(0, Pos + 1);
-            }
-
-            if (Return == RETURN_T.OKAY)
-            {
-                Params.MaxChartXRange_ms = Params.DelayTime_ms + Params.TimeOn_ms + Params.TimeOff_ms;
-                Params.MinChartXRange_ms = Params.DelayTime_ms;
-
-                SetSettings();
-                Draw();
-            }
-
-            return Return;
-        }
         public PARAMS_T GetParams()
         {
             return Params;
         }
         public string GetSignalName()
         {
-            return Params.SignalLabel = chartRelay.Series[0].Name;
+            return Settings.SignalLabel = chartRelay.Series[0].Name;
         }
         public RETURN_T Init(byte Channel, bool NightMode)
         {
@@ -455,7 +373,7 @@ namespace Relay
 
             Init_Settings();
 
-            Params.SignalLabel = MySetup.settings.SignalLabel;
+            Settings.SignalLabel = MySetup.settings.SignalLabel;
 
             Return = Init_Chart();
 
@@ -496,7 +414,7 @@ namespace Relay
             chartRelay.BackColor = Params.NightMode ? MySetup.settings.ChartBColor_NM : MySetup.settings.ChartBColor;
             chartRelay.ForeColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
             chartRelay.ChartAreas[0].BackColor = Params.NightMode ? MySetup.settings.ChartBColor_NM : MySetup.settings.ChartBColor;
-            chartRelay.Series[0].Color = Params.ChartLColor = Params.NightMode ? MySetup.settings.ChartLColor_NM : MySetup.settings.ChartLColor;
+            chartRelay.Series[0].Color = Settings.ChartLColor = Params.NightMode ? MySetup.settings.ChartLColor_NM : MySetup.settings.ChartLColor;
             chartRelay.Series[0].LabelForeColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
             chartRelay.Legends[0].BackColor = Params.NightMode ? MySetup.settings.ChartBColor_NM : MySetup.settings.ChartBColor;
             chartRelay.Legends[0].BorderColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
@@ -564,10 +482,28 @@ namespace Relay
             EventHandler<SetParameterRelayEventArgs> handler = SetParameterRelay;
             handler?.Invoke(this, e);
         }
+        protected virtual void OnOpenRelaySettingsDlg(OpenRelaySettingsDlgEventArgs e)
+        {
+            EventHandler<OpenRelaySettingsDlgEventArgs> handler = OpenRelaySettingsDlg;
+            handler?.Invoke(this, e);
+        }
         protected virtual void OnOpenTriggerSettingsDlg(OpenTriggerSettingsDlgEventArgs e)
         {
             EventHandler<OpenTriggerSettingsDlgEventArgs> handler = OpenTriggerSettingsDlg;
             handler?.Invoke(this, e);
+        }
+        public PARAMS_T parameter
+        {
+            get
+            {
+                return Params;
+            }
+            set
+            {
+                Params = value;
+
+                Draw();
+            }
         }
         public RETURN_T SetAxisLimit(AXIS_SELECT_T Axis, double Limit, bool Minimum)
         {
@@ -620,18 +556,32 @@ namespace Relay
         }
         private void SetSettings()
         {
-            chartRelay.Series[0].Name = Params.SignalLabel = MySetup.settings.SignalLabel;
-            ledEnable.On = Params.Enabled;
-            ledInvertingMode.On = Params.InvertedMode;
-            ledTriggerMode.On = Params.Triggering;
+            chartRelay.Series[0].Name = Settings.SignalLabel = MySetup.settings.SignalLabel;
+            ledEnable.On = Settings.Enabled;
+            ledInvertingMode.On = Settings.InvertedMode;
+            ledTriggerMode.On = Settings.Triggering;
 
             if (ledTriggerMode.On)
             {
-                lblTriggerMode.Text = $"Triggerung({Params.TriggerChannel + 1})";
+                lblTriggerMode.Text = $"Triggerung({Settings.TriggerChannel + 1})";
             }
             else
             {
                 lblTriggerMode.Text = $"Triggerung";
+            }
+        }
+        public SETTINGS_T settings
+        {
+            get
+            {
+                return Settings;
+            }
+            set
+            {
+                Settings = value;
+
+                SetSettings();
+                Draw();
             }
         }
         public MODE_T StringToMode(string ModeAsString)
@@ -675,33 +625,36 @@ namespace Relay
         #region Events
         private void AddSettingsMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult Result;
+            OpenRelaySettingsDlgEventArgs Args = new OpenRelaySettingsDlgEventArgs();
 
-            RelaySettingsDlg AddSettingsDlg = new RelaySettingsDlg();
+            OnOpenRelaySettingsDlg(Args);
+            //DialogResult Result;
 
-            AddSettingsDlg.SetParameter += SetParameter;
+            //RelaySettingsDlg AddSettingsDlg = new RelaySettingsDlg();
 
-            Params.SignalLabel = MySetup.settings.SignalLabel;
+            //AddSettingsDlg.SetParameter += SetParameter;
 
-            AddSettingsDlg.Parameter = Params;
+            //Settings.SignalLabel = MySetup.settings.SignalLabel;
 
-            Result = AddSettingsDlg.ShowDialog();
+            //AddSettingsDlg.Parameter = Params;
 
-            if (Result == DialogResult.OK)
-            {
-                Params = AddSettingsDlg.Parameter;
+            //Result = AddSettingsDlg.ShowDialog();
 
-                if (MySetup.settings.SignalLabel != Params.SignalLabel)
-                {
-                    MySetup.settings.SignalLabel = Params.SignalLabel;
-                    MySetup.Save();
-                }
+            //if (Result == DialogResult.OK)
+            //{
+            //    Params = AddSettingsDlg.Parameter;
 
-                SetSettings();
-                Draw();
-            }
+            //    if (MySetup.settings.SignalLabel != Settings.SignalLabel)
+            //    {
+            //        MySetup.settings.SignalLabel = Settings.SignalLabel;
+            //        MySetup.Save();
+            //    }
+
+            //    SetSettings();
+            //    Draw();
+            //}
         }
-        private void SetParameter(object sender, SetParameterEventArgs e)
+        private void SetParameter(object sender, SetParameterRelayEventArgs e)
         {
             SetParameterRelayEventArgs Args = new SetParameterRelayEventArgs();
 
@@ -721,14 +674,14 @@ namespace Relay
         {
             SetParameterRelayEventArgs Args = new SetParameterRelayEventArgs();
 
-            ledEnable.On = Params.Enabled = !Params.Enabled;
+            ledEnable.On = Settings.Enabled = !Settings.Enabled;
 
             SetSettings();
             Draw();
 
             /* Send Message to parent */
             Args.Channel = (byte)(Params.Channel - 1);
-            Args.Parameter = WHICH_PARAMETER_T.ENABLE;
+//            Args.Parameter = WHICH_PARAMETER_T.ENABLE;
             Args.Mode = ledEnable.On ? MODE_T.ON : MODE_T.OFF;
             Args.Params = Params;
 
@@ -739,14 +692,14 @@ namespace Relay
         {
             SetParameterRelayEventArgs Args = new SetParameterRelayEventArgs();
 
-            ledInvertingMode.On = Params.InvertedMode = !Params.InvertedMode;
+            ledInvertingMode.On = Settings.InvertedMode = !Settings.InvertedMode;
 
             SetSettings();
             Draw();
 
             /* Send Message to parent */
             Args.Channel = (byte)(Params.Channel - 1);
-            Args.Parameter = WHICH_PARAMETER_T.INVERTING_MODE;
+//            Args.Parameter = WHICH_PARAMETER_T.INVERTING_MODE;
             Args.Mode = ledInvertingMode.On ? MODE_T.ON : MODE_T.OFF;
             Args.Params = Params;
 
@@ -755,36 +708,43 @@ namespace Relay
 
         private void chartRelay_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            DialogResult Result;
+            OpenRelaySettingsDlgEventArgs Args = new OpenRelaySettingsDlgEventArgs();
 
-            RelaySettingsDlg AddSettingsDlg = new RelaySettingsDlg();
+            Args.Module = (byte)((Params.Channel - 1) / RCmanager.Constants.CHANNELS);
+            Args.Channel = (byte)((Params.Channel - 1) % RCmanager.Constants.CHANNELS);
 
-            AddSettingsDlg.SetParameter += SetParameter;
+            OnOpenRelaySettingsDlg(Args);
 
-            Params.SignalLabel = MySetup.settings.SignalLabel;
+            //DialogResult Result;
 
-            AddSettingsDlg.Parameter = Params;
+            //RelaySettingsDlg AddSettingsDlg = new RelaySettingsDlg();
 
-            Result = AddSettingsDlg.ShowDialog();
+            //AddSettingsDlg.SetParameter += SetParameter;
 
-            if (Result == DialogResult.OK)
-            {
-                Params = AddSettingsDlg.Parameter;
+            //Params.SignalLabel = MySetup.settings.SignalLabel;
 
-                if (MySetup.settings.SignalLabel != Params.SignalLabel)
-                {
-                    MySetup.settings.SignalLabel = Params.SignalLabel;
-                    MySetup.Save();
-                }
+            //AddSettingsDlg.Parameter = Params;
 
-                SetSettings();
-                Draw();
-            }
+            //Result = AddSettingsDlg.ShowDialog();
+
+            //if (Result == DialogResult.OK)
+            //{
+            //    Params = AddSettingsDlg.Parameter;
+
+            //    if (MySetup.settings.SignalLabel != Params.SignalLabel)
+            //    {
+            //        MySetup.settings.SignalLabel = Params.SignalLabel;
+            //        MySetup.Save();
+            //    }
+
+            //    SetSettings();
+            //    Draw();
+            //}
         }
 
         private void ledTriggerMode_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            DialogResult Result;
+            //DialogResult Result;
             OpenTriggerSettingsDlgEventArgs Args = new OpenTriggerSettingsDlgEventArgs();
 
             OnOpenTriggerSettingsDlg(Args);
@@ -816,42 +776,22 @@ namespace Relay
 
         private void TriggerSettingsMenuItem_Click(object sender, EventArgs e)
         {
-            DialogResult Result;
             OpenTriggerSettingsDlgEventArgs Args = new OpenTriggerSettingsDlgEventArgs();
 
             OnOpenTriggerSettingsDlg(Args);
-
-//            TriggerSettingsDlg.TriggerSettingsDlg AddTriggerSettingsDlg = new TriggerSettingsDlg.TriggerSettingsDlg();
-
-            //AddTriggerSettingsDlg.SetParameter += SetParameter;
-
-            //Params.SignalLabel = MySetup.settings.SignalLabel;
-
-            //AddTriggerSettingsDlg.Parameter = Params;
-
-//            Result = AddTriggerSettingsDlg.ShowDialog();
-
-//            if (Result == DialogResult.OK)
-            {
-                //Params = AddTriggerSettingsDlg.Parameter;
-
-                //if (MySetup.settings.SignalLabel != Params.SignalLabel)
-                //{
-                //    MySetup.settings.SignalLabel = Params.SignalLabel;
-                //    MySetup.Save();
-                //}
-
-                //SetSettings();
-                //Draw();
-            }
         }
     }
     public class SetParameterRelayEventArgs : EventArgs
     {
         public byte Channel { get; set; }
-        public WHICH_PARAMETER_T Parameter { get; set; }
+        public RCmanager.WHICH_PARAMETER_T Parameter { get; set; }
         public MODE_T Mode { get; set; }
         public PARAMS_T Params { get; set; }
+    }
+    public class OpenRelaySettingsDlgEventArgs : EventArgs
+    {
+        public byte Channel { get; set; }
+        public byte Module { get; set; }
     }
     public class OpenTriggerSettingsDlgEventArgs : EventArgs
     { 

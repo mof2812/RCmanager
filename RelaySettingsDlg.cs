@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Relay
+namespace RCmanager
 {
     public enum WHICH_PARAMETER_T
     {
@@ -35,26 +35,30 @@ namespace Relay
     { 
         public event EventHandler<SetParameterEventArgs> SetParameter;
 
+        Relay.SETTINGS_T Settings;
         string[] ListBoxModeItems = new string[] { "Aus", "Ein", "Toggle", "Impuls" };
         string RefText = "";
-        PARAMS_T Params;
-        public RelaySettingsDlg()
+        public RelaySettingsDlg(Relay.SETTINGS_T Settings)
         {
             InitializeComponent();
+
+            this.Settings = Settings;
 
             Init_ListBox();
 
             //Init_RadioButtons();
+
+            SetData();
         }
-        public PARAMS_T Parameter
+        public Relay.SETTINGS_T settings
         {
             get
             {
-                return Params;
+                return Settings;
             }
             set
             {
-                Params = value;
+                Settings = value;
 
                 SetData();
             }
@@ -74,17 +78,17 @@ namespace Relay
         }
         private void Init_RadioButtons()
         {
-            rbImmediateOn.Checked = Params.ImmediateMode;
+            rbImmediateOn.Checked = Settings.ImmediateMode;
             rbImmediateOff.Checked = !rbImmediateOn.Checked;
               
-            rbAsynchron.Checked = Params.AsynchronousMode;
+            rbAsynchron.Checked = Settings.AsynchronousMode;
             rbSynchron.Checked = !rbAsynchron.Checked;
         }
         private void Update_ListBox()
         {
-            if (Params.TriggerChannel < cmbTriggerChannel.Items.Count - 1)
+            if (Settings.TriggerChannel < cmbTriggerChannel.Items.Count - 1)
             {
-                cmbTriggerChannel.SelectedIndex = Params.TriggerChannel;
+                cmbTriggerChannel.SelectedIndex = Settings.TriggerChannel;
             }
             //else if (Params.TriggerChannel == 255)
             //{
@@ -97,20 +101,20 @@ namespace Relay
         }
         private void SetData()
         {
-            txtSignalName.Text = Params.SignalLabel;
+            txtSignalName.Text = Settings.SignalLabel;
 
-            txtDelay_ms.Text = Params.DelayTime_ms.ToString();
-            txtOn_ms.Text = Params.TimeOn_ms.ToString();
-            txtOff_ms.Text = Params.TimeOff_ms.ToString();
-            txtCounter.Text = Params.ImpulseCounter.ToString();
+            txtDelay_ms.Text = Settings.DelayTime_ms.ToString();
+            txtOn_ms.Text = Settings.TimeOn_ms.ToString();
+            txtOff_ms.Text = Settings.TimeOff_ms.ToString();
+            txtCounter.Text = Settings.ImpulseCounter.ToString();
 
-            ledInvertingMode.On = Params.InvertedMode;
-            ledEnable.On = Params.Enabled;
+            ledInvertingMode.On = Settings.InvertedMode;
+            ledEnable.On = Settings.Enabled;
 
-            ledTriggerEnable.On = Params.Triggering;
-            cmbTriggerChannel.Enabled = lblTriggerChannel.Enabled = Params.Triggering;
+            ledTriggerEnable.On = Settings.Triggering;
+            cmbTriggerChannel.Enabled = lblTriggerChannel.Enabled = Settings.Triggering;
 
-            cbMode.SelectedItem = (int)Params.Mode < ListBoxModeItems.Length ? ListBoxModeItems[(int)Params.Mode] : ListBoxModeItems[0];
+            cbMode.SelectedItem = (int)Settings.Mode < ListBoxModeItems.Length ? ListBoxModeItems[(int)Settings.Mode] : ListBoxModeItems[0];
 
             Update_ListBox();
 
@@ -131,10 +135,10 @@ namespace Relay
             SetParameterEventArgs Args = new SetParameterEventArgs();
 
             ledEnable.On = !ledEnable.On;
-            Params.Enabled = ledEnable.On;
+            Settings.Enabled = ledEnable.On;
 
             Args.Parameter = WHICH_PARAMETER_T.ENABLE;
-            Args.Params = Params;
+            Args.Settings = Settings;
             OnSetParmeter(Args);
         }
         private void lblEnable_Click(object sender, EventArgs e)
@@ -142,10 +146,10 @@ namespace Relay
             SetParameterEventArgs Args = new SetParameterEventArgs();
 
             ledEnable.On = !ledEnable.On;
-            Params.Enabled = ledEnable.On;
+            Settings.Enabled = ledEnable.On;
 
             Args.Parameter = WHICH_PARAMETER_T.ENABLE;
-            Args.Params = Params;
+            Args.Settings = Settings;
             OnSetParmeter(Args);
         }
         private void ledInvertingMode_Click(object sender, EventArgs e)
@@ -153,10 +157,10 @@ namespace Relay
             SetParameterEventArgs Args = new SetParameterEventArgs();
 
             ledInvertingMode.On = !ledInvertingMode.On;
-            Params.InvertedMode = ledInvertingMode.On;
+            Settings.InvertedMode = ledInvertingMode.On;
 
             Args.Parameter = WHICH_PARAMETER_T.INVERTING_MODE;
-            Args.Params = Params;
+            Args.Settings = Settings;
             OnSetParmeter(Args);
         }
 
@@ -165,10 +169,10 @@ namespace Relay
             SetParameterEventArgs Args = new SetParameterEventArgs();
 
             ledInvertingMode.On = !ledInvertingMode.On;
-            Params.InvertedMode = ledInvertingMode.On;
+            Settings.InvertedMode = ledInvertingMode.On;
 
             Args.Parameter = WHICH_PARAMETER_T.INVERTING_MODE;
-            Args.Params = Params;
+            Args.Settings = Settings;
             OnSetParmeter(Args);
         }
         protected virtual void OnSetParmeter(SetParameterEventArgs e)
@@ -184,11 +188,11 @@ namespace Relay
             ledTriggerEnable.On = !ledTriggerEnable.On;
             cmbTriggerChannel.Enabled = lblTriggerChannel.Enabled = ledTriggerEnable.On;
 
-            Params.TriggerChannel = Convert.ToUInt16(cmbTriggerChannel.SelectedIndex);
-            Params.Triggering = ledTriggerEnable.On;
+            Settings.TriggerChannel = Convert.ToUInt16(cmbTriggerChannel.SelectedIndex);
+            Settings.Triggering = ledTriggerEnable.On;
 
             Args.Parameter = WHICH_PARAMETER_T.TRIGGER;
-            Args.Params = Params;
+            Args.Settings = Settings;
             OnSetParmeter(Args);
 
         }
@@ -198,47 +202,47 @@ namespace Relay
             SetParameterEventArgs Args = new SetParameterEventArgs();
 
             ledTriggerEnable.On = !ledTriggerEnable.On;
-            Params.Triggering = ledTriggerEnable.On;
+            Settings.Triggering = ledTriggerEnable.On;
 
             Args.Parameter = WHICH_PARAMETER_T.TRIGGER;
-            Args.Params = Params;
+            Args.Settings = Settings;
             OnSetParmeter(Args);
         }
 
         private void txtSignalName_TextChanged(object sender, EventArgs e)
         {
-            Params.SignalLabel = txtSignalName.Text;
+            Settings.SignalLabel = txtSignalName.Text;
         }
 
         private void rbImmediateOn_CheckedChanged(object sender, EventArgs e)
         {
-            Params.ImmediateMode = rbImmediateOn.Checked;
+            Settings.ImmediateMode = rbImmediateOn.Checked;
         }
 
         private void rbImmediateOff_CheckedChanged(object sender, EventArgs e)
         {
             SetParameterEventArgs Args = new SetParameterEventArgs();
 
-            Params.ImmediateMode = rbImmediateOn.Checked;
+            Settings.ImmediateMode = rbImmediateOn.Checked;
 
             Args.Parameter = WHICH_PARAMETER_T.IMMEDIATE_MODE;
-            Args.Params = Params;
+            Args.Settings = Settings;
             OnSetParmeter(Args);
         }
 
         private void rbSynchron_CheckedChanged(object sender, EventArgs e)
         {
-            Params.AsynchronousMode = rbAsynchron.Checked;
+            Settings.AsynchronousMode = rbAsynchron.Checked;
         }
 
         private void rbAsynchron_CheckedChanged(object sender, EventArgs e)
         {
             SetParameterEventArgs Args = new SetParameterEventArgs();
 
-            Params.AsynchronousMode = rbAsynchron.Checked;
+            Settings.AsynchronousMode = rbAsynchron.Checked;
 
             Args.Parameter = WHICH_PARAMETER_T.ASYNCHRONOUS_MODE;
-            Args.Params = Params;
+            Args.Settings = Settings;
             OnSetParmeter(Args);
         }
         #region txtDelay_ms_XXX
@@ -252,10 +256,10 @@ namespace Relay
             {
                 SetParameterEventArgs Args = new SetParameterEventArgs();
 
-                Params.DelayTime_ms = Convert.ToUInt32(txtDelay_ms.Text);
+                Settings.DelayTime_ms = Convert.ToUInt32(txtDelay_ms.Text);
 
                 Args.Parameter = WHICH_PARAMETER_T.DELAY_TIME_MS;
-                Args.Params = Params;
+                Args.Settings = Settings;
                 OnSetParmeter(Args);
             }
         }
@@ -265,10 +269,10 @@ namespace Relay
             {
                 SetParameterEventArgs Args = new SetParameterEventArgs();
 
-                Params.DelayTime_ms = Convert.ToUInt32(txtDelay_ms.Text);
+                Settings.DelayTime_ms = Convert.ToUInt32(txtDelay_ms.Text);
 
                 Args.Parameter = WHICH_PARAMETER_T.DELAY_TIME_MS;
-                Args.Params = Params;
+                Args.Settings = Settings;
                 OnSetParmeter(Args);
 
                 RefText = txtDelay_ms.Text;
@@ -286,10 +290,10 @@ namespace Relay
             {
                 SetParameterEventArgs Args = new SetParameterEventArgs();
 
-                Params.TimeOn_ms = Convert.ToUInt32(txtOn_ms.Text);
+                Settings.TimeOn_ms = Convert.ToUInt32(txtOn_ms.Text);
 
                 Args.Parameter = WHICH_PARAMETER_T.TIME_ON_MS;
-                Args.Params = Params;
+                Args.Settings = Settings;
                 OnSetParmeter(Args);
             }
 
@@ -300,10 +304,10 @@ namespace Relay
             {
                 SetParameterEventArgs Args = new SetParameterEventArgs();
 
-                Params.TimeOn_ms = Convert.ToUInt32(txtOn_ms.Text);
+                Settings.TimeOn_ms = Convert.ToUInt32(txtOn_ms.Text);
 
                 Args.Parameter = WHICH_PARAMETER_T.TIME_ON_MS;
-                Args.Params = Params;
+                Args.Settings = Settings;
                 OnSetParmeter(Args);
 
                 RefText = txtOn_ms.Text;
@@ -321,10 +325,10 @@ namespace Relay
             {
                 SetParameterEventArgs Args = new SetParameterEventArgs();
 
-                Params.TimeOff_ms = Convert.ToUInt32(txtOff_ms.Text);
+                Settings.TimeOff_ms = Convert.ToUInt32(txtOff_ms.Text);
 
                 Args.Parameter = WHICH_PARAMETER_T.TIME_OFF_MS;
-                Args.Params = Params;
+                Args.Settings = Settings;
                 OnSetParmeter(Args);
             }
 
@@ -335,10 +339,10 @@ namespace Relay
             {
                 SetParameterEventArgs Args = new SetParameterEventArgs();
 
-                Params.TimeOff_ms = Convert.ToUInt32(txtOff_ms.Text);
+                Settings.TimeOff_ms = Convert.ToUInt32(txtOff_ms.Text);
 
                 Args.Parameter = WHICH_PARAMETER_T.TIME_OFF_MS;
-                Args.Params = Params;
+                Args.Settings = Settings;
                 OnSetParmeter(Args);
 
                 RefText = txtOff_ms.Text;
@@ -360,11 +364,11 @@ namespace Relay
             {
                 SetParameterEventArgs Args = new SetParameterEventArgs();
 
-                Params.Mode = (MODE_T)cbMode.SelectedIndex;
+                Settings.Mode = (Relay.MODE_T)cbMode.SelectedIndex;
 
                 Args.Parameter = WHICH_PARAMETER_T.MODE;
-                Args.Mode = (MODE_T)cbMode.SelectedIndex;
-                Args.Params = Params;
+                Args.Mode = (Relay.MODE_T)cbMode.SelectedIndex;
+                Args.Settings = Settings;
                 OnSetParmeter(Args);
 
                 RefText = cbMode.Text;
@@ -384,10 +388,10 @@ namespace Relay
             {
                 SetParameterEventArgs Args = new SetParameterEventArgs();
 
-                Params.ImpulseCounter = Convert.ToInt32(txtCounter.Text);
+                Settings.ImpulseCounter = Convert.ToInt32(txtCounter.Text);
 
                 Args.Parameter = WHICH_PARAMETER_T.IMPULSE_COUNTER;
-                Args.Params = Params;
+                Args.Settings = Settings;
                 OnSetParmeter(Args);
             }
 
@@ -398,10 +402,10 @@ namespace Relay
             {
                 SetParameterEventArgs Args = new SetParameterEventArgs();
 
-                Params.ImpulseCounter = Convert.ToInt32(txtCounter.Text);
+                Settings.ImpulseCounter = Convert.ToInt32(txtCounter.Text);
 
                 Args.Parameter = WHICH_PARAMETER_T.IMPULSE_COUNTER;
-                Args.Params = Params;
+                Args.Settings = Settings;
                 OnSetParmeter(Args);
 
                 RefText = txtCounter.Text;
@@ -422,16 +426,16 @@ namespace Relay
 
                 if (cmbTriggerChannel.SelectedIndex >= cmbTriggerChannel.Items.Count - 1)
                 {
-                    Params.TriggerChannel = 255;
+                    Settings.TriggerChannel = 255;
                 }
                 else
                 {
-                    Params.TriggerChannel = Convert.ToUInt16(cmbTriggerChannel.SelectedIndex);
+                    Settings.TriggerChannel = Convert.ToUInt16(cmbTriggerChannel.SelectedIndex);
                 }
 
 
                 Args.Parameter = WHICH_PARAMETER_T.TRIGGER;
-                Args.Params = Params;
+                Args.Settings = Settings;
                 OnSetParmeter(Args);
 
                 RefText = txtDelay_ms.Text;
@@ -444,11 +448,11 @@ namespace Relay
             {
                 SetParameterEventArgs Args = new SetParameterEventArgs();
 
-                Params.TriggerChannel = Convert.ToUInt16(cmbTriggerChannel.SelectedIndex);
-                Params.Triggering = ledTriggerEnable.On;
+                Settings.TriggerChannel = Convert.ToUInt16(cmbTriggerChannel.SelectedIndex);
+                Settings.Triggering = ledTriggerEnable.On;
 
                 Args.Parameter = WHICH_PARAMETER_T.TRIGGER;
-                Args.Params = Params;
+                Args.Settings = Settings;
                 OnSetParmeter(Args);
 
                 RefText = txtDelay_ms.Text;
@@ -458,7 +462,7 @@ namespace Relay
     public class SetParameterEventArgs : EventArgs
     {
         public WHICH_PARAMETER_T Parameter { get; set; }
-        public MODE_T Mode { get; set; }
-        public PARAMS_T Params { get; set; }
+        public Relay.MODE_T Mode { get; set; }
+        public Relay.SETTINGS_T Settings { get; set; }
     }
 }

@@ -81,19 +81,6 @@ namespace RelayCard
         }
         #endregion
         #region Methods
-        public RETURN_T EvaluateConfigurationString(byte Channel, string ConfigurationString)
-        {
-            RETURN_T Return;
-            Relay.Relay relay = new Relay.Relay();
-
-            Return = RETURN_T.OKAY;
-
-            relay = GetRelay(Channel);
-
-            relay.EvaluateConfigurationString(ConfigurationString);
-
-            return Return;
-        }
         public Relay.Relay GetRelay(byte Channel)
         {
             Relay.Relay relay = new Relay.Relay();
@@ -279,7 +266,16 @@ namespace RelayCard
 
             return Return;
         }
+        public RETURN_T SetRelaySettings(byte Channel, Relay.SETTINGS_T RelaySettings)
+        {
+            RETURN_T Return;
 
+            Return = RETURN_T.OKAY;
+
+            GetRelay(Channel).settings = RelaySettings;
+
+            return Return;
+        }
         private RETURN_T FctTemplate()
         {
             RETURN_T Return;
@@ -309,7 +305,7 @@ namespace RelayCard
     {
         public byte Channel { get; set; }
         public byte Module { get; set; }
-        public Relay.WHICH_PARAMETER_T Parameter { get; set; }
+        public RCmanager.WHICH_PARAMETER_T Parameter { get; set; }
         public Relay.MODE_T Mode { get; set; }
         public Relay.PARAMS_T Params { get; set; }
     }
