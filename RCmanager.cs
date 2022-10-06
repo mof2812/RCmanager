@@ -182,6 +182,22 @@ namespace RCmanager
 
             return Return;
         }
+        private string ExcludeFileName(string Path)
+        {
+            string FileName;
+            int Count;
+            int Pos;
+
+            FileName = Path;
+
+            while((Pos = FileName.IndexOf('\\')) >= 0)
+            {
+                Pos ++;
+                FileName = FileName.Substring(Pos, FileName.Length - Pos);
+            }
+
+            return FileName;
+        }
         private RETURN_T GetConfig(byte Channel)
         {
             RETURN_T Return;
@@ -310,23 +326,6 @@ namespace RCmanager
 
             return Return;
         }
-        //private RETURN_T GetTriggerName(byte Channel, ref string TriggerName)
-        //{
-        //    RETURN_T Return;
-
-        //    Return = RETURN_T.OKAY;
-
-        //    if (Channel < Constants.IRQ_IOS)
-        //    {
-        //        TriggerName = TriggerChannel[Channel].TriggerLabel;
-        //    }
-        //    else
-        //    {
-        //        Return = RETURN_T.INVALIDE_CHANNEL;
-        //    }
-
-        //    return Return;
-        //}
         private RETURN_T GetTriggerParameter(byte Channel, ref Trigger.PARAMS_T TriggerParams)
         {
             RETURN_T Return;
@@ -349,6 +348,25 @@ namespace RCmanager
 
             return Return;
         }
+        private string Header
+        {
+            get
+            {
+                return this.Text;
+            }
+            set
+            {
+                Version.Version Version = new Version.Version();
+                this.Text = $"{Version.Application} - {Version.SW_Version}";
+
+                if (true)
+                {
+                    value = ExcludeFileName(value);
+                }
+
+                this.Text += value.Length > 0 ? " - Projekt: " + value : "";
+            }
+        }
         private RETURN_T Init()
         {
             RETURN_T Return;
@@ -356,7 +374,8 @@ namespace RCmanager
 
             Return = RETURN_T.INITIALIZE_ERROR;
 
-            this.Text = $"{this.Text} - {Version.SW_Version}";
+            //this.Text = $"{this.Text} - {Version.SW_Version}";
+            Header = "Kein Projekt geladen";
 
             Params.TriggerParams = new Trigger.PARAMS_T[Constants.IRQ_IOS];
 
@@ -405,8 +424,9 @@ namespace RCmanager
 
             serialCommunication.SetAction(SerialCommunication.ACTION_T.GET_OUTPUT_STATES, true);
 
-            // AddEvent
+            // AddEvents
             serialCommunication.FrameReceived += FrameReceived;
+            serialCommunication.SetConfig += SetConfig;
 
             return Return;
         }
@@ -586,6 +606,7 @@ namespace RCmanager
                 {
                     Card.GetRelay(Channel).OpenTriggerSettingsDlg += OpenTriggerSettingsDlg;
                     Card.GetRelay(Channel).OpenRelaySettingsDlg += OpenRelaySettingsDlg;
+                    Card.GetRelay(Channel).SetParameterRelay += SetParameter;
                 }
 
             }
@@ -744,47 +765,53 @@ namespace RCmanager
             NightMode(menuMainSettingsViewNightMode.Checked);
 
         }
-        //private void SetParameter(object sender, RelayCard.SetParameterRelayCardEventArgs e)
-        //{
+        private void SetConfig(object sender, SerialCommunication.SetConfigEventArgs e)
+        {
+            serialCommunication.Settings = projectSettings.settings.RelaySettings[e.Module, e.Channel];
+        }
+        private void SetParameter(object sender, Relay.SetParameterRelayEventArgs e)
+        {
         //    Relay.Relay relay = new Relay.Relay();
 
-        //    switch (e.Parameter)
-        //    {
-        //        case Relay.WHICH_PARAMETER_T.ASYNCHRONOUS_MODE:
-        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_ASYNCHRONOUS_MODE, e.Channel, e.Params.AsynchronousMode ? 1 : 0, 0, 0, 0, false);
-        //            break;
-        //        case Relay.WHICH_PARAMETER_T.DELAY_TIME_MS:
-        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
-        //            break;
-        //        case Relay.WHICH_PARAMETER_T.ENABLE:
-        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_ENABLE, e.Channel, e.Params.Enabled ? 1 : 0, 0, 0, 0, false);
-        //            break;
-        //        case Relay.WHICH_PARAMETER_T.IMMEDIATE_MODE:
-        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_IMMEDIATE_MODE, e.Channel, e.Params.ImmediateMode ? 1 : 0, 0, 0, 0, false);
-        //            break;
-        //        case Relay.WHICH_PARAMETER_T.IMPULSE_COUNTER:
-        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_COUNTER, e.Channel, e.Params.ImpulseCounter, 0, 0, 0, false);
-        //            break;
-        //        case Relay.WHICH_PARAMETER_T.INVERTING_MODE:
-        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_INVERTING_MODE, e.Channel, e.Params.InvertedMode ? 1 : 0, 0, 0, 0, false);
-        //            break;
-        //        case Relay.WHICH_PARAMETER_T.MODE:
-        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_MODE, e.Channel, relay.ModeToString(e.Mode), 0, 0, 0, false);
-        //            break;
-        //        case Relay.WHICH_PARAMETER_T.TIME_OFF_MS:
-        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
-        //            break;
-        //        case Relay.WHICH_PARAMETER_T.TIME_ON_MS:
-        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
-        //            break;
-        //        case Relay.WHICH_PARAMETER_T.TRIGGER:
-        //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER, e.Channel, e.Params.TriggerChannel, e.Params.Triggering ? 1 : 0, 0, 0, false);
-        //            break;
+            switch (e.Parameter)
+            {
+                //        case Relay.WHICH_PARAMETER_T.ASYNCHRONOUS_MODE:
+                //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_ASYNCHRONOUS_MODE, e.Channel, e.Params.AsynchronousMode ? 1 : 0, 0, 0, 0, false);
+                //            break;
+                //        case Relay.WHICH_PARAMETER_T.DELAY_TIME_MS:
+                //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
+                //            break;
+                        case WHICH_PARAMETER_T.ENABLE:
+                            projectSettings.settings.RelaySettings[e.Module, e.Channel].Enabled = e.Mode == (Relay.MODE_T.ON);
+                //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_ENABLE, e.Channel, e.Params.Enabled ? 1 : 0, 0, 0, 0, false);
+                            break;
+                //        case Relay.WHICH_PARAMETER_T.IMMEDIATE_MODE:
+                //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_IMMEDIATE_MODE, e.Channel, e.Params.ImmediateMode ? 1 : 0, 0, 0, 0, false);
+                //            break;
+                //        case Relay.WHICH_PARAMETER_T.IMPULSE_COUNTER:
+                //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_COUNTER, e.Channel, e.Params.ImpulseCounter, 0, 0, 0, false);
+                //            break;
+                        case WHICH_PARAMETER_T.INVERTING_MODE:
+                            projectSettings.settings.RelaySettings[e.Module, e.Channel].InvertedMode = e.Mode == (Relay.MODE_T.ON);
+                    //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_INVERTING_MODE, e.Channel, e.Params.InvertedMode ? 1 : 0, 0, 0, 0, false);
+                            break;
+                //        case Relay.WHICH_PARAMETER_T.MODE:
+                //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_MODE, e.Channel, relay.ModeToString(e.Mode), 0, 0, 0, false);
+                //            break;
+                //        case Relay.WHICH_PARAMETER_T.TIME_OFF_MS:
+                //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
+                //            break;
+                //        case Relay.WHICH_PARAMETER_T.TIME_ON_MS:
+                //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
+                //            break;
+                //        case Relay.WHICH_PARAMETER_T.TRIGGER:
+                //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER, e.Channel, e.Params.TriggerChannel, e.Params.Triggering ? 1 : 0, 0, 0, false);
+                //            break;
 
-        //        default:
-        //            break;
-        //    }
-        //}
+                default:
+                    break;
+            }
+        }
         private void OpenRelaySettingsDlg(object sender, Relay.OpenRelaySettingsDlgEventArgs e)
         {
             DialogResult Result;
@@ -801,11 +828,15 @@ namespace RCmanager
             {
                 projectSettings.settings.RelaySettings[e.Module, e.Channel] = AddSettingsDlg.settings;
 
+                /* Send data */
+                serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_CONFIG, e.Module * Constants.CHANNELS + e.Channel, 0, 0, 0, 0, false);
+
                 RelayCard.RelayCard Card = new RelayCard.RelayCard();
 
                 Card = e.Module == 0 ? relayCard : relayCardPowerSupply;
 
                 Card.GetRelay(e.Channel).ChartDataName = projectSettings.settings.RelaySettings[e.Module, e.Channel].SignalLabel;
+                Card.GetRelay(e.Channel).settings = projectSettings.settings.RelaySettings[e.Module, e.Channel];
             }
         }
         private void OpenTriggerSettingsDlg(object sender, Relay.OpenTriggerSettingsDlgEventArgs e)
@@ -829,7 +860,6 @@ namespace RCmanager
         }
         private void RCmanager_Load(object sender, EventArgs e)
         {
-            //Init();
         }
         private void ledAllOff_Click(object sender, EventArgs e)
         {
@@ -897,9 +927,23 @@ namespace RCmanager
                 Properties.Settings.Default.ProjectPath = Path;
 
                 Properties.Settings.Default.Save();
+
+                for (byte Module = 0; Module < Constants.MODULES; Module++)
+                {
+                    for (byte Channel = 0; Channel < Constants.CHANNELS; Channel++)
+                    {
+                        serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_CONFIG, Module * Constants.CHANNELS + Channel, 0, 0, 0, 0, false);
+                    }
+                }
+                for (byte TriggerChannel = 0; TriggerChannel < Constants.IRQ_IOS; TriggerChannel++)
+                {
+                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER_CONFIG, TriggerChannel, projectSettings.settings.TriggerSettings[TriggerChannel].Enabled ? 1 : 0, (int)projectSettings.settings.TriggerSettings[TriggerChannel].TriggerMode, (int)(projectSettings.settings.TriggerSettings[TriggerChannel].TriggerLevel * 1000), projectSettings.settings.TriggerSettings[TriggerChannel].Retrigger ? 1 : 0, false);
+                }
             }
 
             projektSichernToolStripMenuItem.Enabled = (Result == DialogResult.OK);
+
+            Header = Path;
         }
         private void MenuFileSaveProject(object sender, EventArgs e)
         {

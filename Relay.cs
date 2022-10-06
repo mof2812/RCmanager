@@ -75,6 +75,7 @@ namespace Relay
         PARAM_MISSING,
         PARAM_OUT_OF_RANGE,
         INVALIDE_CHANNEL,
+        INVALIDE_MODULE,
     }
     public partial class Relay : UserControl
     {
@@ -204,7 +205,55 @@ namespace Relay
                 chartRelay.Series[Series].Points.AddXY(X, Y);
             }
         }
-        private void Draw()
+        private RETURN_T ChannelToModule(byte ChannelToEvaluate, ref SetParameterRelayEventArgs Args)
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+
+            Args.Module = (byte)((ChannelToEvaluate - 1) / RCmanager.Constants.CHANNELS);
+
+            if (Args.Module < RCmanager.Constants.MODULES)
+            {
+                Args.Channel = (byte)((ChannelToEvaluate - 1) % RCmanager.Constants.CHANNELS);
+
+                if (Args.Channel >= RCmanager.Constants.CHANNELS)
+                {
+                    Return = RETURN_T.INVALIDE_CHANNEL;
+                }
+            }
+            else
+            {
+                Return = RETURN_T.INVALIDE_MODULE;
+            }
+
+            return Return;
+        }
+        private RETURN_T ChannelToModule(byte ChannelToEvaluate, ref byte Module, ref byte Channel)
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+
+            Module = (byte)((ChannelToEvaluate - 1) / RCmanager.Constants.CHANNELS);
+
+            if (Module < RCmanager.Constants.MODULES)
+            {
+                Channel = (byte)((ChannelToEvaluate - 1) % RCmanager.Constants.CHANNELS);
+
+                if (Channel >= RCmanager.Constants.CHANNELS)
+                {
+                    Return = RETURN_T.INVALIDE_CHANNEL;
+                }
+            }
+            else
+            {
+                Return = RETURN_T.INVALIDE_MODULE;
+            }
+
+            return Return;
+        }
+        public void Draw()
         {
             int Temp;
             uint Time;
@@ -627,6 +676,9 @@ namespace Relay
         {
             OpenRelaySettingsDlgEventArgs Args = new OpenRelaySettingsDlgEventArgs();
 
+            Args.Module = (byte)((Params.Channel - 1) / RCmanager.Constants.CHANNELS);
+            Args.Channel = (byte)((Params.Channel - 1) % RCmanager.Constants.CHANNELS);
+
             OnOpenRelaySettingsDlg(Args);
             //DialogResult Result;
 
@@ -676,16 +728,15 @@ namespace Relay
 
             ledEnable.On = Settings.Enabled = !Settings.Enabled;
 
-            SetSettings();
-            Draw();
-
             /* Send Message to parent */
-            Args.Channel = (byte)(Params.Channel - 1);
-//            Args.Parameter = WHICH_PARAMETER_T.ENABLE;
+            ChannelToModule(Params.Channel, ref Args);
+            Args.Parameter = RCmanager.WHICH_PARAMETER_T.ENABLE;
             Args.Mode = ledEnable.On ? MODE_T.ON : MODE_T.OFF;
-            Args.Params = Params;
 
             OnSetParmeterRelay(Args);
+
+            SetSettings();
+            Draw();
         }
 
         private void ledInvertingMode_Click(object sender, EventArgs e)
@@ -694,16 +745,15 @@ namespace Relay
 
             ledInvertingMode.On = Settings.InvertedMode = !Settings.InvertedMode;
 
-            SetSettings();
-            Draw();
-
             /* Send Message to parent */
-            Args.Channel = (byte)(Params.Channel - 1);
-//            Args.Parameter = WHICH_PARAMETER_T.INVERTING_MODE;
+            ChannelToModule(Params.Channel, ref Args);
+            Args.Parameter = RCmanager.WHICH_PARAMETER_T.INVERTING_MODE;
             Args.Mode = ledInvertingMode.On ? MODE_T.ON : MODE_T.OFF;
-            Args.Params = Params;
 
             OnSetParmeterRelay(Args);
+
+            SetSettings();
+            Draw();
         }
 
         private void chartRelay_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -783,6 +833,7 @@ namespace Relay
     }
     public class SetParameterRelayEventArgs : EventArgs
     {
+        public byte Module { get; set; }
         public byte Channel { get; set; }
         public RCmanager.WHICH_PARAMETER_T Parameter { get; set; }
         public MODE_T Mode { get; set; }

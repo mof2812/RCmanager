@@ -28,8 +28,6 @@ namespace RelayCard
     }
     public partial class RelayCard : UserControl
     {
-        public event EventHandler<SetParameterRelayCardEventArgs> SetParameterRelayCard;
-
         #region Members
         PARAMS_T Params;
         #endregion
@@ -183,35 +181,20 @@ namespace RelayCard
 
             if ((RETURN_T)relayCH1.Init(Channel++, NightMode) == RETURN_T.OKAY)
             {
-                relayCH1.SetParameterRelay += SetParameter;
                 if ((RETURN_T)relayCH2.Init(Channel++, NightMode) == RETURN_T.OKAY)
                 {
-                    relayCH2.SetParameterRelay += SetParameter;
-
                     if ((RETURN_T)relayCH3.Init(Channel++, NightMode) == RETURN_T.OKAY)
                     {
-                        relayCH3.SetParameterRelay += SetParameter;
-
                         if ((RETURN_T)relayCH4.Init(Channel++, NightMode) == RETURN_T.OKAY)
                         {
-                            relayCH4.SetParameterRelay += SetParameter;
-
                             if ((RETURN_T)relayCH5.Init(Channel++, NightMode) == RETURN_T.OKAY)
                             {
-                                relayCH5.SetParameterRelay += SetParameter;
-
                                 if ((RETURN_T)relayCH6.Init(Channel++, NightMode) == RETURN_T.OKAY)
                                 {
-                                    relayCH6.SetParameterRelay += SetParameter;
-
                                     if ((RETURN_T)relayCH7.Init(Channel++, NightMode) == RETURN_T.OKAY)
                                     {
-                                        relayCH7.SetParameterRelay += SetParameter;
-
                                         if ((RETURN_T)relayCH8.Init(Channel++, NightMode) == RETURN_T.OKAY)
                                         {
-                                            relayCH8.SetParameterRelay += SetParameter;
-
                                             Return = RETURN_T.OKAY;
                                         }
 
@@ -229,11 +212,6 @@ namespace RelayCard
 
             }
             return Return;
-        }
-        protected virtual void OnSetParmeterRelayCard(SetParameterRelayCardEventArgs e)
-        {
-            EventHandler<SetParameterRelayCardEventArgs> handler = SetParameterRelayCard;
-            handler?.Invoke(this, e);
         }
         public void NightMode(bool Set)
         {
@@ -286,27 +264,6 @@ namespace RelayCard
         }
         #endregion
         #region Events
-        private void SetParameter(object sender, Relay.SetParameterRelayEventArgs e)
-        {
-            SetParameterRelayCardEventArgs Args = new SetParameterRelayCardEventArgs();
-
-            Args.Module = (byte)(e.Channel / 8);
-            Args.Channel = e.Channel;
-            Args.Parameter = e.Parameter;
-            Args.Mode = e.Mode;
-            Args.Params = e.Params;
-
-            OnSetParmeterRelayCard(Args);
-        }
-
         #endregion
-    }
-    public class SetParameterRelayCardEventArgs : EventArgs
-    {
-        public byte Channel { get; set; }
-        public byte Module { get; set; }
-        public RCmanager.WHICH_PARAMETER_T Parameter { get; set; }
-        public Relay.MODE_T Mode { get; set; }
-        public Relay.PARAMS_T Params { get; set; }
     }
 }

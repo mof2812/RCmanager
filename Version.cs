@@ -12,12 +12,16 @@ namespace Version
 {
     public partial class Version : Form
     {
-        private string SWVersion = "V2.000 - 04.10.2022";
+        private string application = "RCmanager";
+        private string SWVersion = "V2.000 - 05.10.2022";
         public string SW_Version
         {
             get { return SWVersion; }
         }
-
+        public string Application
+        {
+            get { return application; }
+        }
         public Version()
         {
             InitializeComponent();

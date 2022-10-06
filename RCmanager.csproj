@@ -67,6 +67,12 @@
     </Compile>
     <Compile Include="MyTriggerSettings.user.cs" />
     <Compile Include="MySettings.user.cs" />
+    <Compile Include="ProjectInfo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ProjectInfo.Designer.cs">
+      <DependentUpon>ProjectInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="ProjectSettings.user.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -195,6 +201,9 @@
     </Compile>
     <EmbeddedResource Include="MyUserMonitoringSettings.resx">
       <DependentUpon>MyUserMonitoringSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ProjectInfo.resx">
+      <DependentUpon>ProjectInfo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

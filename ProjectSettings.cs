@@ -18,6 +18,7 @@ namespace ProjectSettings
         public PROJECT_SETTINGS_T settings = new PROJECT_SETTINGS_T();
         private string InitialPath;
         private string DefaultFileName;
+        public string ProjectName;
         #region Properties
         [
         Category("File"),
@@ -51,22 +52,6 @@ namespace ProjectSettings
             Error = false;
 
             return Error;
-
-            //this.FileName = Filename.Length > 0 ? Filename : this.DefaultFileName;
-
-            //if (File.Exists(FileName))
-            //{
-            //    // Read data
-            //    Load();
-            //}
-            //else
-            //{
-            //    // Set default
-            //    SetDefault();
-
-            //    Default = true;
-            //}
-            //return Default;
         }
         public DialogResult Open(ref string Path)
         {
@@ -128,7 +113,17 @@ namespace ProjectSettings
 
             if (Result == DialogResult.OK)
             {
-                Save(InitialPath = Dlg.FileName);
+                ProjectInfo PIDlg = new ProjectInfo();
+
+                PIDlg.Info = settings.Info;
+
+                Result = PIDlg.ShowDialog();
+
+                if (Result == DialogResult.OK)
+                {
+                    settings.Info = PIDlg.Info;
+                    Save(InitialPath = Dlg.FileName);
+                }
             }
 
             Path = Dlg.FileName;

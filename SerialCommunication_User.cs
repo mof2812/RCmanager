@@ -35,7 +35,16 @@ namespace SerialCommunication
     }
     public partial class SerialCommunication : Component
     {
-       public RECEIVE_WAIT_FOR_T Receive(ACTION_T Action)
+        public event EventHandler<SetConfigEventArgs> SetConfig;
+        
+        Relay.SETTINGS_T RelaySettings = new Relay.SETTINGS_T();
+
+        protected virtual void OnSetConfig(SetConfigEventArgs e)
+        {
+            EventHandler<SetConfigEventArgs> handler = SetConfig;
+            handler?.Invoke(this, e);
+        }
+        public RECEIVE_WAIT_FOR_T Receive(ACTION_T Action)
         {
             RECEIVE_WAIT_FOR_T WaitFor;
 
@@ -47,6 +56,7 @@ namespace SerialCommunication
                 case ACTION_T.ENABLE_ALL:
                 case ACTION_T.SET_ENABLE:
                 case ACTION_T.SET_ENABLE_CARD:
+                case ACTION_T.SET_CONFIG:
                 case ACTION_T.SET_TRIGGER_CONFIG:
                     WaitFor = RECEIVE_WAIT_FOR_T.OK;
                     break;
@@ -131,6 +141,30 @@ namespace SerialCommunication
                     Frame = Channel < 8 ? $"SSWAF {Channel} " : $"SPSPAF {Channel % 8} ";
                     Frame += Params.ParameterExecuting[1];
 #pragma warning restore CS1690 // Beim Zugriff auf ein Element zu einem Feld einer "Marshal by Reference"-Klasse kann eine Laufzeitausnahme ausgelöst werden
+                    break;
+                #endregion
+                #region ACTION_T.SET_CONFIG
+                case ACTION_T.SET_CONFIG:
+                    bool Enable;
+                    SetConfigEventArgs Args = new SetConfigEventArgs();
+
+                    Args.Module = (byte)(Channel / RCmanager.Constants.CHANNELS);
+                    Args.Channel = (byte)(Channel % RCmanager.Constants.CHANNELS);
+                    Args.Action = Params.ActionExecuting;
+
+                    OnSetConfig(Args);
+
+                    //#pragma warning disable CS1690 // Beim Zugriff auf ein Element zu einem Feld einer "Marshal by Reference"-Klasse kann eine Laufzeitausnahme ausgelöst werden
+                    Frame = Channel < RCmanager.Constants.CHANNELS ? $"SSWCONFIG {Channel % RCmanager.Constants.CHANNELS}" : $"SPSPCONFIG {Channel % RCmanager.Constants.CHANNELS}";
+                    Frame += Settings.Enabled == false ? " 0" : " 1";
+                    Frame += $" {Settings.Mode.ToString()} {Settings.TimeOn_ms} {Settings.TimeOff_ms} {Settings.DelayTime_ms}";
+                    Frame += $" {Settings.ImpulseCounter}";
+                    Frame += Settings.AsynchronousMode == false ? " 0" : " 1";
+                    Frame += Settings.ImmediateMode == false ? " 0" : " 1";
+                    Frame += Settings.InvertedMode == false ? " 0" : " 1";
+                    Frame += $" {Settings.TriggerChannel}";
+                    Frame += Settings.Triggering == false ? " 0" : " 1";
+                    //#pragma warning restore CS1690 // Beim Zugriff auf ein Element zu einem Feld einer "Marshal by Reference"-Klasse kann eine Laufzeitausnahme ausgelöst werden
                     break;
                 #endregion
                 #region ACTION_T.SET_COUNTER
@@ -286,6 +320,17 @@ namespace SerialCommunication
 
             return Frame;
         }
+        public Relay.SETTINGS_T Settings
+        {
+            get 
+            { 
+                return RelaySettings; 
+            }
+            set
+            {
+                RelaySettings = value;
+            }
+        }
         private string TriggerModeToString(TriggerSettings.TRIGGER_MODE_T TriggerMode)
         {
             string Mode;
@@ -332,5 +377,11 @@ namespace SerialCommunication
             }
             return Mode;
         }
+    }
+    public class SetConfigEventArgs : EventArgs
+    {
+        public byte Module { get; set; }
+        public byte Channel { get; set; }
+        public ACTION_T Action { get; set; }
     }
 }

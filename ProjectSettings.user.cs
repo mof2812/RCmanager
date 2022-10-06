@@ -12,6 +12,7 @@ namespace ProjectSettings
     {
         public Relay.SETTINGS_T[,] RelaySettings { get; set; }     // Relay parameters
         public TriggerSettings.PARAMS_T[] TriggerSettings { get; set; }     // Trigger settings
+        public string Info { get; set; }     // Project info 
     }
     partial class ProjectSettings
     {
@@ -19,11 +20,12 @@ namespace ProjectSettings
         {
             settings.RelaySettings = new Relay.SETTINGS_T[RCmanager.Constants.MODULES, RCmanager.Constants.CHANNELS];
             settings.TriggerSettings = new TriggerSettings.PARAMS_T[RCmanager.Constants.IRQ_IOS];
+            settings.Info = "";
         }
-        public void SetData(Relay.SETTINGS_T[,] RelaySettings, TriggerSettings.PARAMS_T[] TriggerSettings)
-        {
-            settings.RelaySettings = RelaySettings;
-            settings.TriggerSettings = TriggerSettings;
-        }
+        //public void SetData(Relay.SETTINGS_T[,] RelaySettings, TriggerSettings.PARAMS_T[] TriggerSettings)
+        //{
+        //    settings.RelaySettings = RelaySettings;
+        //    settings.TriggerSettings = TriggerSettings;
+        //}
     }
 }
