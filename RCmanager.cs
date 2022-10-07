@@ -783,8 +783,10 @@ namespace RCmanager
                 //            break;
                         case WHICH_PARAMETER_T.ENABLE:
                             projectSettings.settings.RelaySettings[e.Module, e.Channel].Enabled = e.Mode == (Relay.MODE_T.ON);
-                //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_ENABLE, e.Channel, e.Params.Enabled ? 1 : 0, 0, 0, 0, false);
-                            break;
+                            /* Send data */
+                            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_CONFIG, e.Module * Constants.CHANNELS + e.Channel, 0, 0, 0, 0, false);
+                    //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_ENABLE, e.Channel, e.Params.Enabled ? 1 : 0, 0, 0, 0, false);
+                    break;
                 //        case Relay.WHICH_PARAMETER_T.IMMEDIATE_MODE:
                 //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_IMMEDIATE_MODE, e.Channel, e.Params.ImmediateMode ? 1 : 0, 0, 0, 0, false);
                 //            break;
@@ -793,8 +795,10 @@ namespace RCmanager
                 //            break;
                         case WHICH_PARAMETER_T.INVERTING_MODE:
                             projectSettings.settings.RelaySettings[e.Module, e.Channel].InvertedMode = e.Mode == (Relay.MODE_T.ON);
+                            /* Send data */
+                            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_CONFIG, e.Module * Constants.CHANNELS + e.Channel, 0, 0, 0, 0, false);
                     //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_INVERTING_MODE, e.Channel, e.Params.InvertedMode ? 1 : 0, 0, 0, 0, false);
-                            break;
+                    break;
                 //        case Relay.WHICH_PARAMETER_T.MODE:
                 //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_MODE, e.Channel, relay.ModeToString(e.Mode), 0, 0, 0, false);
                 //            break;
