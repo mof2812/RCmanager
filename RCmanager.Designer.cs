@@ -40,6 +40,8 @@
             this.relayCardMonitoring = new RelayCardMonitoring.RelayCardMonitoring();
             this.tabMonitoring2 = new System.Windows.Forms.TabPage();
             this.relayCardUserMonitoring = new RelayCardUserMonitoring.RelayCardUserMonitoring();
+            this.ProjectInfos = new System.Windows.Forms.TabPage();
+            this.lblProjectInfos = new System.Windows.Forms.Label();
             this.menuMain = new System.Windows.Forms.MenuStrip();
             this.dateiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projektÖffnenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,6 +51,7 @@
             this.menuMainSettingsSerialInterface = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMainSettingsView = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMainSettingsViewNightMode = new System.Windows.Forms.ToolStripMenuItem();
+            this.überToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblAllOff = new System.Windows.Forms.Label();
             this.lblAllCardChannelsOff = new System.Windows.Forms.Label();
@@ -56,12 +59,12 @@
             this.ledAllOff = new Bulb.LedBulb();
             this.serialCommunication = new SerialCommunication.SerialCommunication(this.components);
             this.projectSettings = new ProjectSettings.ProjectSettings(this.components);
-            this.überToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabRelayCard.SuspendLayout();
             this.tabSheetSwitchingCard.SuspendLayout();
             this.tabSheetPowerSupply.SuspendLayout();
             this.tabMonitoring1.SuspendLayout();
             this.tabMonitoring2.SuspendLayout();
+            this.ProjectInfos.SuspendLayout();
             this.menuMain.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -71,6 +74,7 @@
             this.tabRelayCard.Controls.Add(this.tabSheetPowerSupply);
             this.tabRelayCard.Controls.Add(this.tabMonitoring1);
             this.tabRelayCard.Controls.Add(this.tabMonitoring2);
+            this.tabRelayCard.Controls.Add(this.ProjectInfos);
             this.tabRelayCard.Location = new System.Drawing.Point(3, 58);
             this.tabRelayCard.Name = "tabRelayCard";
             this.tabRelayCard.SelectedIndex = 0;
@@ -171,6 +175,27 @@
             this.relayCardUserMonitoring.Size = new System.Drawing.Size(1406, 1013);
             this.relayCardUserMonitoring.TabIndex = 0;
             // 
+            // ProjectInfos
+            // 
+            this.ProjectInfos.Controls.Add(this.lblProjectInfos);
+            this.ProjectInfos.Location = new System.Drawing.Point(4, 29);
+            this.ProjectInfos.Name = "ProjectInfos";
+            this.ProjectInfos.Padding = new System.Windows.Forms.Padding(3);
+            this.ProjectInfos.Size = new System.Drawing.Size(1425, 1026);
+            this.ProjectInfos.TabIndex = 4;
+            this.ProjectInfos.Text = "Projekt-Informationen";
+            this.ProjectInfos.UseVisualStyleBackColor = true;
+            this.ProjectInfos.Enter += new System.EventHandler(this.tabProjectInfo_Enter);
+            // 
+            // lblProjectInfos
+            // 
+            this.lblProjectInfos.AutoSize = true;
+            this.lblProjectInfos.Location = new System.Drawing.Point(20, 21);
+            this.lblProjectInfos.Name = "lblProjectInfos";
+            this.lblProjectInfos.Size = new System.Drawing.Size(162, 20);
+            this.lblProjectInfos.TabIndex = 0;
+            this.lblProjectInfos.Text = "Projekt-Informationen";
+            // 
             // menuMain
             // 
             this.menuMain.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
@@ -250,6 +275,13 @@
             this.menuMainSettingsViewNightMode.Text = "Nachtmodus";
             this.menuMainSettingsViewNightMode.Click += new System.EventHandler(this.menuMainSettingsViewNightMode_Click);
             // 
+            // überToolStripMenuItem
+            // 
+            this.überToolStripMenuItem.Name = "überToolStripMenuItem";
+            this.überToolStripMenuItem.Size = new System.Drawing.Size(66, 29);
+            this.überToolStripMenuItem.Text = "Über";
+            this.überToolStripMenuItem.Click += new System.EventHandler(this.MenuAbout_Click);
+            // 
             // statusStrip1
             // 
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
@@ -312,13 +344,6 @@
             // 
             this.projectSettings.DefaultDataFileName = null;
             // 
-            // überToolStripMenuItem
-            // 
-            this.überToolStripMenuItem.Name = "überToolStripMenuItem";
-            this.überToolStripMenuItem.Size = new System.Drawing.Size(66, 29);
-            this.überToolStripMenuItem.Text = "Über";
-            this.überToolStripMenuItem.Click += new System.EventHandler(this.MenuAbout_Click);
-            // 
             // RCmanager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
@@ -335,12 +360,13 @@
             this.MainMenuStrip = this.menuMain;
             this.Name = "RCmanager";
             this.Text = "Steuerzentral für Relaiskarten";
-            this.Load += new System.EventHandler(this.RCmanager_Load);
             this.tabRelayCard.ResumeLayout(false);
             this.tabSheetSwitchingCard.ResumeLayout(false);
             this.tabSheetPowerSupply.ResumeLayout(false);
             this.tabMonitoring1.ResumeLayout(false);
             this.tabMonitoring2.ResumeLayout(false);
+            this.ProjectInfos.ResumeLayout(false);
+            this.ProjectInfos.PerformLayout();
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
             this.ResumeLayout(false);
@@ -377,6 +403,8 @@
         private System.Windows.Forms.ToolStripMenuItem projektSichernUnterToolStripMenuItem;
         private ProjectSettings.ProjectSettings projectSettings;
         private System.Windows.Forms.ToolStripMenuItem überToolStripMenuItem;
+        private System.Windows.Forms.TabPage ProjectInfos;
+        private System.Windows.Forms.Label lblProjectInfos;
     }
 }
 

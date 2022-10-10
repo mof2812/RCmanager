@@ -764,32 +764,6 @@ namespace Relay
             Args.Channel = (byte)((Params.Channel - 1) % RCmanager.Constants.CHANNELS);
 
             OnOpenRelaySettingsDlg(Args);
-
-            //DialogResult Result;
-
-            //RelaySettingsDlg AddSettingsDlg = new RelaySettingsDlg();
-
-            //AddSettingsDlg.SetParameter += SetParameter;
-
-            //Params.SignalLabel = MySetup.settings.SignalLabel;
-
-            //AddSettingsDlg.Parameter = Params;
-
-            //Result = AddSettingsDlg.ShowDialog();
-
-            //if (Result == DialogResult.OK)
-            //{
-            //    Params = AddSettingsDlg.Parameter;
-
-            //    if (MySetup.settings.SignalLabel != Params.SignalLabel)
-            //    {
-            //        MySetup.settings.SignalLabel = Params.SignalLabel;
-            //        MySetup.Save();
-            //    }
-
-            //    SetSettings();
-            //    Draw();
-            //}
         }
 
         private void ledTriggerMode_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -801,27 +775,7 @@ namespace Relay
 
             TriggerSettingsDlg.TriggerSettingsDlg AddTriggerSettingsDlg = new TriggerSettingsDlg.TriggerSettingsDlg();
 
-            //AddTriggerSettingsDlg.SetParameter += SetParameter;
-
-            //Params.SignalLabel = MySetup.settings.SignalLabel;
-
-            //AddTriggerSettingsDlg.Parameter = Params;
-
-            //Result = AddTriggerSettingsDlg.ShowDialog();
-
-            //if (Result == DialogResult.OK)
-            //{
-            //    //Params = AddTriggerSettingsDlg.Parameter;
-
-            //    //if (MySetup.settings.SignalLabel != Params.SignalLabel)
-            //    //{
-            //    //    MySetup.settings.SignalLabel = Params.SignalLabel;
-            //    //    MySetup.Save();
-            //    //}
-
-            //    //SetSettings();
-            //    //Draw();
-            //}
+            ledTriggerMode_MouseClick(sender, e);
         }
 
         private void TriggerSettingsMenuItem_Click(object sender, EventArgs e)
@@ -829,6 +783,25 @@ namespace Relay
             OpenTriggerSettingsDlgEventArgs Args = new OpenTriggerSettingsDlgEventArgs();
 
             OnOpenTriggerSettingsDlg(Args);
+        }
+
+        private void ledTriggerMode_MouseClick(object sender, MouseEventArgs e)
+        {
+            SetParameterRelayEventArgs Args = new SetParameterRelayEventArgs();
+
+            ledTriggerMode.On = Settings.Triggering = !Settings.Triggering;
+
+            /* Send Message to parent */
+            ChannelToModule(Params.Channel, ref Args);
+            Args.Parameter = RCmanager.WHICH_PARAMETER_T.TRIGGER;
+            Args.Mode = ledTriggerMode.On ? MODE_T.ON : MODE_T.OFF;
+            Args.Settings = Settings;
+
+            OnSetParmeterRelay(Args);
+
+            SetSettings();
+            Draw();
+
         }
     }
     public class SetParameterRelayEventArgs : EventArgs
@@ -838,6 +811,7 @@ namespace Relay
         public RCmanager.WHICH_PARAMETER_T Parameter { get; set; }
         public MODE_T Mode { get; set; }
         public PARAMS_T Params { get; set; }
+        public SETTINGS_T Settings { get; set; }
     }
     public class OpenRelaySettingsDlgEventArgs : EventArgs
     {

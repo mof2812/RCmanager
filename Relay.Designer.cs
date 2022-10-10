@@ -79,6 +79,7 @@
             this.lblTriggerMode.TabIndex = 27;
             this.lblTriggerMode.Text = "Triggerung";
             this.lblTriggerMode.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lblTriggerMode.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ledTriggerMode_MouseClick);
             this.lblTriggerMode.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ledTriggerMode_MouseDoubleClick);
             // 
             // lblInvertingMode
@@ -131,6 +132,7 @@
             this.ledTriggerMode.Size = new System.Drawing.Size(23, 23);
             this.ledTriggerMode.TabIndex = 28;
             this.ledTriggerMode.Text = "ledBulb1";
+            this.ledTriggerMode.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ledTriggerMode_MouseClick);
             this.ledTriggerMode.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ledTriggerMode_MouseDoubleClick);
             // 
             // ledInvertingMode

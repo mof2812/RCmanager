@@ -57,6 +57,7 @@ namespace SerialCommunication
                 case ACTION_T.SET_ENABLE:
                 case ACTION_T.SET_ENABLE_CARD:
                 case ACTION_T.SET_CONFIG:
+                case ACTION_T.SET_TRIGGER:
                 case ACTION_T.SET_TRIGGER_CONFIG:
                     WaitFor = RECEIVE_WAIT_FOR_T.OK;
                     break;
@@ -146,6 +147,7 @@ namespace SerialCommunication
                 #region ACTION_T.SET_CONFIG
                 case ACTION_T.SET_CONFIG:
                     bool Enable;
+                    Relay.SETTINGS_T RelaySettings = new Relay.SETTINGS_T();
                     SetConfigEventArgs Args = new SetConfigEventArgs();
 
                     Args.Module = (byte)(Channel / RCmanager.Constants.CHANNELS);
@@ -154,16 +156,18 @@ namespace SerialCommunication
 
                     OnSetConfig(Args);
 
+                    RelaySettings = Get_Settings();
+
                     //#pragma warning disable CS1690 // Beim Zugriff auf ein Element zu einem Feld einer "Marshal by Reference"-Klasse kann eine Laufzeitausnahme ausgelöst werden
                     Frame = Channel < RCmanager.Constants.CHANNELS ? $"SSWCONFIG {Channel % RCmanager.Constants.CHANNELS}" : $"SPSPCONFIG {Channel % RCmanager.Constants.CHANNELS}";
-                    Frame += Settings.Enabled == false ? " 0" : " 1";
-                    Frame += $" {Settings.Mode.ToString()} {Settings.TimeOn_ms} {Settings.TimeOff_ms} {Settings.DelayTime_ms}";
-                    Frame += $" {Settings.ImpulseCounter}";
-                    Frame += Settings.AsynchronousMode == false ? " 0" : " 1";
-                    Frame += Settings.ImmediateMode == false ? " 0" : " 1";
-                    Frame += Settings.InvertedMode == false ? " 0" : " 1";
-                    Frame += $" {Settings.TriggerChannel}";
-                    Frame += Settings.Triggering == false ? " 0" : " 1";
+                    Frame += RelaySettings.Enabled == false ? " 0" : " 1";
+                    Frame += $" {RelaySettings.Mode.ToString()} {RelaySettings.TimeOn_ms} {RelaySettings.TimeOff_ms} {RelaySettings.DelayTime_ms}";
+                    Frame += $" {RelaySettings.ImpulseCounter}";
+                    Frame += RelaySettings.AsynchronousMode == false ? " 0" : " 1";
+                    Frame += RelaySettings.ImmediateMode == false ? " 0" : " 1";
+                    Frame += RelaySettings.InvertedMode == false ? " 0" : " 1";
+                    Frame += $" {RelaySettings.TriggerChannel}";
+                    Frame += RelaySettings.Triggering == false ? " 0" : " 1";
                     //#pragma warning restore CS1690 // Beim Zugriff auf ein Element zu einem Feld einer "Marshal by Reference"-Klasse kann eine Laufzeitausnahme ausgelöst werden
                     break;
                 #endregion
@@ -320,16 +324,13 @@ namespace SerialCommunication
 
             return Frame;
         }
-        public Relay.SETTINGS_T Settings
+        public Relay.SETTINGS_T Get_Settings()
         {
-            get 
-            { 
-                return RelaySettings; 
-            }
-            set
-            {
-                RelaySettings = value;
-            }
+            return RelaySettings;
+        }
+        public void Set_Settings(Relay.SETTINGS_T value)
+        {
+            RelaySettings = value;
         }
         private string TriggerModeToString(TriggerSettings.TRIGGER_MODE_T TriggerMode)
         {

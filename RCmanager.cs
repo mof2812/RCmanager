@@ -1,4 +1,7 @@
-﻿using System;
+﻿using ProjectSettings;
+using RelayCard;
+using RelayCardMonitoring;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -395,6 +398,10 @@ namespace RCmanager
             }
             if (Return == RETURN_T.OKAY)
             {
+                Return = Init_TabControls(Properties.Settings.Default.NightMode);
+            }
+            if (Return == RETURN_T.OKAY)
+            {
                 Return = Init_Communication();
             }
             if (Return == RETURN_T.OKAY)
@@ -545,6 +552,22 @@ namespace RCmanager
 
             return Return;
         }
+        private RETURN_T Init_TabControls(bool NightMode)
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+
+            relayCard.BackColor = !NightMode ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            relayCardPowerSupply.BackColor = !NightMode ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            relayCardMonitoring.BackColor = !NightMode ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            relayCardUserMonitoring.BackColor = !NightMode ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            ProjectInfos.BackColor = !NightMode ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+
+            ProjectInfos.ForeColor = !NightMode ? Properties.Settings.Default.TextColor : Properties.Settings.Default.TextColor_NM;
+
+            return Return;
+        }
         private RETURN_T Init_Triggers(bool NightMode)
         {
             RETURN_T Return;
@@ -565,30 +588,7 @@ namespace RCmanager
                         Channel++;
                         if ((RETURN_T)relayCardMonitoring.GetTriggerMonitoring(Channel).Init(Channel, NightMode) == RETURN_T.OKAY)
                         {
-/*
-                            Channel++;
-                            if ((RETURN_T)relayCardMonitoring.GetTriggerMonitoring(Channel).Init(Channel, NightMode) == RETURN_T.OKAY)
-                            {
-                                Channel++;
-                                if ((RETURN_T)relayCardMonitoring.GetTriggerMonitoring(Channel).Init(Channel, NightMode) == RETURN_T.OKAY)
-                                {
-                                    Channel++;
-                                    if ((RETURN_T)relayCardMonitoring.GetTriggerMonitoring(Channel).Init(Channel, NightMode) == RETURN_T.OKAY)
-                                    {
-                                        Channel++;
-                                        if ((RETURN_T)relayCardMonitoring.GetTriggerMonitoring(Channel).Init(Channel, NightMode) == RETURN_T.OKAY)
-                                        {
-*/
-                                            Return = RETURN_T.OKAY;
-/*
-                                        }
-
-                                    }
-
-                                }
-
-                            }
-*/
+                            Return = RETURN_T.OKAY;
                         }
 
                     }
@@ -632,6 +632,7 @@ namespace RCmanager
             Properties.Settings.Default.Save();
 
             this.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            ProjectInfos.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
 
             relayCard.NightMode(Set);
             relayCardPowerSupply.NightMode(Set);
@@ -767,12 +768,10 @@ namespace RCmanager
         }
         private void SetConfig(object sender, SerialCommunication.SetConfigEventArgs e)
         {
-            serialCommunication.Settings = projectSettings.settings.RelaySettings[e.Module, e.Channel];
+            serialCommunication.Set_Settings(projectSettings.settings.RelaySettings[e.Module, e.Channel]);
         }
         private void SetParameter(object sender, Relay.SetParameterRelayEventArgs e)
         {
-        //    Relay.Relay relay = new Relay.Relay();
-
             switch (e.Parameter)
             {
                 //        case Relay.WHICH_PARAMETER_T.ASYNCHRONOUS_MODE:
@@ -781,10 +780,10 @@ namespace RCmanager
                 //        case Relay.WHICH_PARAMETER_T.DELAY_TIME_MS:
                 //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
                 //            break;
-                        case WHICH_PARAMETER_T.ENABLE:
-                            projectSettings.settings.RelaySettings[e.Module, e.Channel].Enabled = e.Mode == (Relay.MODE_T.ON);
-                            /* Send data */
-                            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_CONFIG, e.Module * Constants.CHANNELS + e.Channel, 0, 0, 0, 0, false);
+                    case WHICH_PARAMETER_T.ENABLE:
+                        projectSettings.settings.RelaySettings[e.Module, e.Channel].Enabled = e.Mode == (Relay.MODE_T.ON);
+                        /* Send data */
+                        serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_CONFIG, e.Module * Constants.CHANNELS + e.Channel, 0, 0, 0, 0, false);
                     //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_ENABLE, e.Channel, e.Params.Enabled ? 1 : 0, 0, 0, 0, false);
                     break;
                 //        case Relay.WHICH_PARAMETER_T.IMMEDIATE_MODE:
@@ -793,10 +792,10 @@ namespace RCmanager
                 //        case Relay.WHICH_PARAMETER_T.IMPULSE_COUNTER:
                 //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_COUNTER, e.Channel, e.Params.ImpulseCounter, 0, 0, 0, false);
                 //            break;
-                        case WHICH_PARAMETER_T.INVERTING_MODE:
-                            projectSettings.settings.RelaySettings[e.Module, e.Channel].InvertedMode = e.Mode == (Relay.MODE_T.ON);
-                            /* Send data */
-                            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_CONFIG, e.Module * Constants.CHANNELS + e.Channel, 0, 0, 0, 0, false);
+                    case WHICH_PARAMETER_T.INVERTING_MODE:
+                        projectSettings.settings.RelaySettings[e.Module, e.Channel].InvertedMode = e.Mode == (Relay.MODE_T.ON);
+                        /* Send data */
+                        serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_CONFIG, e.Module * Constants.CHANNELS + e.Channel, 0, 0, 0, 0, false);
                     //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_INVERTING_MODE, e.Channel, e.Params.InvertedMode ? 1 : 0, 0, 0, 0, false);
                     break;
                 //        case Relay.WHICH_PARAMETER_T.MODE:
@@ -808,12 +807,12 @@ namespace RCmanager
                 //        case Relay.WHICH_PARAMETER_T.TIME_ON_MS:
                 //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
                 //            break;
-                //        case Relay.WHICH_PARAMETER_T.TRIGGER:
-                //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER, e.Channel, e.Params.TriggerChannel, e.Params.Triggering ? 1 : 0, 0, 0, false);
-                //            break;
+                    case WHICH_PARAMETER_T.TRIGGER:
+                        serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER, e.Channel, e.Settings.TriggerChannel, e.Settings.Triggering ? 1 : 0, 0, 0, false);
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
             }
         }
         private void OpenRelaySettingsDlg(object sender, Relay.OpenRelaySettingsDlgEventArgs e)
@@ -861,9 +860,6 @@ namespace RCmanager
                     serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER_CONFIG, TriggerChannel, projectSettings.settings.TriggerSettings[TriggerChannel].Enabled ? 1 : 0, (int)projectSettings.settings.TriggerSettings[TriggerChannel].TriggerMode, (int)(projectSettings.settings.TriggerSettings[TriggerChannel].TriggerLevel * 1000), projectSettings.settings.TriggerSettings[TriggerChannel].Retrigger ? 1 : 0, false);
                 }
             }
-        }
-        private void RCmanager_Load(object sender, EventArgs e)
-        {
         }
         private void ledAllOff_Click(object sender, EventArgs e)
         {
@@ -943,6 +939,9 @@ namespace RCmanager
                 {
                     serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER_CONFIG, TriggerChannel, projectSettings.settings.TriggerSettings[TriggerChannel].Enabled ? 1 : 0, (int)projectSettings.settings.TriggerSettings[TriggerChannel].TriggerMode, (int)(projectSettings.settings.TriggerSettings[TriggerChannel].TriggerLevel * 1000), projectSettings.settings.TriggerSettings[TriggerChannel].Retrigger ? 1 : 0, false);
                 }
+
+                // Set project info tab control
+                lblProjectInfos.Text = projectSettings.settings.Info;
             }
 
             projektSichernToolStripMenuItem.Enabled = (Result == DialogResult.OK);
@@ -981,8 +980,13 @@ namespace RCmanager
             Dlg.ShowDialog();
         }
         #endregion
+
+        private void tabProjectInfo_Enter(object sender, EventArgs e)
+        {
+            lblProjectInfos.Text = projectSettings.settings.Info;
+        }
     }
-        static class Constants
+    static class Constants
     {
         public const uint INITCODE = 0x55AA55AA;
         public const byte MODULES = 2;          // Number of relaycards  

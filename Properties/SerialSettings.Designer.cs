@@ -12,7 +12,7 @@ namespace RCmanager.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.2.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.3.0.0")]
     internal sealed partial class SerialSettings : global::System.Configuration.ApplicationSettingsBase {
         
         private static SerialSettings defaultInstance = ((SerialSettings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new SerialSettings())));
@@ -37,7 +37,7 @@ namespace RCmanager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("COM1")]
+        [global::System.Configuration.DefaultSettingValueAttribute("COM24")]
         public string SerialPort {
             get {
                 return ((string)(this["SerialPort"]));
@@ -49,7 +49,7 @@ namespace RCmanager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("19200")]
+        [global::System.Configuration.DefaultSettingValueAttribute("57600")]
         public int Baudrate {
             get {
                 return ((int)(this["Baudrate"]));
@@ -73,7 +73,7 @@ namespace RCmanager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("One")]
+        [global::System.Configuration.DefaultSettingValueAttribute("Two")]
         public global::System.IO.Ports.StopBits Stopbits {
             get {
                 return ((global::System.IO.Ports.StopBits)(this["Stopbits"]));
@@ -133,7 +133,7 @@ namespace RCmanager.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool UseDelimiters {
             get {
                 return ((bool)(this["UseDelimiters"]));
@@ -200,6 +200,18 @@ namespace RCmanager.Properties {
             }
             set {
                 this["TaskTiming_ms"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SmallVersion {
+            get {
+                return ((bool)(this["SmallVersion"]));
+            }
+            set {
+                this["SmallVersion"] = value;
             }
         }
     }

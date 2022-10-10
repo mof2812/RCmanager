@@ -100,26 +100,40 @@ namespace SerialCommunication
         Description("Use small version"),
         DefaultValue(false)
         ]
-        public bool SmallVersion
-        {
-            get
-            {
-                return Params.SmallVersion;
-            }
-            set
-            {
-                Params.SmallVersion = value;
+        //public bool SmallVersion
+        //{
+        //    get
+        //    {
+        //        return Params.SmallVersion;
+        //    }
+        //    set
+        //    {
+        //        Params.SmallVersion = value;
 
-                if (Params.UseDelimitersPrepared)
-                {
-                    if (Params.SmallVersion)
-                    {
-                        RCmanager.Properties.SerialSettings.Default.UseDelimiters = Params.UseDelimiters;
-                        RCmanager.Properties.SerialSettings.Default.Save();
-                        Params.UseDelimitersPrepared = false;
-                    }
-                }
+        //        if (Params.UseDelimitersPrepared)
+        //        {
+        //            if (Params.SmallVersion)
+        //            {
+        //                RCmanager.Properties.SerialSettings.Default.UseDelimiters = Params.UseDelimiters;
+        //                RCmanager.Properties.SerialSettings.Default.Save();
+        //                Params.UseDelimitersPrepared = false;
+        //            }
+        //        }
+        //    }
+        //}
+        public bool Get_SmallVersion()
+        {
+            return RCmanager.Properties.SerialSettings.Default.SmallVersion;
+        }
+        public void Set_SmallVersion(bool SmallVersion)
+        {
+            RCmanager.Properties.SerialSettings.Default.SmallVersion = SmallVersion;
+
+            if (SmallVersion)
+            {
+                RCmanager.Properties.SerialSettings.Default.UseDelimiters = true;
             }
+            RCmanager.Properties.SerialSettings.Default.Save();
         }
         [
         Category("Bitmap"),
@@ -775,7 +789,8 @@ namespace SerialCommunication
 
             RetVal = RECEIVE_RETURN_T.ERROR;
 
-            Callback = RCmanager.Properties.SerialSettings.Default.UseDelimiters ? CommunicationTask_ReceiveFrame(ref Params.ReceivedData) : CommunicationTask_ReceiveRawFrame(ref Params.ReceivedData);
+//            Callback = RCmanager.Properties.SerialSettings.Default.UseDelimiters ? CommunicationTask_ReceiveFrame(ref Params.ReceivedData) : CommunicationTask_ReceiveRawFrame(ref Params.ReceivedData);
+            Callback = Params.UseDelimiters ? CommunicationTask_ReceiveFrame(ref Params.ReceivedData) : CommunicationTask_ReceiveRawFrame(ref Params.ReceivedData);
 
             switch (Callback)
             {
@@ -800,7 +815,8 @@ namespace SerialCommunication
 
             RetVal = RECEIVE_RETURN_T.ERROR;
 
-            Callback = RCmanager.Properties.SerialSettings.Default.UseDelimiters ? CommunicationTask_ReceiveFrame(ref Params.ReceivedData) : CommunicationTask_ReceiveRawFrame(ref Params.ReceivedData);
+//            Callback = RCmanager.Properties.SerialSettings.Default.UseDelimiters ? CommunicationTask_ReceiveFrame(ref Params.ReceivedData) : CommunicationTask_ReceiveRawFrame(ref Params.ReceivedData);
+            Callback = Params.UseDelimiters ? CommunicationTask_ReceiveFrame(ref Params.ReceivedData) : CommunicationTask_ReceiveRawFrame(ref Params.ReceivedData);
 
             switch (Callback)
             {

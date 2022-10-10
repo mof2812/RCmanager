@@ -38,3 +38,28 @@ F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\o
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\Version.Version.resources
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\RCmanager.RelaySettingsDlg.resources
 F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000\obj\Debug\ProjectSettings.ProjectInfo.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\bin\Debug\RCmanager.exe.config
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\bin\Debug\RCmanager.exe
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\bin\Debug\RCmanager.pdb
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\RCmanager.csproj.AssemblyReference.cache
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\RCmanager.csproj.SuggestedBindingRedirects.cache
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\MyUserMonitoringSettings.MyUserMonitoringSettings.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\ProjectSettings.ProjectInfo.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\RCmanager.Properties.Resources.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\RCmanager.RCmanager.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\Relay.Relay.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\RelayCard.RelayCard.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\RelayCardMonitoring.RelayCardMonitoring.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\RelayCardUserMonitoring.RelayCardUserMonitoring.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\RelayMonitoring.RelayMonitoring.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\RCmanager.RelaySettingsDlg.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\TriggerSettingsDlg.TriggerSettingsDlg.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\SerialCommunication.SerialCommunication.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\TriggerCard.TriggerCard.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\Trigger.Trigger.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\TriggerSettings.TriggerSettings.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\Version.Version.resources
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\RCmanager.csproj.GenerateResource.cache
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\RCmanager.csproj.CoreCompileInputs.cache
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\RCmanager.exe
+F:\Daten\Visual Studio - Projekte\VisualStudio 2022\Messplatz\RCmanager\V2.000 - temp\obj\Debug\RCmanager.pdb

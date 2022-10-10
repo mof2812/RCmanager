@@ -59,7 +59,7 @@ namespace SerialCommunication
 
             RetVal = RETURN_T.OKAY;
 
-            if (!RCmanager.Properties.SerialSettings.Default.UseDelimiters)
+            if (!Params.UseDelimiters)
             {
                 Frame2Send = Command;
             }
