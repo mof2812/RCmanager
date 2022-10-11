@@ -515,33 +515,6 @@ namespace RCmanager
             relayCardMonitoring.Init_Monitoring(menuMainSettingsViewNightMode.Checked);
             relayCardUserMonitoring.Init_Monitoring(menuMainSettingsViewNightMode.Checked);
 
-            //for (Index = 0; (Index < Constants.MODULES * Constants.CHANNELS) && (Return == RETURN_T.OKAY); Index++)
-            //{
-            //    if (Return == RETURN_T.OKAY)
-            //    {
-            //        if (Return == RETURN_T.OKAY)
-            //        {
-            //            byte Module = (byte)(Index / Constants.CHANNELS);
-            //            byte Channel = (byte)(Index % Constants.CHANNELS);
-
-            //            relayCardMonitoring.InitRelayMonitoring(Index, projectSettings.settings.RelaySettings[Module, Channel]);
-            //        }
-            //    }
-            //}
-
-            //for (Index = 0; (Index < Constants.IRQ_IOS) && (Return == RETURN_T.OKAY); Index++)
-            //{
-            //    if (Return == RETURN_T.OKAY)
-            //    {
-            //        Return = GetTriggerParameter(Index, ref Params.TriggerParams[Index]);
-
-            //        if (Return == RETURN_T.OKAY)
-            //        {
-            //            //relayCardUserMonitoring.Init_TriggerMonitoring(Index, Params.TriggerParams[Index]);
-            //        }
-            //    }
-            //}
-
             return Return;
         }
         private RETURN_T Init_Part_2()
@@ -634,7 +607,6 @@ namespace RCmanager
 
             }
 
-
             for (byte Module = 0; Module < Constants.MODULES; Module++)
             {
                 Card = Module == 0 ? relayCard : relayCardPowerSupply;
@@ -671,6 +643,10 @@ namespace RCmanager
             this.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
             this.ForeColor = !Set ? Properties.Settings.Default.TextColor : Properties.Settings.Default.TextColor_NM;
 
+            relayCard.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            relayCardPowerSupply.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            relayCardMonitoring.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            relayCardUserMonitoring.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
             ProjectInfos.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
             menuMain.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
             menuMain.ForeColor = !Set ? Properties.Settings.Default.TextColor : Properties.Settings.Default.TextColor_NM;
@@ -680,6 +656,8 @@ namespace RCmanager
 
             relayCard.NightMode(Set);
             relayCardPowerSupply.NightMode(Set);
+            relayCardMonitoring.NightMode = Set;
+            relayCardUserMonitoring.NightMode = Set;
 
             for (byte Module = 0; Module < Constants.MODULES; Module++)
             {
@@ -1067,25 +1045,9 @@ namespace RCmanager
         {
             lblProjectInfos.Text = projectSettings.settings.Info;
         }
-
-        private void tabRelayCard_DrawItem(object sender, DrawItemEventArgs e)
+        private void relayCardMonitoring_Load(object sender, EventArgs e)
         {
-            switch (e.Index)
-            {
-                case 0:
-                    e.Graphics.FillRectangle(new SolidBrush(Color.Red), e.Bounds);
-                    break;
-                case 1:
-                    e.Graphics.FillRectangle(new SolidBrush(Color.Blue), e.Bounds);
-                    break;
-                default:
-                    break;
-            }
-
-            // Then draw the current tab button text 
-            Rectangle paddedBounds = e.Bounds;
-            paddedBounds.Inflate(-2, -2);
-            e.Graphics.DrawString(tabRelayCard.TabPages[e.Index].Text, this.Font, SystemBrushes.HighlightText, paddedBounds);
+            relayCardMonitoring.SetSignalNames(projectSettings.settings.RelaySettings);
         }
     }
     static class Constants

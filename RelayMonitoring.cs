@@ -36,7 +36,7 @@ namespace RelayMonitoring
         {
             set
             {
-                this.BackColor = value ? Color.Black : Color.White;
+                lblSignalName.BackColor = this.BackColor = value ? Color.Black : Color.White;
                 lblSignalName.ForeColor = value ? Color.Cyan : Color.DarkGray;
             }
         }

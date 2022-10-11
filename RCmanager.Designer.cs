@@ -81,7 +81,6 @@
             this.tabRelayCard.Size = new System.Drawing.Size(1433, 1059);
             this.tabRelayCard.TabIndex = 0;
             this.tabRelayCard.Tag = "";
-            this.tabRelayCard.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabRelayCard_DrawItem);
             // 
             // tabSheetSwitchingCard
             // 
@@ -147,12 +146,13 @@
             // 
             // relayCardMonitoring
             // 
-            this.relayCardMonitoring.BackColor = System.Drawing.Color.Black;
+            this.relayCardMonitoring.BackColor = System.Drawing.Color.White;
             this.relayCardMonitoring.Location = new System.Drawing.Point(7, 7);
             this.relayCardMonitoring.Name = "relayCardMonitoring";
             this.relayCardMonitoring.NightMode = false;
             this.relayCardMonitoring.Size = new System.Drawing.Size(1406, 1013);
             this.relayCardMonitoring.TabIndex = 0;
+            this.relayCardMonitoring.Load += new System.EventHandler(this.relayCardMonitoring_Load);
             // 
             // tabMonitoring2
             // 
@@ -207,7 +207,7 @@
             this.überToolStripMenuItem});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(1458, 36);
+            this.menuMain.Size = new System.Drawing.Size(1458, 33);
             this.menuMain.TabIndex = 1;
             this.menuMain.Text = "menuStrip1";
             // 
@@ -218,7 +218,7 @@
             this.projektSichernToolStripMenuItem,
             this.projektSichernUnterToolStripMenuItem});
             this.dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
-            this.dateiToolStripMenuItem.Size = new System.Drawing.Size(69, 32);
+            this.dateiToolStripMenuItem.Size = new System.Drawing.Size(69, 29);
             this.dateiToolStripMenuItem.Text = "Datei";
             // 
             // projektÖffnenToolStripMenuItem
@@ -249,7 +249,7 @@
             this.menuMainSettingsSerialInterface,
             this.menuMainSettingsView});
             this.menuMainSettings.Name = "menuMainSettings";
-            this.menuMainSettings.Size = new System.Drawing.Size(132, 32);
+            this.menuMainSettings.Size = new System.Drawing.Size(132, 29);
             this.menuMainSettings.Text = "Einstellungen";
             // 
             // menuMainSettingsSerialInterface
@@ -279,7 +279,7 @@
             // überToolStripMenuItem
             // 
             this.überToolStripMenuItem.Name = "überToolStripMenuItem";
-            this.überToolStripMenuItem.Size = new System.Drawing.Size(66, 32);
+            this.überToolStripMenuItem.Size = new System.Drawing.Size(66, 29);
             this.überToolStripMenuItem.Text = "Über";
             this.überToolStripMenuItem.Click += new System.EventHandler(this.MenuAbout_Click);
             // 

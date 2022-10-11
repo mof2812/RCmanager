@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
+using System.Runtime.Remoting.Channels;
 
 namespace RelayCardMonitoring
 { 
@@ -71,7 +72,8 @@ namespace RelayCardMonitoring
             }
             set
             {
-                this.BackColor = value ? Color.White : Color.Black;
+                TriggerBackground.BackColor = this.BackColor = !value ? Color.White : Color.Black;
+                
                 for (byte Channel = 0; Channel < 16; Channel++)
                 {
                     GetRelayMonitoring(Channel).NightMode = value;
@@ -201,6 +203,16 @@ namespace RelayCardMonitoring
         public void SetSignalName(byte Channel, string SignalName)
         {
             GetRelayMonitoring(Channel).SignalName = SignalName;
+        }
+        public void SetSignalNames(Relay.SETTINGS_T[,] RelaySettings)
+        {
+            for (byte Module = 0; Module < RCmanager.Constants.MODULES; Module++)
+            {
+                for (byte Channel = 0; Channel < RCmanager.Constants.CHANNELS; Channel++)
+                {
+                    GetRelayMonitoring((byte)(Module * RCmanager.Constants.CHANNELS + Channel)).SignalName = RelaySettings[Module, Channel].SignalLabel;
+                }
+            }
         }
         public void SetTriggerName(byte Channel, string TriggerName)
         {
