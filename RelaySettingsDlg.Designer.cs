@@ -59,6 +59,7 @@
             this.lblEnable = new System.Windows.Forms.Label();
             this.ledEnable = new Bulb.LedBulb();
             this.grpSignalName = new System.Windows.Forms.GroupBox();
+            this.btnColor = new System.Windows.Forms.Button();
             this.txtSignalName = new System.Windows.Forms.TextBox();
             this.grpRelayControlTiming.SuspendLayout();
             this.GrpSwMode.SuspendLayout();
@@ -440,6 +441,7 @@
             // 
             // grpSignalName
             // 
+            this.grpSignalName.Controls.Add(this.btnColor);
             this.grpSignalName.Controls.Add(this.txtSignalName);
             this.grpSignalName.Location = new System.Drawing.Point(19, 12);
             this.grpSignalName.Name = "grpSignalName";
@@ -448,13 +450,22 @@
             this.grpSignalName.TabStop = false;
             this.grpSignalName.Text = "Signalname";
             // 
+            // btnColor
+            // 
+            this.btnColor.Location = new System.Drawing.Point(490, 33);
+            this.btnColor.Name = "btnColor";
+            this.btnColor.Size = new System.Drawing.Size(30, 30);
+            this.btnColor.TabIndex = 23;
+            this.btnColor.UseVisualStyleBackColor = true;
+            this.btnColor.Click += new System.EventHandler(this.btnColor_Click);
+            // 
             // txtSignalName
             // 
             this.txtSignalName.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSignalName.Location = new System.Drawing.Point(29, 35);
             this.txtSignalName.Margin = new System.Windows.Forms.Padding(4);
             this.txtSignalName.Name = "txtSignalName";
-            this.txtSignalName.Size = new System.Drawing.Size(476, 26);
+            this.txtSignalName.Size = new System.Drawing.Size(438, 26);
             this.txtSignalName.TabIndex = 22;
             this.txtSignalName.Text = "0";
             this.txtSignalName.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
@@ -534,5 +545,6 @@
         private System.Windows.Forms.GroupBox grpSignalName;
         private System.Windows.Forms.TextBox txtSignalName;
         private System.Windows.Forms.ComboBox cmbTriggerChannel;
+        private System.Windows.Forms.Button btnColor;
     }
 }

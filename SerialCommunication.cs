@@ -69,10 +69,6 @@ namespace SerialCommunication
             public ACTION_T ActionExecuting;
             public string[] ParameterExecuting;
             public string ReceivedData;
-            public bool SmallVersion;
-            public bool VersionSet;     // Small version <-> Std version
-            public bool UseDelimitersPrepared;
-            public bool UseDelimiters;
         }
         public struct RECEIVE_DATA_T
         {
@@ -96,46 +92,6 @@ namespace SerialCommunication
         #endregion
         #region Properties
         [
-        Category("Apperance"),
-        Description("Use small version"),
-        DefaultValue(false)
-        ]
-        //public bool SmallVersion
-        //{
-        //    get
-        //    {
-        //        return Params.SmallVersion;
-        //    }
-        //    set
-        //    {
-        //        Params.SmallVersion = value;
-
-        //        if (Params.UseDelimitersPrepared)
-        //        {
-        //            if (Params.SmallVersion)
-        //            {
-        //                RCmanager.Properties.SerialSettings.Default.UseDelimiters = Params.UseDelimiters;
-        //                RCmanager.Properties.SerialSettings.Default.Save();
-        //                Params.UseDelimitersPrepared = false;
-        //            }
-        //        }
-        //    }
-        //}
-        public bool Get_SmallVersion()
-        {
-            return RCmanager.Properties.SerialSettings.Default.SmallVersion;
-        }
-        public void Set_SmallVersion(bool SmallVersion)
-        {
-            RCmanager.Properties.SerialSettings.Default.SmallVersion = SmallVersion;
-
-            if (SmallVersion)
-            {
-                RCmanager.Properties.SerialSettings.Default.UseDelimiters = true;
-            }
-            RCmanager.Properties.SerialSettings.Default.Save();
-        }
-        [
         Category("Bitmap"),
         Description("Bitmap shown in the setup dialog"),
         ]
@@ -150,105 +106,7 @@ namespace SerialCommunication
                 SetupSerialDlg.Bitmap = value;
             }
         }
-        [
-        Category("Communication"),
-        Description("Baudrate by default"),
-        ]
-        public int DefaultBaudrate
-        {
-            get
-            {
-                return SetupSerialDlg.DefaultBaudrate;
-            }
-            set
-            {
-                SetupSerialDlg.DefaultBaudrate = value;
-
-                Init();
-            }
-        }
-        [
-        Category("Communication"),
-        Description("Databits by default"),
-        //DefaultValue(8)
-        ]
-        public byte DefaultDatabits
-        {
-            get
-            {
-                return SetupSerialDlg.DefaultDatabits;
-            }
-            set
-            {
-                SetupSerialDlg.DefaultDatabits = value;
-
-                Init();
-            }
-        }
-        [
-        Category("Communication"),
-        Description("Communication port by default"),
-        //DefaultValue("COM1")
-        ]
-        public string DefaultSerialPort
-        {
-            get
-            {
-                return SetupSerialDlg.DefaultSerialPort;
-            }
-            set
-            {
-                SetupSerialDlg.DefaultSerialPort = value;
-
-                Init();
-            }
-        }
-        [
-        Category("Communication"),
-        Description("Databits by default"),
-        //DefaultValue("One")
-        ]
-        public StopBits DefaultStopbits
-        {
-            get
-            {
-                return SetupSerialDlg.DefaultStopbits;
-            }
-            set
-            {
-                SetupSerialDlg.DefaultStopbits = value;
-
-                Init();
-            }
-        }
-        [
-        Category("Communication"),
-        Description("Use delimiters (used on small version)"),
-        DefaultValue(false)
-        ]
-        public bool UseDelimiters
-        {
-            get
-            {
-                return RCmanager.Properties.SerialSettings.Default.UseDelimiters;
-            }
-            set
-            {
-                if (Params.VersionSet)
-                {
-                    RCmanager.Properties.SerialSettings.Default.UseDelimiters = value;
-                    RCmanager.Properties.SerialSettings.Default.Save();
-                    Params.UseDelimitersPrepared = false;
-                }
-                else
-                {
-                    Params.UseDelimitersPrepared = true;
-                    Params.UseDelimiters = value;
-                }
-            }
-        }
-
-        #endregion
+       #endregion
         public bool ClearAction<S, T, U, V, W>(ACTION_T Action, S Param_1, T Param_2, U Param_3, V Param_4, W Param_5)
         {
             bool Error;
@@ -617,7 +475,6 @@ namespace SerialCommunication
                         }
                         else
                         {
-                            long TimeoutGetData = 500L;
                             RetVal = RECEIVE_RETURN_T.TIMEOUT;
                             ComPort.DiscardInBuffer();
                         }
@@ -789,8 +646,7 @@ namespace SerialCommunication
 
             RetVal = RECEIVE_RETURN_T.ERROR;
 
-//            Callback = RCmanager.Properties.SerialSettings.Default.UseDelimiters ? CommunicationTask_ReceiveFrame(ref Params.ReceivedData) : CommunicationTask_ReceiveRawFrame(ref Params.ReceivedData);
-            Callback = Params.UseDelimiters ? CommunicationTask_ReceiveFrame(ref Params.ReceivedData) : CommunicationTask_ReceiveRawFrame(ref Params.ReceivedData);
+            Callback = RCmanager.Properties.SerialSettings.Default.UseDelimiters ? CommunicationTask_ReceiveFrame(ref Params.ReceivedData) : CommunicationTask_ReceiveRawFrame(ref Params.ReceivedData);
 
             switch (Callback)
             {
@@ -815,8 +671,7 @@ namespace SerialCommunication
 
             RetVal = RECEIVE_RETURN_T.ERROR;
 
-//            Callback = RCmanager.Properties.SerialSettings.Default.UseDelimiters ? CommunicationTask_ReceiveFrame(ref Params.ReceivedData) : CommunicationTask_ReceiveRawFrame(ref Params.ReceivedData);
-            Callback = Params.UseDelimiters ? CommunicationTask_ReceiveFrame(ref Params.ReceivedData) : CommunicationTask_ReceiveRawFrame(ref Params.ReceivedData);
+            Callback = RCmanager.Properties.SerialSettings.Default.UseDelimiters ? CommunicationTask_ReceiveFrame(ref Params.ReceivedData) : CommunicationTask_ReceiveRawFrame(ref Params.ReceivedData);
 
             switch (Callback)
             {
@@ -920,32 +775,25 @@ namespace SerialCommunication
         }
         private void Init()
         {
-            Params.VersionSet = false;
-            Params.UseDelimitersPrepared = false;
-
-            if (SetupSerialDlg.SetupDone)
+            if (RCmanager.Properties.SerialSettings.Default.InitCode != Constants.INITCODE)
             {
-                if (RCmanager.Properties.SerialSettings.Default.InitCode != Constants.INITCODE)
-                {
-                    RCmanager.Properties.SerialSettings.Default.InitCode = Constants.INITCODE;
-                    RCmanager.Properties.SerialSettings.Default.Save();
-                }
-                // Setup Timer
-                TaskTimer.Interval = RCmanager.Properties.SerialSettings.Default.TaskTiming_ms;
-                TaskTimer.Enabled = true;
-
-                // Open serial port
-                OpenPort();
-
-                // Init communication stack
-                Init_Communication();
-
-                // Start timer
-                CommunicationTime.Start();
+                RCmanager.Properties.SerialSettings.Default.InitCode = Constants.INITCODE;
+                RCmanager.Properties.SerialSettings.Default.Save();
             }
+            // Setup Timer
+            TaskTimer.Interval = RCmanager.Properties.SerialSettings.Default.TaskTiming_ms;
+            TaskTimer.Enabled = true;
+
+            // Open serial port
+            OpenPort();
+
+            // Start timer
+            CommunicationTime.Start();
         }
         public void Init_Communication()
         {
+            Init();
+
             Params.State = STATE_T.INIT;
             Params.ActionExecuting = ACTION_T.NONE;
             Params.ParameterExecuting = new string[Constants.ACTIONLIST_PARAMETERS];
@@ -1002,8 +850,6 @@ namespace SerialCommunication
             DialogResult Result;
 
             Result = DialogResult.OK;
-
-            SetupSerialDlg.SmallVersion = Params.SmallVersion;
 
             Result = SetupSerialDlg.ShowDialog();
 
@@ -1247,7 +1093,6 @@ namespace SerialCommunication
     public class FrameReceivedEventArgs : EventArgs
     {
         public SerialCommunication.PARAMS_T Parameter { get; set; }
-        //public string ReceivedFrame { get; set; }
     }
     static class Constants
     {

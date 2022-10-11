@@ -141,6 +141,23 @@ namespace RelayCard
 
             return Return;
         }
+        public RETURN_T GetSignalColor(byte Channel, ref Color SignalColor)
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+
+            if (Channel < RCmanager.Constants.CHANNELS)
+            {
+                SignalColor = GetRelay(Channel).GetChartLineColor();
+            }
+            else
+            {
+                Return = RETURN_T.INVALIDE_CHANNEL;
+            }
+
+            return Return;    
+        }
         public RETURN_T GetSignalName(byte Channel, ref string SignalName)
         {
             RETURN_T Return;

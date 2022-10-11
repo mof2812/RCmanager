@@ -52,13 +52,13 @@
             this.menuMainSettingsView = new System.Windows.Forms.ToolStripMenuItem();
             this.menuMainSettingsViewNightMode = new System.Windows.Forms.ToolStripMenuItem();
             this.überToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.lblAllOff = new System.Windows.Forms.Label();
             this.lblAllCardChannelsOff = new System.Windows.Forms.Label();
             this.ledAllCardChannelsOff = new Bulb.LedBulb();
             this.ledAllOff = new Bulb.LedBulb();
             this.serialCommunication = new SerialCommunication.SerialCommunication(this.components);
             this.projectSettings = new ProjectSettings.ProjectSettings(this.components);
+            this.StatusLine = new System.Windows.Forms.Label();
             this.tabRelayCard.SuspendLayout();
             this.tabSheetSwitchingCard.SuspendLayout();
             this.tabSheetPowerSupply.SuspendLayout();
@@ -75,12 +75,13 @@
             this.tabRelayCard.Controls.Add(this.tabMonitoring1);
             this.tabRelayCard.Controls.Add(this.tabMonitoring2);
             this.tabRelayCard.Controls.Add(this.ProjectInfos);
-            this.tabRelayCard.Location = new System.Drawing.Point(3, 58);
+            this.tabRelayCard.Location = new System.Drawing.Point(11, 61);
             this.tabRelayCard.Name = "tabRelayCard";
             this.tabRelayCard.SelectedIndex = 0;
             this.tabRelayCard.Size = new System.Drawing.Size(1433, 1059);
             this.tabRelayCard.TabIndex = 0;
             this.tabRelayCard.Tag = "";
+            this.tabRelayCard.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.tabRelayCard_DrawItem);
             // 
             // tabSheetSwitchingCard
             // 
@@ -206,7 +207,7 @@
             this.überToolStripMenuItem});
             this.menuMain.Location = new System.Drawing.Point(0, 0);
             this.menuMain.Name = "menuMain";
-            this.menuMain.Size = new System.Drawing.Size(1438, 33);
+            this.menuMain.Size = new System.Drawing.Size(1458, 36);
             this.menuMain.TabIndex = 1;
             this.menuMain.Text = "menuStrip1";
             // 
@@ -217,7 +218,7 @@
             this.projektSichernToolStripMenuItem,
             this.projektSichernUnterToolStripMenuItem});
             this.dateiToolStripMenuItem.Name = "dateiToolStripMenuItem";
-            this.dateiToolStripMenuItem.Size = new System.Drawing.Size(69, 29);
+            this.dateiToolStripMenuItem.Size = new System.Drawing.Size(69, 32);
             this.dateiToolStripMenuItem.Text = "Datei";
             // 
             // projektÖffnenToolStripMenuItem
@@ -248,7 +249,7 @@
             this.menuMainSettingsSerialInterface,
             this.menuMainSettingsView});
             this.menuMainSettings.Name = "menuMainSettings";
-            this.menuMainSettings.Size = new System.Drawing.Size(132, 29);
+            this.menuMainSettings.Size = new System.Drawing.Size(132, 32);
             this.menuMainSettings.Text = "Einstellungen";
             // 
             // menuMainSettingsSerialInterface
@@ -278,18 +279,9 @@
             // überToolStripMenuItem
             // 
             this.überToolStripMenuItem.Name = "überToolStripMenuItem";
-            this.überToolStripMenuItem.Size = new System.Drawing.Size(66, 29);
+            this.überToolStripMenuItem.Size = new System.Drawing.Size(66, 32);
             this.überToolStripMenuItem.Text = "Über";
             this.überToolStripMenuItem.Click += new System.EventHandler(this.MenuAbout_Click);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
-            this.statusStrip1.Location = new System.Drawing.Point(0, 1122);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1438, 22);
-            this.statusStrip1.TabIndex = 2;
-            this.statusStrip1.Text = "statusStrip1";
             // 
             // lblAllOff
             // 
@@ -333,27 +325,31 @@
             // serialCommunication
             // 
             this.serialCommunication.Bitmap = "Relay_sm.jpg";
-            this.serialCommunication.DefaultBaudrate = 9600;
-            this.serialCommunication.DefaultDatabits = ((byte)(8));
-            this.serialCommunication.DefaultSerialPort = "COM1";
-            this.serialCommunication.DefaultStopbits = System.IO.Ports.StopBits.One;
-            this.serialCommunication.SmallVersion = true;
-            this.serialCommunication.UseDelimiters = true;
             // 
             // projectSettings
             // 
             this.projectSettings.DefaultDataFileName = null;
             // 
+            // StatusLine
+            // 
+            this.StatusLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.StatusLine.Location = new System.Drawing.Point(10, 1120);
+            this.StatusLine.Name = "StatusLine";
+            this.StatusLine.Size = new System.Drawing.Size(1433, 43);
+            this.StatusLine.TabIndex = 7;
+            this.StatusLine.Text = "label1";
+            this.StatusLine.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // RCmanager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1438, 1144);
+            this.ClientSize = new System.Drawing.Size(1458, 1162);
+            this.Controls.Add(this.StatusLine);
             this.Controls.Add(this.lblAllCardChannelsOff);
             this.Controls.Add(this.ledAllCardChannelsOff);
             this.Controls.Add(this.lblAllOff);
             this.Controls.Add(this.ledAllOff);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.tabRelayCard);
             this.Controls.Add(this.menuMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -386,7 +382,6 @@
         private System.Windows.Forms.ToolStripMenuItem dateiToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem menuMainSettings;
         private System.Windows.Forms.ToolStripMenuItem menuMainSettingsSerialInterface;
-        private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripMenuItem menuMainSettingsView;
         private System.Windows.Forms.ToolStripMenuItem menuMainSettingsViewNightMode;
         private System.Windows.Forms.TabPage tabMonitoring1;
@@ -405,6 +400,7 @@
         private System.Windows.Forms.ToolStripMenuItem überToolStripMenuItem;
         private System.Windows.Forms.TabPage ProjectInfos;
         private System.Windows.Forms.Label lblProjectInfos;
+        private System.Windows.Forms.Label StatusLine;
     }
 }
 

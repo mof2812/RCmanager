@@ -31,7 +31,7 @@ namespace SerialCommunication
     {
         public string Bitmap;
         public uint SetupFlags;
-        public bool SmallVersion;
+        //public bool SmallVersion;
     }
     public struct SERIAL_PARAMS_T
     {
@@ -258,10 +258,11 @@ namespace SerialCommunication
 
             Ratio = Convert.ToDouble(Width) / 1139.0;
 
-            grpProtocol.Visible = !Params.SmallVersion;
-            grpMisc.Visible = !Params.SmallVersion;
+            grpProtocol.Visible = !RCmanager.Properties.SerialSettings.Default.SmallVersion;
+            grpMisc.Visible = !RCmanager.Properties.SerialSettings.Default.SmallVersion;
 
-            if (Params.SmallVersion)
+
+            if (RCmanager.Properties.SerialSettings.Default.SmallVersion)
             {
                 pbBitmap.Left = grpProtocol.Left;
                 btnCancel.Left = grpProtocol.Left;
@@ -362,7 +363,7 @@ namespace SerialCommunication
 
             Error = true;
 
-            cbUseDelimiters.Checked = RCmanager.Properties.SerialSettings.Default.UseDelimiters;
+            cbUseDelimiters.Checked = RCmanager.Properties.SerialSettings.Default.UseDelimiters || RCmanager.Properties.SerialSettings.Default.SmallVersion;
             lblStartDelimiter.Enabled = cbUseDelimiters.Checked;
             txtStartDelimiter.Enabled = cbUseDelimiters.Checked;
             txtStartDelimiter.Text = $"{RCmanager.Properties.SerialSettings.Default.StartDelimiter}";
@@ -458,17 +459,17 @@ namespace SerialCommunication
                 return Params.SetupFlags == SetupReadyFlags;
             }
         }
-        public bool SmallVersion
-        {
-            get 
-            { 
-                return Params.SmallVersion; 
-            }
-            set 
-            { 
-                Params.SmallVersion = value; 
-            }
-        }
+        //public bool SmallVersion
+        //{
+        //    get 
+        //    { 
+        //        return Params.SmallVersion; 
+        //    }
+        //    set 
+        //    { 
+        //        Params.SmallVersion = value; 
+        //    }
+        //}
         private string StopbitsToText(StopBits stopBits)
         {
             string RetVal;

@@ -7,6 +7,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Remoting.Channels;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -114,6 +116,7 @@ namespace RCmanager
 
                     case 12:
                         GetSignalName(Module, Channel);
+                        GetSignalColor(Module, Channel);
                         break;
 
                     default:
@@ -280,6 +283,30 @@ namespace RCmanager
 
             return Return;
         }
+
+        private RETURN_T GetSignalColor(byte Module, byte Channel)
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+
+            switch (Module)
+            {
+                case 0:
+                    Return = (RETURN_T)relayCard.GetSignalColor(Channel, ref projectSettings.settings.RelaySettings[Module, Channel].ChartLColor);
+                    break;
+
+                case 1:
+                    Return = (RETURN_T)relayCardPowerSupply.GetSignalColor(Channel, ref projectSettings.settings.RelaySettings[Module, Channel].ChartLColor);
+                    break;
+
+                default:
+                    Return = RETURN_T.INVALIDE_CHANNEL;
+                    break;
+            }
+
+            return Return;
+        }
         private RETURN_T GetSignalName(byte Module, byte Channel)
         {
             RETURN_T Return;
@@ -377,8 +404,8 @@ namespace RCmanager
 
             Return = RETURN_T.INITIALIZE_ERROR;
 
-            //this.Text = $"{this.Text} - {Version.SW_Version}";
-            Header = "Kein Projekt geladen";
+//            Header = "Kein Projekt geladen";
+            Header = "";
 
             Params.TriggerParams = new Trigger.PARAMS_T[Constants.IRQ_IOS];
 
@@ -406,6 +433,7 @@ namespace RCmanager
             }
             if (Return == RETURN_T.OKAY)
             {
+                StatusLine.Text = $"{Properties.SerialSettings.Default.SerialPort}: {Properties.SerialSettings.Default.Baudrate}, None, {Properties.SerialSettings.Default.Databits}, {StopbitsToDecimal()}";
                 // Init the monitoring routines
                 Init_Monitoring();
                 // Get the configuration of all relays
@@ -414,6 +442,11 @@ namespace RCmanager
                 // Get the configuration of all triggers
                 GetTriggerConfig(255);
             }
+
+            this.BackColor = !Properties.Settings.Default.NightMode ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            this.ForeColor = !Properties.Settings.Default.NightMode ? Properties.Settings.Default.TextColor : Properties.Settings.Default.TextColor_NM;
+            StatusLine.BackColor = !Properties.Settings.Default.NightMode ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            StatusLine.ForeColor = !Properties.Settings.Default.NightMode ? Properties.Settings.Default.TextColor : Properties.Settings.Default.TextColor_NM;
 
             if (Return != RETURN_T.OKAY)
             {
@@ -459,6 +492,10 @@ namespace RCmanager
             RETURN_T Return;
 
             Return = RETURN_T.OKAY;
+
+            // Set colors
+            menuMain.BackColor = !Properties.Settings.Default.NightMode ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            menuMain.ForeColor = !Properties.Settings.Default.NightMode ? Properties.Settings.Default.TextColor : Properties.Settings.Default.TextColor_NM;
 
             menuMainSettingsViewNightMode.Checked = Properties.Settings.Default.NightMode;
 
@@ -632,10 +669,29 @@ namespace RCmanager
             Properties.Settings.Default.Save();
 
             this.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            this.ForeColor = !Set ? Properties.Settings.Default.TextColor : Properties.Settings.Default.TextColor_NM;
+
             ProjectInfos.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            menuMain.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            menuMain.ForeColor = !Set ? Properties.Settings.Default.TextColor : Properties.Settings.Default.TextColor_NM;
+
+            StatusLine.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            StatusLine.ForeColor = !Set ? Properties.Settings.Default.TextColor : Properties.Settings.Default.TextColor_NM;
 
             relayCard.NightMode(Set);
             relayCardPowerSupply.NightMode(Set);
+
+            for (byte Module = 0; Module < Constants.MODULES; Module++)
+            {
+                for (byte Channel = 0; Channel < Constants.CHANNELS; Channel++)
+                {
+                    RelayCard.RelayCard Card = new RelayCard.RelayCard();
+
+                    Card = Module == 0 ? relayCard : relayCardPowerSupply;
+
+                    Card.GetSignalColor(Channel, ref projectSettings.settings.RelaySettings[Module, Channel].ChartLColor);
+                }
+            }
         }
         public RETURN_T SetAxisLimit(byte Channel, Relay.AXIS_SELECT_T Axis, double Limit, bool Minimum)
         {
@@ -714,6 +770,31 @@ namespace RCmanager
             Return = RETURN_T.OKAY;
 
             return Return;
+        }
+        private string StopbitsToDecimal()
+        {
+            string Decimal;
+
+            Decimal = "";
+
+            switch(Properties.SerialSettings.Default.Stopbits)
+            {
+                case System.IO.Ports.StopBits.One:
+                    Decimal = "1";
+                    break;
+
+                case System.IO.Ports.StopBits.OnePointFive:
+                    Decimal = "1.5";
+                    break;
+
+                case System.IO.Ports.StopBits.Two:
+                    Decimal = "2";
+                    break;
+
+                default:
+                    break;
+            }
+            return Decimal;
         }
         #endregion
         #region Events
@@ -840,6 +921,7 @@ namespace RCmanager
 
                 Card.GetRelay(e.Channel).ChartDataName = projectSettings.settings.RelaySettings[e.Module, e.Channel].SignalLabel;
                 Card.GetRelay(e.Channel).settings = projectSettings.settings.RelaySettings[e.Module, e.Channel];
+                Card.GetRelay(e.Channel).SetChartLineColor(projectSettings.settings.RelaySettings[e.Module, e.Channel].ChartLColor);
             }
         }
         private void OpenTriggerSettingsDlg(object sender, Relay.OpenTriggerSettingsDlgEventArgs e)
@@ -984,6 +1066,26 @@ namespace RCmanager
         private void tabProjectInfo_Enter(object sender, EventArgs e)
         {
             lblProjectInfos.Text = projectSettings.settings.Info;
+        }
+
+        private void tabRelayCard_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            switch (e.Index)
+            {
+                case 0:
+                    e.Graphics.FillRectangle(new SolidBrush(Color.Red), e.Bounds);
+                    break;
+                case 1:
+                    e.Graphics.FillRectangle(new SolidBrush(Color.Blue), e.Bounds);
+                    break;
+                default:
+                    break;
+            }
+
+            // Then draw the current tab button text 
+            Rectangle paddedBounds = e.Bounds;
+            paddedBounds.Inflate(-2, -2);
+            e.Graphics.DrawString(tabRelayCard.TabPages[e.Index].Text, this.Font, SystemBrushes.HighlightText, paddedBounds);
         }
     }
     static class Constants

@@ -64,7 +64,10 @@ namespace RCmanager
             }
 
         }
-
+        private void Init_ColorButton()
+        {
+            btnColor.BackColor = Settings.ChartLColor;
+        }
         private void Init_ListBox()
         {
             cbMode.Items.Clear();
@@ -119,6 +122,8 @@ namespace RCmanager
             Update_ListBox();
 
             Init_RadioButtons();
+
+            Init_ColorButton();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -456,6 +461,20 @@ namespace RCmanager
                 OnSetParmeter(Args);
 
                 RefText = txtDelay_ms.Text;
+            }
+        }
+
+        private void btnColor_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+
+            dlg.AllowFullOpen = false;
+            dlg.ShowHelp = true;
+            dlg.Color = Settings.ChartLColor;
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                Settings.ChartLColor = btnColor.BackColor = btnColor.ForeColor = dlg.Color;
             }
         }
     }

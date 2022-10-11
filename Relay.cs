@@ -142,17 +142,56 @@ namespace Relay
         {
             get
             {
-                return MySetup.settings.ChartLColor;
+                return !Params.NightMode ? MySetup.settings.ChartLColor : MySetup.settings.ChartLColor_NM;
             }
             set
+            {
+                if (!Params.NightMode)
+                {
+                    if (MySetup.settings.ChartLColor != value)
+                    {
+                        MySetup.settings.ChartLColor = value;
+                        MySetup.Save();
+                        Init_Colors();
+                    }
+                }
+                else
+                {
+                    if (MySetup.settings.ChartLColor_NM != value)
+                    {
+                        MySetup.settings.ChartLColor_NM = value;
+                        MySetup.Save();
+                        Init_Colors();
+                    }
+                }
+                Settings.ChartLColor = chartRelay.Series[0].Color = value;
+            }
+        }
+        public Color GetChartLineColor()
+        {
+            return !Params.NightMode ? MySetup.settings.ChartLColor : MySetup.settings.ChartLColor_NM;
+        }
+        public void SetChartLineColor(Color value)
+        {
+            if (!Params.NightMode)
             {
                 if (MySetup.settings.ChartLColor != value)
                 {
                     MySetup.settings.ChartLColor = value;
                     MySetup.Save();
+                    Init_Colors();
                 }
-                chartRelay.Series[0].Color = value;
             }
+            else
+            {
+                if (MySetup.settings.ChartLColor_NM != value)
+                {
+                    MySetup.settings.ChartLColor_NM = value;
+                    MySetup.Save();
+                    Init_Colors();
+                }
+            }
+            Settings.ChartLColor = chartRelay.Series[0].Color = value;
         }
         public double MaxChartXRange_ms
         {
@@ -423,6 +462,7 @@ namespace Relay
             Init_Settings();
 
             Settings.SignalLabel = MySetup.settings.SignalLabel;
+            Settings.ChartLColor = !Params.NightMode ? MySetup.settings.ChartLColor : MySetup.settings.ChartLColor_NM;
 
             Return = Init_Chart();
 
@@ -496,6 +536,11 @@ namespace Relay
                 // Set default values
                 SetDefaults();
             }
+/* For testing only
+            MySetup.settings.ChartLColor = Color.Green;
+            MySetup.settings.ChartLColor_NM = Color.Blue;
+            MySetup.Save();
+*/
             return Return;
         }
         public string ModeToString(MODE_T Mode)
