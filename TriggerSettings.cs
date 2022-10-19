@@ -18,6 +18,8 @@ namespace TriggerSettings
         TRIGGER_MODE_RISING,
         TRIGGER_MODE_LEVEL_DOWN,
         TRIGGER_MODE_LEVEL_UP,
+        TRIGGER_MODE_LEVEL_FALLING,
+        TRIGGER_MODE_LEVEL_RISING,
         TRIGGER_MODE_IRQ_DOWN,
         TRIGGER_MODE_IRQ_UP
     }
@@ -25,7 +27,6 @@ namespace TriggerSettings
     public struct PARAMS_T
     {
         public bool Enabled;
-        public bool Retrigger;
         public TRIGGER_MODE_T TriggerMode;
         public float TriggerLevel;
     }
@@ -76,18 +77,6 @@ namespace TriggerSettings
             set
             {
                 Params = value;
-            }
-        }
-        public bool ReTrigger
-        {
-            get
-            {
-                return this.Params.Retrigger;
-            }
-            set
-            {
-                this.Params.Retrigger = value;
-                ledRetrigger.On = value;
             }
         }
         public bool TriggerEnable
@@ -150,18 +139,11 @@ namespace TriggerSettings
                 DoNotUpdateText = false;
             }
         }
-        private void ledEnable_MouseDoubleClick(object sender, MouseEventArgs e)
+        private void ledEnable_MouseClick(object sender, MouseEventArgs e)
         {
             Params.Enabled = !Params.Enabled;
             ledEnable.On = Params.Enabled;
         }
-
-        private void ledRetrigger_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            Params.Retrigger = !Params.Retrigger;
-            ledRetrigger.On = Params.Retrigger;
-        }
-
         private void cbTriggerMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             Params.TriggerMode = (TRIGGER_MODE_T)cbTriggerMode.SelectedIndex;

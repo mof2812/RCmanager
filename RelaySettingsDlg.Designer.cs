@@ -452,6 +452,8 @@
             // 
             // btnColor
             // 
+            this.btnColor.FlatAppearance.BorderSize = 0;
+            this.btnColor.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnColor.Location = new System.Drawing.Point(490, 33);
             this.btnColor.Name = "btnColor";
             this.btnColor.Size = new System.Drawing.Size(30, 30);

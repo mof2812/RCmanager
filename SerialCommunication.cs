@@ -320,6 +320,14 @@ namespace SerialCommunication
 
             return RetVal;
         }
+        private void CommunicationTask_ClearBuffers()
+        {
+            if (ComPort.IsOpen)
+            {
+                ComPort.DiscardInBuffer();
+                ComPort.DiscardOutBuffer();
+            }
+        }
         private void CommunicationTask_ClearReceiveBuffer()
         {
             if (ComPort.IsOpen)
@@ -627,7 +635,7 @@ namespace SerialCommunication
                 if (!Error)
                 {
                     // Clear input buffer
-                    CommunicationTask_ClearReceiveBuffer();
+                    CommunicationTask_ClearBuffers();
 
                     Write(Frame);
                 }

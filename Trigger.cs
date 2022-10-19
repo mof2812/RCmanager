@@ -16,6 +16,8 @@ namespace Trigger
         public bool NightMode;
         public Color ChartLColor;
         public string TriggerLabel;
+        public float AnalogInputValue;
+        public float TriggerLevel;
     }
     public enum RETURN_T
     {
@@ -39,6 +41,35 @@ namespace Trigger
             Init();
         }
         #region Methods
+        public float AnalogInputVoltage
+        {
+            get
+            {
+                return Params.AnalogInputValue;
+            }
+            set
+            {
+                Params.AnalogInputValue = value;
+
+                lblInputVoltage.Visible = lblTriggerLevel.Visible = value > -5.00f;
+
+                if (value > -5.00f)
+                {
+                    //lblInputVoltage.Text = $"{value}V";
+                    lblInputVoltage.Text = string.Format("{0:0.00}V", value);
+
+                    if (value > Params.TriggerLevel + 0.01f)
+                    {
+                        ledTrigger.On = true;
+                    }
+                    else if (value < Params.TriggerLevel - 0.01f)
+                    {
+                        ledTrigger.On = false;
+                    }
+                    lblTriggerLevel.Visible = true;
+                }
+            }
+        }
         public PARAMS_T GetParams()
         {
             return Params;
@@ -77,6 +108,8 @@ namespace Trigger
             {
                 this.BackColor = value ? Color.Black : Color.White;
                 lblTriggerName.ForeColor = value ? Color.Yellow : Color.Black;
+                lblTriggerLevel.ForeColor = value ? Color.Yellow : Color.Black;
+                lblInputVoltage.ForeColor = Color.LightBlue;
             }
         }
         private RETURN_T Init_Settings()
@@ -98,6 +131,16 @@ namespace Trigger
 
             MySetup.Save();
         }
+        public RETURN_T SetParams(PARAMS_T Params)
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+
+            this.Params = Params;
+
+            return Return;
+        }
         public bool TriggerStatus
         {
             get
@@ -105,8 +148,24 @@ namespace Trigger
                 return ledTrigger.On;
             }
             set 
-            { 
-                ledTrigger.On = value; 
+            {
+                if (Params.AnalogInputValue <= -5.0f)
+                {
+                    ledTrigger.On = value;
+                }
+            }
+        }
+        public float TriggerLevel
+        {
+            get
+            {
+                return Params.TriggerLevel;
+            }
+            set
+            {
+                Params.TriggerLevel = value;
+
+                lblTriggerLevel.Text = string.Format("{0:0.00}V", value);
             }
         }
         public string TriggerName

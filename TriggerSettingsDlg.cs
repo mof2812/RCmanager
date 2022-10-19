@@ -143,14 +143,12 @@ namespace TriggerSettingsDlg
                 if (get)
                 {
                     TriggerSettings[TriggerChannel].Enabled = Control.TriggerEnable;
-                    TriggerSettings[TriggerChannel].Retrigger = Control.ReTrigger;
                     TriggerSettings[TriggerChannel].TriggerMode = Control.TriggerMode;
                     TriggerSettings[TriggerChannel].TriggerLevel = Control.TriggerLevel;
                 }
                 else
                 {
                     Control.TriggerEnable = TriggerSettings[TriggerChannel].Enabled;
-                    Control.ReTrigger = TriggerSettings[TriggerChannel].Retrigger;
                     Control.TriggerMode = TriggerSettings[TriggerChannel].TriggerMode;
                     Control.TriggerLevel = TriggerSettings[TriggerChannel].TriggerLevel;
                 }

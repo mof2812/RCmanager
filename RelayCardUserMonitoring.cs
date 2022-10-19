@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Diagnostics;
+using RCmanager.Properties;
 
 namespace RelayCardUserMonitoring
 {
@@ -103,6 +104,7 @@ namespace RelayCardUserMonitoring
 
             Init_Settings();
 
+            Init_Buttons();
             Init_ListBoxes();
             Init_ComboBoxes();
             Init_CheckBoxes();
@@ -110,6 +112,17 @@ namespace RelayCardUserMonitoring
             Init_Graphs();
 
             return Return;
+        }
+        private bool Init_Buttons()
+        {
+            bool Error;
+
+            Error = false;
+
+            btnGridColorChart1.BackColor = btnGridColorChart1.ForeColor = Params.NightMode ? MyUserMonitoringSettings.settings.ChartGridColor_NM[0] : MyUserMonitoringSettings.settings.ChartGridColor[0];
+            btnGridColorChart2.BackColor = btnGridColorChart1.ForeColor = Params.NightMode ? MyUserMonitoringSettings.settings.ChartGridColor_NM[1] : MyUserMonitoringSettings.settings.ChartGridColor[1];
+
+            return Error;
         }
         private bool Init_CheckBoxes()
         {
@@ -119,6 +132,9 @@ namespace RelayCardUserMonitoring
 
             cbRectangleChart1.Checked = MyUserMonitoringSettings.settings.RectangleMode[0];
             cbRectangleChart2.Checked = MyUserMonitoringSettings.settings.RectangleMode[1];
+
+            cbGridChart1.Checked = MyUserMonitoringSettings.settings.Y_Grid[0];
+            cbGridChart2.Checked = MyUserMonitoringSettings.settings.Y_Grid[1];
 
             return Error;
         }
@@ -250,18 +266,29 @@ namespace RelayCardUserMonitoring
 
                 chart.ChartAreas[0].AxisX.Minimum = 0;
                 chart.ChartAreas[0].AxisX.Maximum = Maximum;
+                chart.ChartAreas[0].AxisX.Title = $"Zeit [{Params.TimeUnit[ChartID]}]";
                 chart.ChartAreas[0].AxisY.Minimum = 0;
                 chart.ChartAreas[0].AxisY.Maximum = 1.1;
                 chart.ChartAreas[0].AxisY.Interval = 1;
-                chart.ChartAreas[0].AxisX.Title = $"Zeit [{Params.TimeUnit[ChartID]}]";
                 chart.ChartAreas[0].AxisY.Title = "Status";
+                chart.ChartAreas[0].AxisY2.Minimum = 0;
+                chart.ChartAreas[0].AxisY2.Maximum = 5.5;
+                chart.ChartAreas[0].AxisY2.Interval = 0.5;
+                chart.ChartAreas[0].AxisY2.Title = "Spg.";
 
                 chart.ChartAreas[0].AxisX.MajorGrid.LineDashStyle = ChartDashStyle.Dot;
                 chart.ChartAreas[0].AxisX.MajorGrid.LineWidth = 1;
                 chart.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
                 chart.ChartAreas[0].AxisY.MajorGrid.LineDashStyle = ChartDashStyle.Dot;
                 chart.ChartAreas[0].AxisY.MajorGrid.LineWidth = 1;
-                chart.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
+                chart.ChartAreas[0].AxisY.MajorGrid.LineColor = Params.NightMode ? MyUserMonitoringSettings.settings.ChartGridColor_NM[ChartID] : MyUserMonitoringSettings.settings.ChartGridColor[ChartID];
+                chart.ChartAreas[0].AxisY.MajorGrid.Enabled = MyUserMonitoringSettings.settings.Y_Grid[ChartID];
+                chart.ChartAreas[0].AxisY2.MajorGrid.LineDashStyle = ChartDashStyle.Dot;
+                chart.ChartAreas[0].AxisY2.MajorGrid.LineWidth = 1;
+                chart.ChartAreas[0].AxisY2.MajorGrid.Enabled = MyUserMonitoringSettings.settings.Y_Grid[ChartID];
+                chart.ChartAreas[0].AxisY2.MajorGrid.LineColor = Params.NightMode ? MyUserMonitoringSettings.settings.ChartGridColor_NM[ChartID] : MyUserMonitoringSettings.settings.ChartGridColor[ChartID];
+
+
 
                 chart.Series.Clear();
 
@@ -363,13 +390,18 @@ namespace RelayCardUserMonitoring
 
             return Error;
         }
-        public void Monitoring(UInt32 RelayStates)
+        public void Monitoring(UInt32 RelayStates, float[] AnalogInputVoltage)
         {
             int SeriesID;
-            int BitState;
+            float BitState;
             double ElapsedTime;
+            bool UseSecondYScale;
+            bool UseGrid;
             Chart chart = new Chart();
             CheckBox cbRectangle = new CheckBox();
+
+            UseSecondYScale = false;
+            UseGrid = false;
 
             txtStates.Text = RelayStates.ToString();
             
@@ -391,7 +423,29 @@ namespace RelayCardUserMonitoring
 
                         if (SeriesID >= 0)
                         {
-                            BitState = (RelayStates & (0x00000001 << BitPos)) == 0 ? 0 : 1;
+                            if (BitPos < Params.RelayChannels)
+                            {
+                                // Relay states
+                                BitState = (RelayStates & (0x00000001 << BitPos)) == 0 ? 0 : 1;
+                            }
+                            else
+                            {
+                                // Trigger states
+                                UseSecondYScale = (AnalogInputVoltage[BitPos - Params.RelayChannels] > -5);
+                                if (UseSecondYScale)
+                                {
+                                    UseGrid = true;
+                                }
+
+                                if (AnalogInputVoltage[BitPos - Params.RelayChannels] <= -5)
+                                {
+                                    BitState = (RelayStates & (0x00000001 << (BitPos - Params.RelayChannels + 24))) == 0 ? 0 : 1;
+                                }
+                                else
+                                {
+                                    BitState = AnalogInputVoltage[BitPos - Params.RelayChannels];
+                                }
+                            }
 
                             if (SeriesID == 0)
                             {
@@ -407,6 +461,8 @@ namespace RelayCardUserMonitoring
                                     Init_Cursor(ChartID);
                                 }
                             }
+
+                            chart.Series[SeriesID].YAxisType = UseSecondYScale ? AxisType.Secondary : AxisType.Primary; 
 
                             if (cbRectangle.Checked)
                             {
@@ -429,6 +485,8 @@ namespace RelayCardUserMonitoring
             set
             {
                 Chart chart = new Chart();
+
+                Params.NightMode = value;
 
                 this.BackColor = value ? Color.Black : Color.White;
                 this.ForeColor = value ? Color.White : Color.Black;
@@ -453,16 +511,25 @@ namespace RelayCardUserMonitoring
                     chart.ChartAreas[0].BackColor = value ? Color.Black : Color.White;
                     chart.ChartAreas[0].AxisX.LineColor = value ? Color.White : Color.Black;
                     chart.ChartAreas[0].AxisY.LineColor = value ? Color.White : Color.Black;
+                    chart.ChartAreas[0].AxisY2.LineColor = value ? Color.White : Color.Black;
                     chart.ChartAreas[0].AxisX.TitleForeColor = value ? Color.White : Color.Black;
                     chart.ChartAreas[0].AxisX2.TitleForeColor = value ? Color.White : Color.Black;
                     chart.ChartAreas[0].AxisY.TitleForeColor = value ? Color.White : Color.Black;
                     chart.ChartAreas[0].AxisY2.TitleForeColor = value ? Color.White : Color.Black;
                     chart.ChartAreas[0].AxisX.LabelStyle.ForeColor = value ? Color.White : Color.Black;
                     chart.ChartAreas[0].AxisY.LabelStyle.ForeColor = value ? Color.White : Color.Black;
+                    chart.ChartAreas[0].AxisY2.LabelStyle.ForeColor = value ? Color.White : Color.Black;
+                    chart.ChartAreas[0].AxisX.MajorGrid.LineColor = value ? Color.White : Color.Black;
+                    chart.ChartAreas[0].AxisY.MajorGrid.LineColor = Params.NightMode ? MyUserMonitoringSettings.settings.ChartGridColor_NM[ChartID] : MyUserMonitoringSettings.settings.ChartGridColor[ChartID];
+                    chart.ChartAreas[0].AxisY2.MajorGrid.LineColor = Params.NightMode ? MyUserMonitoringSettings.settings.ChartGridColor_NM[ChartID] : MyUserMonitoringSettings.settings.ChartGridColor[ChartID];
                     chart.Legends[0].ForeColor = value ? Color.White : Color.Black;
                     chart.Legends[0].BackColor = value ? Color.Black : Color.White;
                 }
                 lblTimebase_1.ForeColor = lblTimebase_2.ForeColor = value ? Color.White : Color.Black;
+
+                btnGridColorChart1.BackColor = btnGridColorChart1.ForeColor = Params.NightMode ? MyUserMonitoringSettings.settings.ChartGridColor_NM[0] : MyUserMonitoringSettings.settings.ChartGridColor[0];
+                btnGridColorChart2.BackColor = btnGridColorChart1.ForeColor = Params.NightMode ? MyUserMonitoringSettings.settings.ChartGridColor_NM[1] : MyUserMonitoringSettings.settings.ChartGridColor[1];
+
             }
         }
         private TIMEBASE_T TextToMilliseconds(string Text)
@@ -608,7 +675,11 @@ namespace RelayCardUserMonitoring
             for (int Chart = 0; Chart < 2; Chart++)
             {
                 MyUserMonitoringSettings.settings.UserMonitoringTimeBase_ms[Chart] = 10000;
-                MyUserMonitoringSettings.settings.RectangleMode[0] = MyUserMonitoringSettings.settings.RectangleMode[1] = false;
+                MyUserMonitoringSettings.settings.RectangleMode[Chart] = false;
+                MyUserMonitoringSettings.settings.Y_Grid[Chart] = false;
+                MyUserMonitoringSettings.settings.ChartGridColor[Chart] = Color.DarkGray;
+                MyUserMonitoringSettings.settings.ChartGridColor_NM[Chart] = Color.DarkGray;
+
                 for (int Index = 0; Index < Params.RelayChannels + Params.TriggerChannels; Index++)
                 {
                     MyUserMonitoringSettings.settings.UsedInChart[Chart, Index] = false;
@@ -977,6 +1048,80 @@ namespace RelayCardUserMonitoring
         {
             MyUserMonitoringSettings.settings.RectangleMode[1] = cbRectangleChart2.Checked;
             MyUserMonitoringSettings.Save();
+        }
+
+        private void cbGridChart1_CheckedChanged(object sender, EventArgs e)
+        {
+            MyUserMonitoringSettings.settings.Y_Grid[0] = cbGridChart1.Checked;
+            MyUserMonitoringSettings.Save();
+
+            UserChart_1.ChartAreas[0].AxisY.MajorGrid.Enabled = cbGridChart1.Checked;
+            UserChart_1.ChartAreas[0].AxisY2.MajorGrid.Enabled = cbGridChart1.Checked;
+        }
+
+        private void cbGridChart2_CheckedChanged(object sender, EventArgs e)
+        {
+            MyUserMonitoringSettings.settings.Y_Grid[1] = cbGridChart2.Checked;
+            MyUserMonitoringSettings.Save();
+
+            UserChart_2.ChartAreas[0].AxisY.MajorGrid.Enabled = cbGridChart2.Checked;
+            UserChart_2.ChartAreas[0].AxisY2.MajorGrid.Enabled = cbGridChart2.Checked;
+        }
+
+        private void btnGridColorChart1_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+
+            dlg.AllowFullOpen = false;
+            dlg.ShowHelp = true;
+
+            dlg.Color = !Params.NightMode ? MyUserMonitoringSettings.settings.ChartGridColor[0] : MyUserMonitoringSettings.settings.ChartGridColor_NM[0];
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                if (!Params.NightMode)
+                {
+                    MyUserMonitoringSettings.settings.ChartGridColor[0] = dlg.Color;
+                }
+                else
+                {
+                    MyUserMonitoringSettings.settings.ChartGridColor_NM[0] = dlg.Color;
+                }
+                MyUserMonitoringSettings.Save();
+
+                UserChart_1.ChartAreas[0].AxisY.MajorGrid.LineColor = dlg.Color;
+                UserChart_1.ChartAreas[0].AxisY2.MajorGrid.LineColor = dlg.Color;
+
+                btnGridColorChart1.BackColor = btnGridColorChart1.ForeColor = dlg.Color;
+            }
+        }
+
+        private void btnGridColorChart2_Click(object sender, EventArgs e)
+        {
+            ColorDialog dlg = new ColorDialog();
+
+            dlg.AllowFullOpen = false;
+            dlg.ShowHelp = true;
+
+            dlg.Color = !Params.NightMode ? MyUserMonitoringSettings.settings.ChartGridColor[1] : MyUserMonitoringSettings.settings.ChartGridColor_NM[1];
+
+            if (dlg.ShowDialog() == DialogResult.OK)
+            {
+                if (!Params.NightMode)
+                {
+                    MyUserMonitoringSettings.settings.ChartGridColor[1] = dlg.Color;
+                }
+                else
+                {
+                    MyUserMonitoringSettings.settings.ChartGridColor_NM[1] = dlg.Color;
+                }
+                MyUserMonitoringSettings.Save();
+
+                UserChart_2.ChartAreas[0].AxisY.MajorGrid.LineColor = dlg.Color;
+                UserChart_2.ChartAreas[0].AxisY2.MajorGrid.LineColor = dlg.Color;
+
+                btnGridColorChart2.BackColor = btnGridColorChart1.ForeColor = dlg.Color;
+            }
         }
     }
     static class Constants

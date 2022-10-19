@@ -53,6 +53,54 @@ namespace RCmanager
         }
         #endregion
         #region Methods
+        public RETURN_T EvaluateOutputStates(string ReceivedData, ref uint OutputStates, ref float[] AnalogInputVoltage)
+        {
+            RETURN_T Return;
+            int Pos;
+            int Index;
+
+            Return = RETURN_T.OKAY;
+            Pos = 0;
+            Index = -1;
+
+            ReceivedData = ReceivedData.Replace('.', ',');
+
+            while (ReceivedData.Length > 0)
+            {
+                Pos = ReceivedData.IndexOf(" ");
+
+                if (Index == -1)
+                {
+                    if (Pos > -1)
+                    {
+                        OutputStates = Convert.ToUInt32(ReceivedData.Substring(0, Pos));
+                        ReceivedData = ReceivedData.Remove(0, Pos + 1);
+                    }
+                    else
+                    {
+                        OutputStates = Convert.ToUInt32(ReceivedData);
+                        ReceivedData = "";
+                    }
+                }
+                else
+                {
+                    if (Pos > -1)
+                    {
+                        AnalogInputVoltage[Index] = (float)Convert.ToDouble(ReceivedData.Substring(0, Pos));
+                        ReceivedData = ReceivedData.Remove(0, Pos + 1);
+                    }
+                    else
+                    {
+                        AnalogInputVoltage[Index] = (float)Convert.ToDouble(ReceivedData);
+                        ReceivedData = "";
+                    }
+                }
+                Index++;
+
+                
+            }
+            return Return;
+        }
         public RETURN_T EvaluateRelayConfigurationString(byte Module, byte Channel, string ConfigurationString)
         {
             RETURN_T Return;
@@ -154,7 +202,7 @@ namespace RCmanager
             Return = RETURN_T.OKAY;
             Pos = 0;
 
-            for (int Index = 0; Index < 4; Index++)
+            for (int Index = 0; Index < 3; Index++)
             {
                 Pos = ConfigurationString.IndexOf(" ");
                 switch (Index)
@@ -169,11 +217,7 @@ namespace RCmanager
 
                     case 2:
                         ConfigurationString = ConfigurationString.Replace('.', ',');
-                        projectSettings.settings.TriggerSettings[TriggerChannel].TriggerLevel = (float)Convert.ToDouble(ConfigurationString.Substring(0, Pos));
-                        break;
-
-                    case 3:
-                        projectSettings.settings.TriggerSettings[TriggerChannel].Retrigger = ConfigurationString == "0" ? false : true;
+                        projectSettings.settings.TriggerSettings[TriggerChannel].TriggerLevel = (float)Convert.ToDouble(ConfigurationString);
                         break;
 
                     default:
@@ -526,6 +570,13 @@ namespace RCmanager
 
             Init_Limits();
 
+            for (byte TriggerChannel = 0; TriggerChannel < Constants.IRQ_IOS; TriggerChannel++)
+            {
+                relayCardMonitoring.GetTriggerMonitoring(TriggerChannel).TriggerLevel = projectSettings.settings.TriggerSettings[TriggerChannel].TriggerLevel;
+            }
+
+            
+
             return Return;
         }
         private RETURN_T Init_RelayCards()
@@ -781,9 +832,12 @@ namespace RCmanager
             string ReceivedFrame;
             byte Channel;
             byte Module;
+            uint OutputStates;
+            float[] AnalogInputVoltage = new float[Constants.IRQ_IOS];
 
             Channel = 255;
             ReceivedFrame = e.Parameter.ReceivedData;
+            OutputStates = 0;
 
             switch (e.Parameter.ActionExecuting)
             {
@@ -795,20 +849,24 @@ namespace RCmanager
                     break;
 
                 case SerialCommunication.ACTION_T.GET_OUTPUT_STATES:
-                    relayCardMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
-                    relayCardUserMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
-                break;
+                    EvaluateOutputStates(e.Parameter.ReceivedData, ref OutputStates, ref AnalogInputVoltage);
+
+                    //relayCardMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
+                    relayCardMonitoring.Monitoring(OutputStates, AnalogInputVoltage);
+                    //relayCardUserMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
+                    relayCardUserMonitoring.Monitoring(OutputStates, AnalogInputVoltage);
+                    break;
 
                 case SerialCommunication.ACTION_T.GET_TRIGGER_CONFIG:
-                Channel = (byte)(Convert.ToInt32(e.Parameter.ParameterExecuting[0]));
-                EvaluateTriggerConfigurationString(Channel, e.Parameter.ReceivedData);
-                if (Channel == 3)
-                {
-                    Initialized = true;
+                    Channel = (byte)(Convert.ToInt32(e.Parameter.ParameterExecuting[0]));
+                    EvaluateTriggerConfigurationString(Channel, e.Parameter.ReceivedData);
+                    if (Channel == 3)
+                    {
+                        Initialized = true;
 
-                    Init_Part_2();
-                }
-                break;
+                        Init_Part_2();
+                    }
+                    break;
 
                 default:
                     break;
@@ -867,6 +925,7 @@ namespace RCmanager
                 //            serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_DELAY_TIME_MS, e.Channel, e.Params.TimeOn_ms, e.Params.TimeOff_ms, e.Params.DelayTime_ms, 0, false);
                 //            break;
                     case WHICH_PARAMETER_T.TRIGGER:
+                        projectSettings.settings.RelaySettings[e.Module, e.Channel].Triggering = e.Mode == (Relay.MODE_T.ON); 
                         serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER, e.Channel, e.Settings.TriggerChannel, e.Settings.Triggering ? 1 : 0, 0, 0, false);
                         break;
 
@@ -917,7 +976,9 @@ namespace RCmanager
 
                 for (byte TriggerChannel = 0; TriggerChannel < Constants.IRQ_IOS; TriggerChannel++)
                 {
-                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER_CONFIG, TriggerChannel, projectSettings.settings.TriggerSettings[TriggerChannel].Enabled ? 1 : 0, (int)projectSettings.settings.TriggerSettings[TriggerChannel].TriggerMode, (int)(projectSettings.settings.TriggerSettings[TriggerChannel].TriggerLevel * 1000), projectSettings.settings.TriggerSettings[TriggerChannel].Retrigger ? 1 : 0, false);
+                    relayCardMonitoring.GetTriggerMonitoring(TriggerChannel).TriggerLevel = projectSettings.settings.TriggerSettings[TriggerChannel].TriggerLevel;
+
+                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER_CONFIG, TriggerChannel, projectSettings.settings.TriggerSettings[TriggerChannel].Enabled ? 1 : 0, (int)projectSettings.settings.TriggerSettings[TriggerChannel].TriggerMode, (int)(projectSettings.settings.TriggerSettings[TriggerChannel].TriggerLevel * 1000), 0, false);
                 }
             }
         }
@@ -997,7 +1058,7 @@ namespace RCmanager
                 }
                 for (byte TriggerChannel = 0; TriggerChannel < Constants.IRQ_IOS; TriggerChannel++)
                 {
-                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER_CONFIG, TriggerChannel, projectSettings.settings.TriggerSettings[TriggerChannel].Enabled ? 1 : 0, (int)projectSettings.settings.TriggerSettings[TriggerChannel].TriggerMode, (int)(projectSettings.settings.TriggerSettings[TriggerChannel].TriggerLevel * 1000), projectSettings.settings.TriggerSettings[TriggerChannel].Retrigger ? 1 : 0, false);
+                    serialCommunication.SetAction(SerialCommunication.ACTION_T.SET_TRIGGER_CONFIG, TriggerChannel, projectSettings.settings.TriggerSettings[TriggerChannel].Enabled ? 1 : 0, (int)projectSettings.settings.TriggerSettings[TriggerChannel].TriggerMode, (int)(projectSettings.settings.TriggerSettings[TriggerChannel].TriggerLevel * 1000), 0, false);
                 }
 
                 // Set project info tab control

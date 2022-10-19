@@ -29,22 +29,26 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea2 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend2 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series2 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea4 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend4 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series4 = new System.Windows.Forms.DataVisualization.Charting.Series();
             this.UserChart_1 = new System.Windows.Forms.DataVisualization.Charting.Chart();
             this.lbSignalSelect_Chart_1 = new System.Windows.Forms.ListBox();
             this.btnDelSignal_Chart_1 = new System.Windows.Forms.Button();
             this.cmbTimebaseChart_2 = new System.Windows.Forms.ComboBox();
             this.grpMonitor_1 = new System.Windows.Forms.GroupBox();
+            this.btnGridColorChart1 = new System.Windows.Forms.Button();
+            this.cbGridChart1 = new System.Windows.Forms.CheckBox();
             this.cbRectangleChart1 = new System.Windows.Forms.CheckBox();
             this.lblTimebase_1 = new System.Windows.Forms.Label();
             this.cmbTimebaseChart_1 = new System.Windows.Forms.ComboBox();
             this.btnAddSignal_Chart_1 = new System.Windows.Forms.Button();
             this.grpMonitor_2 = new System.Windows.Forms.GroupBox();
+            this.btnGridColorChart2 = new System.Windows.Forms.Button();
+            this.cbGridChart2 = new System.Windows.Forms.CheckBox();
             this.cbRectangleChart2 = new System.Windows.Forms.CheckBox();
             this.lblTimebase_2 = new System.Windows.Forms.Label();
             this.lbSignalSelect_Chart_2 = new System.Windows.Forms.ListBox();
@@ -65,16 +69,16 @@
             // 
             // UserChart_1
             // 
-            chartArea1.Name = "ChartArea1";
-            this.UserChart_1.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            this.UserChart_1.Legends.Add(legend1);
+            chartArea3.Name = "ChartArea1";
+            this.UserChart_1.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            this.UserChart_1.Legends.Add(legend3);
             this.UserChart_1.Location = new System.Drawing.Point(40, 37);
             this.UserChart_1.Name = "UserChart_1";
-            series1.ChartArea = "ChartArea1";
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            this.UserChart_1.Series.Add(series1);
+            series3.ChartArea = "ChartArea1";
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            this.UserChart_1.Series.Add(series3);
             this.UserChart_1.Size = new System.Drawing.Size(1049, 357);
             this.UserChart_1.TabIndex = 18;
             this.UserChart_1.Text = "chart1";
@@ -133,6 +137,8 @@
             // 
             // grpMonitor_1
             // 
+            this.grpMonitor_1.Controls.Add(this.btnGridColorChart1);
+            this.grpMonitor_1.Controls.Add(this.cbGridChart1);
             this.grpMonitor_1.Controls.Add(this.cbRectangleChart1);
             this.grpMonitor_1.Controls.Add(this.lblTimebase_1);
             this.grpMonitor_1.Controls.Add(this.cmbTimebaseChart_1);
@@ -146,6 +152,28 @@
             this.grpMonitor_1.TabIndex = 23;
             this.grpMonitor_1.TabStop = false;
             this.grpMonitor_1.Text = "Monitor 1";
+            // 
+            // btnGridColorChart1
+            // 
+            this.btnGridColorChart1.FlatAppearance.BorderSize = 0;
+            this.btnGridColorChart1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGridColorChart1.Location = new System.Drawing.Point(1058, 327);
+            this.btnGridColorChart1.Name = "btnGridColorChart1";
+            this.btnGridColorChart1.Size = new System.Drawing.Size(24, 24);
+            this.btnGridColorChart1.TabIndex = 26;
+            this.btnGridColorChart1.UseVisualStyleBackColor = true;
+            this.btnGridColorChart1.Click += new System.EventHandler(this.btnGridColorChart1_Click);
+            // 
+            // cbGridChart1
+            // 
+            this.cbGridChart1.AutoSize = true;
+            this.cbGridChart1.Location = new System.Drawing.Point(953, 327);
+            this.cbGridChart1.Name = "cbGridChart1";
+            this.cbGridChart1.Size = new System.Drawing.Size(99, 24);
+            this.cbGridChart1.TabIndex = 25;
+            this.cbGridChart1.Text = "Y-Raster";
+            this.cbGridChart1.UseVisualStyleBackColor = true;
+            this.cbGridChart1.CheckedChanged += new System.EventHandler(this.cbGridChart1_CheckedChanged);
             // 
             // cbRectangleChart1
             // 
@@ -209,6 +237,8 @@
             // 
             // grpMonitor_2
             // 
+            this.grpMonitor_2.Controls.Add(this.btnGridColorChart2);
+            this.grpMonitor_2.Controls.Add(this.cbGridChart2);
             this.grpMonitor_2.Controls.Add(this.cbRectangleChart2);
             this.grpMonitor_2.Controls.Add(this.lblTimebase_2);
             this.grpMonitor_2.Controls.Add(this.lbSignalSelect_Chart_2);
@@ -222,6 +252,28 @@
             this.grpMonitor_2.TabIndex = 24;
             this.grpMonitor_2.TabStop = false;
             this.grpMonitor_2.Text = "Monitor 2";
+            // 
+            // btnGridColorChart2
+            // 
+            this.btnGridColorChart2.FlatAppearance.BorderSize = 0;
+            this.btnGridColorChart2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnGridColorChart2.Location = new System.Drawing.Point(1058, 327);
+            this.btnGridColorChart2.Name = "btnGridColorChart2";
+            this.btnGridColorChart2.Size = new System.Drawing.Size(24, 24);
+            this.btnGridColorChart2.TabIndex = 28;
+            this.btnGridColorChart2.UseVisualStyleBackColor = true;
+            this.btnGridColorChart2.Click += new System.EventHandler(this.btnGridColorChart2_Click);
+            // 
+            // cbGridChart2
+            // 
+            this.cbGridChart2.AutoSize = true;
+            this.cbGridChart2.Location = new System.Drawing.Point(953, 327);
+            this.cbGridChart2.Name = "cbGridChart2";
+            this.cbGridChart2.Size = new System.Drawing.Size(99, 24);
+            this.cbGridChart2.TabIndex = 27;
+            this.cbGridChart2.Text = "Y-Raster";
+            this.cbGridChart2.UseVisualStyleBackColor = true;
+            this.cbGridChart2.CheckedChanged += new System.EventHandler(this.cbGridChart2_CheckedChanged);
             // 
             // cbRectangleChart2
             // 
@@ -257,16 +309,16 @@
             // 
             // UserChart_2
             // 
-            chartArea2.Name = "ChartArea1";
-            this.UserChart_2.ChartAreas.Add(chartArea2);
-            legend2.Name = "Legend1";
-            this.UserChart_2.Legends.Add(legend2);
+            chartArea4.Name = "ChartArea1";
+            this.UserChart_2.ChartAreas.Add(chartArea4);
+            legend4.Name = "Legend1";
+            this.UserChart_2.Legends.Add(legend4);
             this.UserChart_2.Location = new System.Drawing.Point(40, 37);
             this.UserChart_2.Name = "UserChart_2";
-            series2.ChartArea = "ChartArea1";
-            series2.Legend = "Legend1";
-            series2.Name = "Series1";
-            this.UserChart_2.Series.Add(series2);
+            series4.ChartArea = "ChartArea1";
+            series4.Legend = "Legend1";
+            series4.Name = "Series1";
+            this.UserChart_2.Series.Add(series4);
             this.UserChart_2.Size = new System.Drawing.Size(1049, 357);
             this.UserChart_2.TabIndex = 21;
             this.UserChart_2.Text = "chart1";
@@ -397,5 +449,9 @@
         private System.Windows.Forms.Button btnPauseMonitoring;
         private System.Windows.Forms.CheckBox cbRectangleChart1;
         private System.Windows.Forms.CheckBox cbRectangleChart2;
+        private System.Windows.Forms.CheckBox cbGridChart1;
+        private System.Windows.Forms.CheckBox cbGridChart2;
+        private System.Windows.Forms.Button btnGridColorChart1;
+        private System.Windows.Forms.Button btnGridColorChart2;
     }
 }

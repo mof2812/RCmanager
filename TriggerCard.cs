@@ -142,6 +142,27 @@ namespace TriggerCard
             }
             return Return;
         }
-#endregion
+        public RETURN_T SetTriggerParameter(byte Channel, Trigger.PARAMS_T TriggerParams)
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+
+            if (Channel < RCmanager.Constants.IRQ_IOS)
+            {
+                if (GetTrigger(Channel).SetParams(TriggerParams) != Trigger.RETURN_T.OKAY)
+                {
+                    Return = RETURN_T.ERROR;
+                }
+            }
+            else
+            {
+                Return = RETURN_T.INVALIDE_CHANNEL;
+            }
+
+            return Return;
+        }
+
+        #endregion
     }
 }

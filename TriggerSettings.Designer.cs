@@ -28,39 +28,24 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ledEnable = new Bulb.LedBulb();
             this.grpTriggerSettings = new System.Windows.Forms.GroupBox();
             this.lblTriggerLevelUnit = new System.Windows.Forms.Label();
             this.txtTriggerLevel = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.lblRetrigger = new System.Windows.Forms.Label();
-            this.ledRetrigger = new Bulb.LedBulb();
             this.cbTriggerMode = new System.Windows.Forms.ComboBox();
             this.lblTriggerLevel = new System.Windows.Forms.Label();
             this.tbTriggerLevel = new System.Windows.Forms.TrackBar();
             this.lblEnable = new System.Windows.Forms.Label();
+            this.ledEnable = new Bulb.LedBulb();
             this.grpTriggerSettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.tbTriggerLevel)).BeginInit();
             this.SuspendLayout();
-            // 
-            // ledEnable
-            // 
-            this.ledEnable.Location = new System.Drawing.Point(38, 29);
-            this.ledEnable.Name = "ledEnable";
-            this.ledEnable.On = true;
-            this.ledEnable.Size = new System.Drawing.Size(23, 23);
-            this.ledEnable.TabIndex = 0;
-            this.ledEnable.Tag = "Enable";
-            this.ledEnable.Text = "ledBulb1";
-            this.ledEnable.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ledEnable_MouseDoubleClick);
             // 
             // grpTriggerSettings
             // 
             this.grpTriggerSettings.Controls.Add(this.lblTriggerLevelUnit);
             this.grpTriggerSettings.Controls.Add(this.txtTriggerLevel);
             this.grpTriggerSettings.Controls.Add(this.label2);
-            this.grpTriggerSettings.Controls.Add(this.lblRetrigger);
-            this.grpTriggerSettings.Controls.Add(this.ledRetrigger);
             this.grpTriggerSettings.Controls.Add(this.cbTriggerMode);
             this.grpTriggerSettings.Controls.Add(this.lblTriggerLevel);
             this.grpTriggerSettings.Controls.Add(this.tbTriggerLevel);
@@ -100,28 +85,6 @@
             this.label2.Text = "Trigger-Mode";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // lblRetrigger
-            // 
-            this.lblRetrigger.AutoSize = true;
-            this.lblRetrigger.Location = new System.Drawing.Point(230, 30);
-            this.lblRetrigger.Name = "lblRetrigger";
-            this.lblRetrigger.Size = new System.Drawing.Size(75, 20);
-            this.lblRetrigger.TabIndex = 6;
-            this.lblRetrigger.Text = "Retrigger";
-            this.lblRetrigger.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblRetrigger.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ledRetrigger_MouseDoubleClick);
-            // 
-            // ledRetrigger
-            // 
-            this.ledRetrigger.Location = new System.Drawing.Point(201, 29);
-            this.ledRetrigger.Name = "ledRetrigger";
-            this.ledRetrigger.On = true;
-            this.ledRetrigger.Size = new System.Drawing.Size(23, 23);
-            this.ledRetrigger.TabIndex = 5;
-            this.ledRetrigger.Tag = "Enable";
-            this.ledRetrigger.Text = "ledBulb1";
-            this.ledRetrigger.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ledRetrigger_MouseDoubleClick);
-            // 
             // cbTriggerMode
             // 
             this.cbTriggerMode.FormattingEnabled = true;
@@ -132,6 +95,8 @@
             "LOW -> HIGH Pegel",
             "Triggerpegel - Unterschreitung ",
             "Triggerpegel - Überschreitung",
+            "Triggerpegel - abfallende Flanke",
+            "Triggerpegel - ansteigende Flanke",
             "IRQ fallend",
             "IRQ steigend"});
             this.cbTriggerMode.Location = new System.Drawing.Point(38, 128);
@@ -165,13 +130,24 @@
             // lblEnable
             // 
             this.lblEnable.AutoSize = true;
-            this.lblEnable.Location = new System.Drawing.Point(67, 30);
+            this.lblEnable.Location = new System.Drawing.Point(67, 45);
             this.lblEnable.Name = "lblEnable";
             this.lblEnable.Size = new System.Drawing.Size(72, 20);
             this.lblEnable.TabIndex = 1;
             this.lblEnable.Text = "Freigabe";
             this.lblEnable.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lblEnable.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ledEnable_MouseDoubleClick);
+            this.lblEnable.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ledEnable_MouseClick);
+            // 
+            // ledEnable
+            // 
+            this.ledEnable.Location = new System.Drawing.Point(38, 44);
+            this.ledEnable.Name = "ledEnable";
+            this.ledEnable.On = true;
+            this.ledEnable.Size = new System.Drawing.Size(23, 23);
+            this.ledEnable.TabIndex = 0;
+            this.ledEnable.Tag = "Enable";
+            this.ledEnable.Text = "ledBulb1";
+            this.ledEnable.MouseClick += new System.Windows.Forms.MouseEventHandler(this.ledEnable_MouseClick);
             // 
             // TriggerSettings
             // 
@@ -193,8 +169,6 @@
         private System.Windows.Forms.GroupBox grpTriggerSettings;
         private System.Windows.Forms.Label lblEnable;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label lblRetrigger;
-        private Bulb.LedBulb ledRetrigger;
         private System.Windows.Forms.ComboBox cbTriggerMode;
         private System.Windows.Forms.Label lblTriggerLevel;
         private System.Windows.Forms.TrackBar tbTriggerLevel;

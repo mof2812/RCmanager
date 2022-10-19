@@ -314,7 +314,7 @@ namespace SerialCommunication
                 case ACTION_T.SET_TRIGGER_CONFIG:
                     Params.ParameterExecuting[2] = TriggerModeToString((TriggerSettings.TRIGGER_MODE_T)Convert.ToInt32(Params.ParameterExecuting[2]));
                     Params.ParameterExecuting[3] = Params.ParameterExecuting[3].Insert(Params.ParameterExecuting[3].Length - 3, ".");
-                    Frame = $"STRGCONFIG {Channel} {Params.ParameterExecuting[1]} {Params.ParameterExecuting[2]} {Params.ParameterExecuting[3]} {Params.ParameterExecuting[4]}";
+                    Frame = $"STRGCONFIG {Channel} {Params.ParameterExecuting[1]} {Params.ParameterExecuting[2]} {Params.ParameterExecuting[3]}";
                     break;
                 #endregion
                 #endregion
@@ -362,6 +362,14 @@ namespace SerialCommunication
 
                 case TriggerSettings.TRIGGER_MODE_T.TRIGGER_MODE_LEVEL_UP:
                     Mode = "LEVEL_UP";
+                    break;
+
+                case TriggerSettings.TRIGGER_MODE_T.TRIGGER_MODE_LEVEL_FALLING:
+                    Mode = "LEVEL_FALLING";
+                    break;
+
+                case TriggerSettings.TRIGGER_MODE_T.TRIGGER_MODE_LEVEL_RISING:
+                    Mode = "LEVEL_RISING";
                     break;
 
                 case TriggerSettings.TRIGGER_MODE_T.TRIGGER_MODE_IRQ_DOWN:

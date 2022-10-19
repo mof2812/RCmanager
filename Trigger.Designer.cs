@@ -29,20 +29,12 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.ledTrigger = new Bulb.LedBulb();
             this.lblTriggerName = new System.Windows.Forms.Label();
+            this.lblInputVoltage = new System.Windows.Forms.Label();
+            this.ledTrigger = new Bulb.LedBulb();
             this.MySetup = new MyTriggerSettings.MyTriggerSettings(this.components);
+            this.lblTriggerLevel = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // ledTrigger
-            // 
-            this.ledTrigger.Color = System.Drawing.Color.FromArgb(((int)(((byte)(111)))), ((int)(((byte)(202)))), ((int)(((byte)(255)))));
-            this.ledTrigger.Location = new System.Drawing.Point(33, 10);
-            this.ledTrigger.Name = "ledTrigger";
-            this.ledTrigger.On = true;
-            this.ledTrigger.Size = new System.Drawing.Size(80, 80);
-            this.ledTrigger.TabIndex = 1;
-            this.ledTrigger.Text = "ledBulb1";
             // 
             // lblTriggerName
             // 
@@ -54,19 +46,50 @@
             this.lblTriggerName.Text = "Trigger 1";
             this.lblTriggerName.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // lblInputVoltage
+            // 
+            this.lblInputVoltage.AutoSize = true;
+            this.lblInputVoltage.Location = new System.Drawing.Point(98, 80);
+            this.lblInputVoltage.Name = "lblInputVoltage";
+            this.lblInputVoltage.Size = new System.Drawing.Size(51, 20);
+            this.lblInputVoltage.TabIndex = 4;
+            this.lblInputVoltage.Text = "label1";
+            // 
+            // ledTrigger
+            // 
+            this.ledTrigger.Color = System.Drawing.Color.FromArgb(((int)(((byte)(111)))), ((int)(((byte)(202)))), ((int)(((byte)(255)))));
+            this.ledTrigger.Location = new System.Drawing.Point(33, 10);
+            this.ledTrigger.Name = "ledTrigger";
+            this.ledTrigger.On = true;
+            this.ledTrigger.Size = new System.Drawing.Size(80, 80);
+            this.ledTrigger.TabIndex = 1;
+            this.ledTrigger.Text = "ledBulb1";
+            // 
             // MySetup
             // 
             this.MySetup.DefaultDataFileName = null;
+            // 
+            // lblTriggerLevel
+            // 
+            this.lblTriggerLevel.AutoSize = true;
+            this.lblTriggerLevel.Location = new System.Drawing.Point(98, -1);
+            this.lblTriggerLevel.Name = "lblTriggerLevel";
+            this.lblTriggerLevel.Size = new System.Drawing.Size(51, 20);
+            this.lblTriggerLevel.TabIndex = 5;
+            this.lblTriggerLevel.Text = "label1";
             // 
             // Trigger
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.lblTriggerLevel);
+            this.Controls.Add(this.lblInputVoltage);
             this.Controls.Add(this.lblTriggerName);
             this.Controls.Add(this.ledTrigger);
             this.Name = "Trigger";
             this.Size = new System.Drawing.Size(351, 100);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -75,5 +98,7 @@
         private Bulb.LedBulb ledTrigger;
         private System.Windows.Forms.Label lblTriggerName;
         private MyTriggerSettings.MyTriggerSettings MySetup;
+        private System.Windows.Forms.Label lblInputVoltage;
+        private System.Windows.Forms.Label lblTriggerLevel;
     }
 }

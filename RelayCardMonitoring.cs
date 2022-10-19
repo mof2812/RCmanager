@@ -49,6 +49,13 @@ namespace RelayCardMonitoring
 
             return Error;
         }
+        public void Monitoring(float[] AnalogInputVoltage)
+        {
+            for (byte Index = 0; Index < RCmanager.Constants.IRQ_IOS; Index++)
+            {
+                GetTriggerMonitoring(Index).AnalogInputVoltage = AnalogInputVoltage[Index];
+            }
+        }
         public void Monitoring(UInt32 RelayStates)
         {
             for (byte Index = 0; Index < 16; Index++)
@@ -57,12 +64,16 @@ namespace RelayCardMonitoring
                 RelayStates >>= 1;
             }
             RelayStates >>= 8;
-            //for (byte Index = 0; Index < 8; Index++)
-            for (byte Index = 0; Index < 4; Index++)
+            for (byte Index = 0; Index < RCmanager.Constants.IRQ_IOS; Index++)
             {
                 GetTriggerMonitoring(Index).TriggerStatus = Convert.ToBoolean(RelayStates & 0x00000001);
                 RelayStates >>= 1;
             }
+        }
+        public void Monitoring(uint OutputStates, float[] AnalogInputVoltage)
+        {
+            Monitoring(OutputStates);
+            Monitoring(AnalogInputVoltage);
         }
         public bool NightMode
         {

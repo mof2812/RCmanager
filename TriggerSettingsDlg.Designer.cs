@@ -60,7 +60,6 @@
             // 
             this.Trigger1Settings.Location = new System.Drawing.Point(13, 13);
             this.Trigger1Settings.Name = "Trigger1Settings";
-            this.Trigger1Settings.ReTrigger = false;
             this.Trigger1Settings.Size = new System.Drawing.Size(641, 234);
             this.Trigger1Settings.TabIndex = 2;
             this.Trigger1Settings.TriggerEnable = false;
@@ -71,7 +70,6 @@
             // 
             this.Trigger3Settings.Location = new System.Drawing.Point(13, 241);
             this.Trigger3Settings.Name = "Trigger3Settings";
-            this.Trigger3Settings.ReTrigger = false;
             this.Trigger3Settings.Size = new System.Drawing.Size(641, 234);
             this.Trigger3Settings.TabIndex = 3;
             this.Trigger3Settings.TriggerEnable = false;
@@ -82,7 +80,6 @@
             // 
             this.Trigger4Settings.Location = new System.Drawing.Point(657, 241);
             this.Trigger4Settings.Name = "Trigger4Settings";
-            this.Trigger4Settings.ReTrigger = false;
             this.Trigger4Settings.Size = new System.Drawing.Size(641, 234);
             this.Trigger4Settings.TabIndex = 5;
             this.Trigger4Settings.TriggerEnable = false;
@@ -93,7 +90,6 @@
             // 
             this.Trigger2Settings.Location = new System.Drawing.Point(657, 13);
             this.Trigger2Settings.Name = "Trigger2Settings";
-            this.Trigger2Settings.ReTrigger = false;
             this.Trigger2Settings.Size = new System.Drawing.Size(641, 234);
             this.Trigger2Settings.TabIndex = 4;
             this.Trigger2Settings.TriggerEnable = false;

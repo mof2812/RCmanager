@@ -518,12 +518,14 @@ namespace Relay
 
             chartRelay.ChartAreas[0].AxisX.LineColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
             chartRelay.ChartAreas[0].AxisY.LineColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
+            chartRelay.ChartAreas[0].AxisY2.LineColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
             chartRelay.ChartAreas[0].AxisX.TitleForeColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
             chartRelay.ChartAreas[0].AxisX2.TitleForeColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
             chartRelay.ChartAreas[0].AxisY.TitleForeColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
             chartRelay.ChartAreas[0].AxisY2.TitleForeColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
             chartRelay.ChartAreas[0].AxisX.LabelStyle.ForeColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
             chartRelay.ChartAreas[0].AxisY.LabelStyle.ForeColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
+            chartRelay.ChartAreas[0].AxisY2.LabelStyle.ForeColor = Params.NightMode ? MySetup.settings.ChartTColor_NM : MySetup.settings.ChartTColor;
         }
         private RETURN_T Init_Settings()
         {
@@ -800,6 +802,24 @@ namespace Relay
             SetSettings();
             Draw();
         }
+        private void ledTriggerMode_MouseClick(object sender, MouseEventArgs e)
+        {
+            SetParameterRelayEventArgs Args = new SetParameterRelayEventArgs();
+
+            ledTriggerMode.On = Settings.Triggering = !Settings.Triggering;
+
+            /* Send Message to parent */
+            ChannelToModule(Params.Channel, ref Args);
+            Args.Parameter = RCmanager.WHICH_PARAMETER_T.TRIGGER;
+            Args.Mode = ledTriggerMode.On ? MODE_T.ON : MODE_T.OFF;
+            Args.Settings = Settings;
+
+            OnSetParmeterRelay(Args);
+
+            SetSettings();
+            Draw();
+
+        }
 
         private void chartRelay_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -830,24 +850,6 @@ namespace Relay
             OnOpenTriggerSettingsDlg(Args);
         }
 
-        private void ledTriggerMode_MouseClick(object sender, MouseEventArgs e)
-        {
-            SetParameterRelayEventArgs Args = new SetParameterRelayEventArgs();
-
-            ledTriggerMode.On = Settings.Triggering = !Settings.Triggering;
-
-            /* Send Message to parent */
-            ChannelToModule(Params.Channel, ref Args);
-            Args.Parameter = RCmanager.WHICH_PARAMETER_T.TRIGGER;
-            Args.Mode = ledTriggerMode.On ? MODE_T.ON : MODE_T.OFF;
-            Args.Settings = Settings;
-
-            OnSetParmeterRelay(Args);
-
-            SetSettings();
-            Draw();
-
-        }
     }
     public class SetParameterRelayEventArgs : EventArgs
     {
