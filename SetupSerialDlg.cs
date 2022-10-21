@@ -242,11 +242,6 @@ namespace SerialCommunication
             Init_TaskTiming();
             Init_Apperance();
         }
-        //private void Init_Defaults()
-        //{
-        //    RCmanager.Properties.SerialSettings.Default.TimeoutGetData_ms = 500;
-        //    RCmanager.Properties.SerialSettings.Default.MaxReplies = 3;
-        //}
         private bool Init_Apperance()
         {
             bool Error;

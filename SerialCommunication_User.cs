@@ -63,6 +63,7 @@ namespace SerialCommunication
                     break;
                 case ACTION_T.GET_CONFIG:
                 case ACTION_T.GET_TRIGGER_CONFIG:
+                case ACTION_T.GET_VERSION:
                     WaitFor = RECEIVE_WAIT_FOR_T.DATA;
                     break;
                 case ACTION_T.GET_OUTPUT_STATES:
@@ -125,6 +126,11 @@ namespace SerialCommunication
                     Frame = Channel == 0 ? $"GSTATES" : "";
                     break;
                 #endregion /* GET_OUTPUT_STATES */
+                #region ACTION_T.GET_VERSION
+                case ACTION_T.GET_VERSION:
+                    Frame = Channel == 0 ? $"VERSION" : "";
+                    break;
+                #endregion /* ACTION_T.GET_VERSION */
                 #region ACTION_T.SET_ASYNCHRONOUS_MODE
                 case ACTION_T.SET_ASYNCHRONOUS_MODE:
                     if (Params.ParameterExecuting[1].Length > 0)

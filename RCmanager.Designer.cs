@@ -37,9 +37,9 @@
             this.tabSheetPowerSupply = new System.Windows.Forms.TabPage();
             this.relayCardPowerSupply = new RelayCard.RelayCard();
             this.tabMonitoring1 = new System.Windows.Forms.TabPage();
-            this.relayCardMonitoring = new RelayCardMonitoring.RelayCardMonitoring();
+            this.relayCardMonitoring = new Monitoring.Monitoring();
             this.tabMonitoring2 = new System.Windows.Forms.TabPage();
-            this.relayCardUserMonitoring = new RelayCardUserMonitoring.RelayCardUserMonitoring();
+            this.relayCardUserMonitoring = new UserMonitoring.UserMonitoring();
             this.ProjectInfos = new System.Windows.Forms.TabPage();
             this.lblProjectInfos = new System.Windows.Forms.Label();
             this.menuMain = new System.Windows.Forms.MenuStrip();
@@ -59,6 +59,9 @@
             this.serialCommunication = new SerialCommunication.SerialCommunication(this.components);
             this.projectSettings = new ProjectSettings.ProjectSettings(this.components);
             this.StatusLine = new System.Windows.Forms.Label();
+            this.lblConnected = new System.Windows.Forms.Label();
+            this.ledConnected = new Bulb.LedBulb();
+            this.SplashScreen = new System.Windows.Forms.PictureBox();
             this.tabRelayCard.SuspendLayout();
             this.tabSheetSwitchingCard.SuspendLayout();
             this.tabSheetPowerSupply.SuspendLayout();
@@ -66,6 +69,7 @@
             this.tabMonitoring2.SuspendLayout();
             this.ProjectInfos.SuspendLayout();
             this.menuMain.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SplashScreen)).BeginInit();
             this.SuspendLayout();
             // 
             // tabRelayCard
@@ -301,6 +305,7 @@
             this.lblAllCardChannelsOff.Size = new System.Drawing.Size(213, 20);
             this.lblAllCardChannelsOff.TabIndex = 6;
             this.lblAllCardChannelsOff.Text = "Alle Schaltkanäle abschalten";
+            this.lblAllCardChannelsOff.Click += new System.EventHandler(this.ledAllCardChannelsOff_Click);
             // 
             // ledAllCardChannelsOff
             // 
@@ -335,16 +340,48 @@
             this.StatusLine.Font = new System.Drawing.Font("Microsoft Sans Serif", 8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.StatusLine.Location = new System.Drawing.Point(10, 1120);
             this.StatusLine.Name = "StatusLine";
-            this.StatusLine.Size = new System.Drawing.Size(1433, 43);
+            this.StatusLine.Size = new System.Drawing.Size(800, 43);
             this.StatusLine.TabIndex = 7;
             this.StatusLine.Text = "label1";
             this.StatusLine.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lblConnected
+            // 
+            this.lblConnected.AutoSize = true;
+            this.lblConnected.Location = new System.Drawing.Point(1285, 1130);
+            this.lblConnected.Name = "lblConnected";
+            this.lblConnected.Size = new System.Drawing.Size(84, 20);
+            this.lblConnected.TabIndex = 9;
+            this.lblConnected.Text = "verbunden";
+            this.lblConnected.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ledConnected_DoubleClick);
+            // 
+            // ledConnected
+            // 
+            this.ledConnected.Location = new System.Drawing.Point(1240, 1125);
+            this.ledConnected.Name = "ledConnected";
+            this.ledConnected.On = true;
+            this.ledConnected.Size = new System.Drawing.Size(30, 30);
+            this.ledConnected.TabIndex = 8;
+            this.ledConnected.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.ledConnected_DoubleClick);
+            // 
+            // SplashScreen
+            // 
+            this.SplashScreen.Image = ((System.Drawing.Image)(resources.GetObject("SplashScreen.Image")));
+            this.SplashScreen.Location = new System.Drawing.Point(0, 0);
+            this.SplashScreen.Name = "SplashScreen";
+            this.SplashScreen.Size = new System.Drawing.Size(1461, 1163);
+            this.SplashScreen.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.SplashScreen.TabIndex = 10;
+            this.SplashScreen.TabStop = false;
             // 
             // RCmanager
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1458, 1162);
+            this.Controls.Add(this.SplashScreen);
+            this.Controls.Add(this.lblConnected);
+            this.Controls.Add(this.ledConnected);
             this.Controls.Add(this.StatusLine);
             this.Controls.Add(this.lblAllCardChannelsOff);
             this.Controls.Add(this.ledAllCardChannelsOff);
@@ -365,6 +402,7 @@
             this.ProjectInfos.PerformLayout();
             this.menuMain.ResumeLayout(false);
             this.menuMain.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.SplashScreen)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -388,11 +426,11 @@
         private System.Windows.Forms.TabPage tabMonitoring2;
         private Bulb.LedBulb ledAllOff;
         private System.Windows.Forms.Label lblAllOff;
-        private RelayCardMonitoring.RelayCardMonitoring relayCardMonitoring;
+        private Monitoring.Monitoring relayCardMonitoring;
         private System.Windows.Forms.Label lblAllCardChannelsOff;
         private Bulb.LedBulb ledAllCardChannelsOff;
         private TriggerCard.TriggerCard triggerCard;
-        private RelayCardUserMonitoring.RelayCardUserMonitoring relayCardUserMonitoring;
+        private UserMonitoring.UserMonitoring relayCardUserMonitoring;
         private System.Windows.Forms.ToolStripMenuItem projektÖffnenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem projektSichernToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem projektSichernUnterToolStripMenuItem;
@@ -401,6 +439,9 @@
         private System.Windows.Forms.TabPage ProjectInfos;
         private System.Windows.Forms.Label lblProjectInfos;
         private System.Windows.Forms.Label StatusLine;
+        private System.Windows.Forms.Label lblConnected;
+        private Bulb.LedBulb ledConnected;
+        private System.Windows.Forms.PictureBox SplashScreen;
     }
 }
 

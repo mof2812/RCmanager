@@ -54,19 +54,37 @@ namespace TriggerSettings
             Init();
         }
         #region Methods
+        public bool EnableLevelControls
+        {
+            set
+            {
+                tbTriggerLevel.Enabled = value;
+                lblTriggerLevel.Enabled = value;
+                txtTriggerLevel.Enabled = value;
+                lblTriggerLevelUnit.Enabled = value;
+            }
+        }
         private void Init()
         {
             Initialized = false;
             DoNotUpdateText = false;
 
-            Init_TrackBar();
+            Init_Controls();
 
             Initialized = true;
         }
-
-        private void Init_TrackBar()
+        private void Init_Controls()
         {
+            bool EnableControls;
+
+            EnableControls = Params.TriggerMode == TRIGGER_MODE_T.TRIGGER_MODE_LEVEL_DOWN;
+            EnableControls |= Params.TriggerMode == TRIGGER_MODE_T.TRIGGER_MODE_LEVEL_UP;
+            EnableControls |= Params.TriggerMode == TRIGGER_MODE_T.TRIGGER_MODE_LEVEL_FALLING;
+            EnableControls |= Params.TriggerMode == TRIGGER_MODE_T.TRIGGER_MODE_LEVEL_RISING;
+
             txtTriggerLevel.Text = Convert.ToString((float)tbTriggerLevel.Value / 1000);
+
+            EnableLevelControls = EnableControls;
         }
         public PARAMS_T Parameter
         {
@@ -147,6 +165,8 @@ namespace TriggerSettings
         private void cbTriggerMode_SelectedIndexChanged(object sender, EventArgs e)
         {
             Params.TriggerMode = (TRIGGER_MODE_T)cbTriggerMode.SelectedIndex;
+
+            Init_Controls();
         }
 
         private void txtTriggerLevel_TextChanged(object sender, EventArgs e)

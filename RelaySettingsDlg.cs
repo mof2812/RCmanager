@@ -44,9 +44,7 @@ namespace RCmanager
 
             this.Settings = Settings;
 
-            Init_ListBox();
-
-            //Init_RadioButtons();
+            Init_Controls();
 
             SetData();
         }
@@ -64,9 +62,55 @@ namespace RCmanager
             }
 
         }
+        private void Enable_Controls()
+        {
+            switch (cbMode.Text)
+            {
+                case "Toggle":
+                    txtCounter.Enabled = lblCounter.Enabled = false;
+                    txtDelay_ms.Enabled = lblDelay_ms.Enabled = true;
+                    txtOn_ms.Enabled = lblOn_ms.Enabled = true;
+                    txtOff_ms.Enabled = lblOff_ms.Enabled = true;
+                    grpSwImmediate1.Enabled = true;
+                    grpSwSync1.Enabled = true;
+                    grpSwTrigger.Enabled = true;
+                    break;
+
+                case "Aus":
+                case "Ein":
+                    txtCounter.Enabled = lblCounter.Enabled = false;
+                    txtDelay_ms.Enabled = lblDelay_ms.Enabled = false;
+                    txtOn_ms.Enabled = lblOn_ms.Enabled = false;
+                    txtOff_ms.Enabled = lblOff_ms.Enabled = false;
+                    grpSwImmediate1.Enabled = false;
+                    grpSwSync1.Enabled = false;
+                    grpSwTrigger.Enabled = true;
+                    break;
+
+                default: /* "Impulse" */
+                    txtCounter.Enabled = lblCounter.Enabled = true;
+                    txtDelay_ms.Enabled = lblDelay_ms.Enabled = true;
+                    txtOn_ms.Enabled = lblOn_ms.Enabled = true;
+                    txtOff_ms.Enabled = lblOff_ms.Enabled = true;
+                    grpSwImmediate1.Enabled = true;
+                    grpSwSync1.Enabled = true;
+                    grpSwTrigger.Enabled = true;
+                    break;
+            }
+        }
         private void Init_ColorButton()
         {
             btnColor.BackColor = Settings.ChartLColor;
+        }
+        private void Init_Controls()
+        {
+            Init_ListBox();
+            Init_RadioButtons();
+            Init_ColorButton();
+
+            Enable_Controls();
+
+            grpSignalName.Enabled = Settings.SignalNameEditable;
         }
         private void Init_ListBox()
         {
@@ -121,9 +165,7 @@ namespace RCmanager
 
             Update_ListBox();
 
-            Init_RadioButtons();
-
-            Init_ColorButton();
+            Init_Controls();
         }
 
         private void btnCancel_Click(object sender, EventArgs e)
@@ -376,11 +418,11 @@ namespace RCmanager
                 Args.Settings = Settings;
                 OnSetParmeter(Args);
 
+                Enable_Controls();
+
                 RefText = cbMode.Text;
             }
         }
-
-
         #endregion
         #region txtCounter_XXX
         private void txtCounter_Enter(object sender, EventArgs e)

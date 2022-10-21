@@ -28,6 +28,7 @@ namespace Relay
         public TRIGGERMODE_T TriggerMode;
         public bool Triggering;
         public UInt16 TriggerChannel;
+        public bool SignalNameEditable;
         /* Add data */
         public Color ChartLColor;
         //public Color ChartBColor;
@@ -82,6 +83,19 @@ namespace Relay
         public event EventHandler<SetParameterRelayEventArgs> SetParameterRelay;
         public event EventHandler<OpenRelaySettingsDlgEventArgs> OpenRelaySettingsDlg;
         public event EventHandler<OpenTriggerSettingsDlgEventArgs> OpenTriggerSettingsDlg;
+
+        public bool SignalNameEditable
+        {
+            get
+            { 
+                return Settings.SignalNameEditable; 
+            }
+            set 
+            {
+                Settings.SignalNameEditable = value; 
+            }
+
+        }
 
         #region Members
         private PARAMS_T Params;
@@ -234,6 +248,8 @@ namespace Relay
         public Relay()
         {
             InitializeComponent();
+
+            SignalNameEditable = true;
         }
         #endregion
         #region Methods
@@ -448,7 +464,8 @@ namespace Relay
         }
         public string GetSignalName()
         {
-            return Settings.SignalLabel = chartRelay.Series[0].Name;
+            //return Settings.SignalLabel = chartRelay.Series[0].Name;
+            return chartRelay.Series[0].Name = Settings.SignalLabel;
         }
         public RETURN_T Init(byte Channel, bool NightMode)
         {
@@ -465,6 +482,8 @@ namespace Relay
             Settings.ChartLColor = !Params.NightMode ? MySetup.settings.ChartLColor : MySetup.settings.ChartLColor_NM;
 
             Return = Init_Chart();
+
+            Enable_Controls();
 
             return Return;
         }
@@ -656,6 +675,7 @@ namespace Relay
             ledEnable.On = Settings.Enabled;
             ledInvertingMode.On = Settings.InvertedMode;
             ledTriggerMode.On = Settings.Triggering;
+            Enable_Controls();
 
             if (ledTriggerMode.On)
             {
@@ -665,6 +685,11 @@ namespace Relay
             {
                 lblTriggerMode.Text = $"Triggerung";
             }
+        }
+        public void SetSignalName(string SignalName)
+        {
+            MySetup.settings.SignalLabel = Settings.SignalLabel = SignalName;
+            MySetup.Save();
         }
         public SETTINGS_T settings
         {
@@ -707,6 +732,24 @@ namespace Relay
             }
 
             return Mode;
+        }
+        private void Enable_Controls()
+        {
+            switch (Settings.Mode)
+            {
+                case MODE_T.TOGGLE:
+                    ledTriggerMode.Visible = lblTriggerMode.Visible = true;
+                    break;
+
+                case MODE_T.OFF:
+                case MODE_T.ON:
+                    ledTriggerMode.Visible = lblTriggerMode.Visible = true;
+                    break;
+
+                default: /* MODE_T.IMPULSE */
+                    ledTriggerMode.Enabled = lblTriggerMode.Visible = true;
+                    break;
+            }
         }
         private RETURN_T FctTemplate()
         {

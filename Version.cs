@@ -13,10 +13,23 @@ namespace Version
     public partial class Version : Form
     {
         private string application = "RCmanager";
-        private string SWVersion = "V2.010 - 18.10.2022";
+        private string SWVersion = "V2.012 - 21.10.2022";
+        private string SWVersion_RelayCard = "";
         public string SW_Version
         {
             get { return SWVersion; }
+        }
+        public string SW_Version_RelayCard
+        {
+            get 
+            {
+                return SWVersion_RelayCard; 
+            }
+            set
+            {
+                SWVersion_RelayCard = value;
+                lblVersionRelayCard.Text = "Relay card: " + SW_Version_RelayCard;
+            }
         }
         public string Application
         {

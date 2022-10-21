@@ -7,6 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO.Ports;
+using static SerialCommunication.SerialCommunication;
+using System.Reflection;
+using RCmanager.Properties;
 
 namespace SerialCommunication
 {
@@ -21,6 +24,8 @@ namespace SerialCommunication
     #endregion
     public partial class SerialCommunication : Component
     {
+        uint Counter = 0;
+
         #region Structs and Enums
         public enum STATE_T
         {
@@ -51,6 +56,7 @@ namespace SerialCommunication
             TEXT_INSTEAD_OF_NUMBER,
             OKAY,
             ERROR,
+            TOO_MUCH_REPLIES,
             NO_RESPONSE,
         }
         public struct COM_BUFFER_T
@@ -69,6 +75,7 @@ namespace SerialCommunication
             public ACTION_T ActionExecuting;
             public string[] ParameterExecuting;
             public string ReceivedData;
+            public RECEIVE_RETURN_T Error;
         }
         public struct RECEIVE_DATA_T
         {
@@ -80,8 +87,11 @@ namespace SerialCommunication
             public byte RepliesLeft;
         }
         #endregion
-        #region Members
+        #region EventHandler
         public event EventHandler<FrameReceivedEventArgs> FrameReceived;
+        public event EventHandler<ComErrorOccuredEventArgs> ComErrorOccured;
+        #endregion
+        #region Members
         private SetupSerialDlg SetupSerialDlg = new SetupSerialDlg();
         private PARAMS_T Params;
         private RECEIVE_DATA_T ReceiveData;
@@ -197,7 +207,7 @@ namespace SerialCommunication
                     case STATE_T.INIT:
                         Params.State = STATE_T.IDLE;
                         StayInLoop = true;
-                        ReceiveData.RepliesLeft = 5;
+                        ReceiveData.RepliesLeft = SerialSettings.Default.MaxReplies;
                         break;
 
                     case STATE_T.IDLE:
@@ -232,6 +242,8 @@ namespace SerialCommunication
                         break;
 
                     case STATE_T.SEND:
+                        Params.Error = RECEIVE_RETURN_T.OKAY;
+
                         if (CommunicationTask_Send(Params))
                         {
                             // Error
@@ -241,6 +253,7 @@ namespace SerialCommunication
                             }
                             else
                             {
+                                Params.Error = RECEIVE_RETURN_T.TOO_MUCH_REPLIES;
                                 Params.State = STATE_T.ERROR;
                             }
                         }
@@ -260,21 +273,47 @@ namespace SerialCommunication
 
                         Callback = CommunicationTask_Receive(Params);
 
-                        if (Callback == RECEIVE_RETURN_T.OKAY)
+                        switch (Callback)
                         {
-                            Params.State = STATE_T.EVALUATE;
+                            case RECEIVE_RETURN_T.OKAY:
+                                Params.State = STATE_T.EVALUATE;
+                                break;
+
+                            case RECEIVE_RETURN_T.BUSY:
+                                break;
+                            default:
+                                if (ReceiveData.RepliesLeft-- > 0)
+                                {
+                                    Params.State = STATE_T.SEND;
+                                }
+                                else
+                                {
+                                    Params.Error = RECEIVE_RETURN_T.TOO_MUCH_REPLIES;
+                                    Params.State = STATE_T.ERROR;
+                                }
+                                break;
+
+                            //default:    /* Misc errors */
+                            //    Params.Error = Callback;
+                            //    Params.State = STATE_T.ERROR;
+                            //    break;
                         }
-                        else if (Callback != RECEIVE_RETURN_T.BUSY)
-                        {
-                            if (ReceiveData.RepliesLeft-- > 0)
-                            {
-                                Params.State = STATE_T.SEND;
-                            }
-                            else
-                            {
-                                Params.State = STATE_T.ERROR;
-                            }
-                        }
+
+                        //if (Callback == RECEIVE_RETURN_T.OKAY)
+                        //{
+                        //    Params.State = STATE_T.EVALUATE;
+                        //}
+                        //else if (Callback != RECEIVE_RETURN_T.BUSY)
+                        //{
+                        //    if (ReceiveData.RepliesLeft-- > 0)
+                        //    {
+                        //        Params.State = STATE_T.SEND;
+                        //    }
+                        //    else
+                        //    {
+                        //        Params.State = STATE_T.ERROR;
+                        //    }
+                        //}
                         break;
 
                     case STATE_T.EVALUATE:
@@ -297,6 +336,11 @@ namespace SerialCommunication
                         break;
 
                     case STATE_T.ERROR:
+                        ComErrorOccuredEventArgs Args = new ComErrorOccuredEventArgs();
+
+                        Args.Error = RECEIVE_RETURN_T.ERROR;
+                        OnComErrorOccured(Args);
+                        
                         Params.State = STATE_T.INIT;
                         break;
 
@@ -304,7 +348,7 @@ namespace SerialCommunication
                         NewData = true;
                         Params.State = STATE_T.IDLE;
 
-                        ReceiveData.RepliesLeft = 5;
+                        ReceiveData.RepliesLeft = SerialSettings.Default.MaxReplies;
                         break;
 
                     case STATE_T.NEW_DATA:
@@ -630,13 +674,15 @@ namespace SerialCommunication
             Error = false;
             Frame = Send(Params);
 
+            Timeout.Start();
+
             if (ComPort.IsOpen)
             {
                 if (!Error)
                 {
                     // Clear input buffer
                     CommunicationTask_ClearBuffers();
-
+Counter++;
                     Write(Frame);
                 }
             }
@@ -847,6 +893,11 @@ namespace SerialCommunication
                     ComBufferContinous.Parameter[Index, SubIndex] = "";
                 }
             }
+        }
+        protected virtual void OnComErrorOccured(ComErrorOccuredEventArgs e)
+        {
+            EventHandler<ComErrorOccuredEventArgs> handler = ComErrorOccured;
+            handler?.Invoke(this, e);
         }
         protected virtual void OnFrameReceived(FrameReceivedEventArgs e)
         {
@@ -1102,10 +1153,14 @@ namespace SerialCommunication
     {
         public SerialCommunication.PARAMS_T Parameter { get; set; }
     }
+    public class ComErrorOccuredEventArgs : EventArgs
+    {
+        public RECEIVE_RETURN_T Error { get; set; }
+    }
     static class Constants
     {
-        public const uint INITCODE =                0x55AA55A0;
+        public const uint INITCODE =                0x55AA55AA;
         public const byte ACTIONLIST_PARAMETERS =   5;
-        public const int ACTIONLIST_SIZE =          20;
+        public const int ACTIONLIST_SIZE =          32;
     }
 }

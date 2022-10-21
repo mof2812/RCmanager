@@ -32,6 +32,7 @@
             this.lblVersion = new System.Windows.Forms.Label();
             this.lblAuthor = new System.Windows.Forms.Label();
             this.lblApplication = new System.Windows.Forms.Label();
+            this.lblVersionRelayCard = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lblVersion
@@ -39,9 +40,9 @@
             this.lblVersion.BackColor = System.Drawing.Color.Transparent;
             this.lblVersion.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblVersion.ForeColor = System.Drawing.Color.White;
-            this.lblVersion.Location = new System.Drawing.Point(201, 290);
+            this.lblVersion.Location = new System.Drawing.Point(201, 255);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(285, 29);
+            this.lblVersion.Size = new System.Drawing.Size(285, 44);
             this.lblVersion.TabIndex = 5;
             this.lblVersion.Text = "Version";
             this.lblVersion.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -72,12 +73,25 @@
             this.lblApplication.Text = "RCmanager";
             this.lblApplication.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // lblVersionRelayCard
+            // 
+            this.lblVersionRelayCard.BackColor = System.Drawing.Color.Transparent;
+            this.lblVersionRelayCard.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblVersionRelayCard.ForeColor = System.Drawing.Color.White;
+            this.lblVersionRelayCard.Location = new System.Drawing.Point(16, 328);
+            this.lblVersionRelayCard.Name = "lblVersionRelayCard";
+            this.lblVersionRelayCard.Size = new System.Drawing.Size(654, 29);
+            this.lblVersionRelayCard.TabIndex = 6;
+            this.lblVersionRelayCard.Text = " Version \'RelayCard\'";
+            this.lblVersionRelayCard.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Version
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("$this.BackgroundImage")));
             this.ClientSize = new System.Drawing.Size(678, 364);
+            this.Controls.Add(this.lblVersionRelayCard);
             this.Controls.Add(this.lblVersion);
             this.Controls.Add(this.lblAuthor);
             this.Controls.Add(this.lblApplication);
@@ -94,5 +108,6 @@
         private System.Windows.Forms.Label lblVersion;
         private System.Windows.Forms.Label lblAuthor;
         private System.Windows.Forms.Label lblApplication;
+        private System.Windows.Forms.Label lblVersionRelayCard;
     }
 }

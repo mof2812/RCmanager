@@ -1,6 +1,6 @@
 ﻿using ProjectSettings;
 using RelayCard;
-using RelayCardMonitoring;
+using Monitoring;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -35,12 +35,15 @@ namespace RCmanager
             public double MinChartXRange_ms;
             //public Relay.PARAMS_T[] RelayParams;
             public Trigger.PARAMS_T[] TriggerParams;
+            public bool RelayCardConnected;
             //public TriggerSettings.PARAMS_T[] TriggerSettings;
         }
 
         #region Members
         private bool Initialized = false;
         private PARAMS_T Params;
+        private bool StartupPhase;
+        private Version.Version About = new Version.Version();
         #endregion
         #region Properties
         #endregion
@@ -53,6 +56,11 @@ namespace RCmanager
         }
         #endregion
         #region Methods
+
+        private void ComErrorOccured(object sender, SerialCommunication.ComErrorOccuredEventArgs e)
+        {
+            RelayCardConnected = false;
+        }
         public RETURN_T EvaluateOutputStates(string ReceivedData, ref uint OutputStates, ref float[] AnalogInputVoltage)
         {
             RETURN_T Return;
@@ -164,6 +172,7 @@ namespace RCmanager
 
                     case 12:
                         GetSignalName(Module, Channel);
+                        GetSignalNameEditableFlag(Module, Channel);
                         GetSignalColor(Module, Channel);
                         break;
 
@@ -195,8 +204,6 @@ namespace RCmanager
         public RETURN_T EvaluateTriggerConfigurationString(byte TriggerChannel, string ConfigurationString)
         {
             RETURN_T Return;
-            //TriggerSettings.PARAMS_T TriggerParams;
-            //TriggerSettings.TriggerSettings triggerSettings = new TriggerSettings.TriggerSettings();
             int Pos;
 
             Return = RETURN_T.OKAY;
@@ -229,6 +236,16 @@ namespace RCmanager
             }
 
 
+
+            return Return;
+        }
+        private RETURN_T EvaluateVersionString(string VersionString)
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+
+            About.SW_Version_RelayCard = VersionString;
 
             return Return;
         }
@@ -299,35 +316,34 @@ namespace RCmanager
 
             return Return;
         }
-        private RETURN_T GetSignalName(byte Channel, ref string SignalName)
-        {
-            RETURN_T Return;
-            byte Module;
-            byte RelayChannel;
+        //private RETURN_T GetSignalName(byte Channel, ref string SignalName)
+        //{
+        //    RETURN_T Return;
+        //    byte Module;
+        //    byte RelayChannel;
 
-            Return = RETURN_T.OKAY;
-            SignalName = "";
-            Module = (byte)(Channel / Constants.CHANNELS);
-            RelayChannel = (byte)(Channel % Constants.CHANNELS);
+        //    Return = RETURN_T.OKAY;
+        //    SignalName = "";
+        //    Module = (byte)(Channel / Constants.CHANNELS);
+        //    RelayChannel = (byte)(Channel % Constants.CHANNELS);
 
-            switch (Module)
-            {
-                case 0:
-                    Return = (RETURN_T)relayCard.GetSignalName(RelayChannel, ref SignalName);
-                    break;
+        //    switch (Module)
+        //    {
+        //        case 0:
+        //            Return = (RETURN_T)relayCard.GetSignalName(RelayChannel, ref SignalName);
+        //            break;
 
-                case 1:
-                    Return = (RETURN_T)relayCardPowerSupply.GetSignalName(RelayChannel, ref SignalName);
-                    break;
+        //        case 1:
+        //            Return = (RETURN_T)relayCardPowerSupply.GetSignalName(RelayChannel, ref SignalName);
+        //            break;
 
-                default:
-                    Return = RETURN_T.INVALIDE_CHANNEL;
-                    break;
-            }
+        //        default:
+        //            Return = RETURN_T.INVALIDE_CHANNEL;
+        //            break;
+        //    }
 
-            return Return;
-        }
-
+        //    return Return;
+        //}
         private RETURN_T GetSignalColor(byte Module, byte Channel)
         {
             RETURN_T Return;
@@ -359,14 +375,42 @@ namespace RCmanager
 
             projectSettings.settings.RelaySettings[Module, Channel].SignalLabel = "";
 
+            if (true)//MOF projectSettings.settings.RelaySettings[Module, Channel].SignalNameEditable)
+            {
+                switch (Module)
+                {
+                    case 0:
+                        Return = (RETURN_T)relayCard.GetSignalName(Channel, ref projectSettings.settings.RelaySettings[Module, Channel].SignalLabel);
+                        break;
+
+                    case 1:
+                        Return = (RETURN_T)relayCardPowerSupply.GetSignalName(Channel, ref projectSettings.settings.RelaySettings[Module, Channel].SignalLabel);
+                        break;
+
+                    default:
+                        Return = RETURN_T.INVALIDE_CHANNEL;
+                        break;
+                }
+            }
+
+            return Return;
+        }
+        private RETURN_T GetSignalNameEditableFlag(byte Module, byte Channel)
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+
+            projectSettings.settings.RelaySettings[Module, Channel].SignalNameEditable = false;
+
             switch (Module)
             {
                 case 0:
-                    Return = (RETURN_T)relayCard.GetSignalName(Channel, ref projectSettings.settings.RelaySettings[Module, Channel].SignalLabel);
+                    Return = (RETURN_T)relayCard.GetSignalNameEditableFlag(Channel, ref projectSettings.settings.RelaySettings[Module, Channel].SignalNameEditable);
                     break;
 
                 case 1:
-                    Return = (RETURN_T)relayCardPowerSupply.GetSignalName(Channel, ref projectSettings.settings.RelaySettings[Module, Channel].SignalLabel);
+                    Return = (RETURN_T)relayCardPowerSupply.GetSignalNameEditableFlag(Channel, ref projectSettings.settings.RelaySettings[Module, Channel].SignalNameEditable);
                     break;
 
                 default:
@@ -445,13 +489,18 @@ namespace RCmanager
         {
             RETURN_T Return;
             Version.Version Version = new Version.Version();
-
+            
             Return = RETURN_T.INITIALIZE_ERROR;
 
-//            Header = "Kein Projekt geladen";
+            StartupPhase = true;
+            this.Cursor = Cursors.WaitCursor;
+
             Header = "";
 
             Params.TriggerParams = new Trigger.PARAMS_T[Constants.IRQ_IOS];
+
+            RelayCardConnected = false;
+            SplashScreen.Visible = true;
 
             Return = Init_Settings();
 
@@ -480,6 +529,9 @@ namespace RCmanager
                 StatusLine.Text = $"{Properties.SerialSettings.Default.SerialPort}: {Properties.SerialSettings.Default.Baudrate}, None, {Properties.SerialSettings.Default.Databits}, {StopbitsToDecimal()}";
                 // Init the monitoring routines
                 Init_Monitoring();
+                // Get the software version of the relay card
+                serialCommunication.SetAction(SerialCommunication.ACTION_T.GET_VERSION, false);
+
                 // Get the configuration of all relays
                 GetConfig(255);
 
@@ -504,12 +556,15 @@ namespace RCmanager
 
             Return = RETURN_T.OKAY;
 
+            Params.RelayCardConnected = false;
+
             serialCommunication.Init_Communication();
 
             serialCommunication.SetAction(SerialCommunication.ACTION_T.GET_OUTPUT_STATES, true);
 
             // AddEvents
             serialCommunication.FrameReceived += FrameReceived;
+            serialCommunication.ComErrorOccured += ComErrorOccured;
             serialCommunication.SetConfig += SetConfig;
 
             return Return;
@@ -575,7 +630,10 @@ namespace RCmanager
                 relayCardMonitoring.GetTriggerMonitoring(TriggerChannel).TriggerLevel = projectSettings.settings.TriggerSettings[TriggerChannel].TriggerLevel;
             }
 
-            
+            this.Cursor = Cursors.Default;
+            SplashScreen.Visible = false;
+
+            StartupPhase = false;
 
             return Return;
         }
@@ -705,6 +763,9 @@ namespace RCmanager
             StatusLine.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
             StatusLine.ForeColor = !Set ? Properties.Settings.Default.TextColor : Properties.Settings.Default.TextColor_NM;
 
+            lblConnected.BackColor = !Set ? Properties.Settings.Default.BackColor : Properties.Settings.Default.BackColor_NM;
+            lblConnected.ForeColor = !Set ? Properties.Settings.Default.TextColor : Properties.Settings.Default.TextColor_NM;
+
             relayCard.NightMode(Set);
             relayCardPowerSupply.NightMode(Set);
             relayCardMonitoring.NightMode = Set;
@@ -721,6 +782,32 @@ namespace RCmanager
                     Card.GetSignalColor(Channel, ref projectSettings.settings.RelaySettings[Module, Channel].ChartLColor);
                 }
             }
+        }
+        private RETURN_T ReInit_Communication()
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+
+            Params.RelayCardConnected = false;
+
+            this.Cursor = Cursors.WaitCursor;
+
+            serialCommunication.Init_Communication();
+
+            // Get the software version of the relay card
+            serialCommunication.SetAction(SerialCommunication.ACTION_T.GET_VERSION, false);
+
+            // Get the configuration of all relays
+            GetConfig(255);
+
+            // Get the configuration of all triggers
+            GetTriggerConfig(255);
+
+            // Get output states
+            serialCommunication.SetAction(SerialCommunication.ACTION_T.GET_OUTPUT_STATES, true);
+
+            return Return;
         }
         public RETURN_T SetAxisLimit(byte Channel, Relay.AXIS_SELECT_T Axis, double Limit, bool Minimum)
         {
@@ -852,7 +939,7 @@ namespace RCmanager
                     EvaluateOutputStates(e.Parameter.ReceivedData, ref OutputStates, ref AnalogInputVoltage);
 
                     //relayCardMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
-                    relayCardMonitoring.Monitoring(OutputStates, AnalogInputVoltage);
+                    relayCardMonitoring.RelayMonitoring(OutputStates, AnalogInputVoltage);
                     //relayCardUserMonitoring.Monitoring(Convert.ToUInt32(e.Parameter.ReceivedData));
                     relayCardUserMonitoring.Monitoring(OutputStates, AnalogInputVoltage);
                     break;
@@ -868,9 +955,19 @@ namespace RCmanager
                     }
                     break;
 
+                case SerialCommunication.ACTION_T.GET_VERSION:
+                    //Module = (byte)(Convert.ToInt32(e.Parameter.ParameterExecuting[0]) / 8);
+                    //Channel = (byte)(Convert.ToInt32(e.Parameter.ParameterExecuting[0]) % 8);
+
+                    EvaluateVersionString(e.Parameter.ReceivedData);
+                    break;
+
                 default:
                     break;
             }
+
+            RelayCardConnected = true;
+
         }
         private void menuMainSettingsSerialInterface_Click(object sender, EventArgs e)
         {
@@ -1096,20 +1193,57 @@ namespace RCmanager
         }
         private void MenuAbout_Click(object sender, EventArgs e)
         {
-            Version.Version Dlg = new Version.Version();
-
-            Dlg.ShowDialog();
+            About.ShowDialog();
         }
-        #endregion
-
         private void tabProjectInfo_Enter(object sender, EventArgs e)
         {
             lblProjectInfos.Text = projectSettings.settings.Info;
+        }
+        public bool RelayCardConnected
+        {
+            get
+            {
+                return Params.RelayCardConnected;
+
+            }
+            set
+            {
+                Params.RelayCardConnected = value;
+
+                if (value == false)
+                {
+                    lblConnected.Text = "Verbindung getrennt";
+                    ledConnected.Color = Color.Red;
+
+                    serialCommunication.Init_Communication();
+
+                    this.Cursor = Cursors.Default;
+                    SplashScreen.Visible = false;
+                }
+                else
+                {
+                    lblConnected.Text = "Verbindung okay";
+                    ledConnected.Color = Color.LightGreen;
+                }
+            }
         }
         private void relayCardMonitoring_Load(object sender, EventArgs e)
         {
             relayCardMonitoring.SetSignalNames(projectSettings.settings.RelaySettings);
         }
+        private void ledConnected_DoubleClick(object sender, EventArgs e)
+        {
+            if (!RelayCardConnected)
+            {
+                ReInit_Communication();
+            }
+            else
+            {
+                RelayCardConnected = false;
+            }
+            
+        }
+        #endregion
     }
     static class Constants
     {
@@ -1117,5 +1251,23 @@ namespace RCmanager
         public const byte MODULES = 2;          // Number of relaycards  
         public const byte CHANNELS = 8;         // Number of relays on one relaycard
         public const byte IRQ_IOS = 4;          // Number of interrupt IOs
+        public const bool FIXED_SIGNALNAMES_ON_MODULE_0 = false; // The signalnames are not editable of the switching module
+        public const bool FIXED_SIGNALNAMES_ON_MODULE_1 = true; // The signalnames are not editable of the powersupply module
+        public const string FIXED_SIGNALNAME_1_ON_MODULE_0 = "Relais 1";
+        public const string FIXED_SIGNALNAME_2_ON_MODULE_0 = "Relais 2";
+        public const string FIXED_SIGNALNAME_3_ON_MODULE_0 = "Relais 3";
+        public const string FIXED_SIGNALNAME_4_ON_MODULE_0 = "Relais 4";
+        public const string FIXED_SIGNALNAME_5_ON_MODULE_0 = "Relais 5";
+        public const string FIXED_SIGNALNAME_6_ON_MODULE_0 = "Relais 6";
+        public const string FIXED_SIGNALNAME_7_ON_MODULE_0 = "Relais 7";
+        public const string FIXED_SIGNALNAME_8_ON_MODULE_0 = "Relais 8";
+        public const string FIXED_SIGNALNAME_1_ON_MODULE_1 = "VCC 3.3V";
+        public const string FIXED_SIGNALNAME_2_ON_MODULE_1 = "VCC 5V";
+        public const string FIXED_SIGNALNAME_3_ON_MODULE_1 = "VCC 12V";
+        public const string FIXED_SIGNALNAME_4_ON_MODULE_1 = "VCC -12V";
+        public const string FIXED_SIGNALNAME_5_ON_MODULE_1 = "frei";
+        public const string FIXED_SIGNALNAME_6_ON_MODULE_1 = "frei";
+        public const string FIXED_SIGNALNAME_7_ON_MODULE_1 = "frei";
+        public const string FIXED_SIGNALNAME_8_ON_MODULE_1 = "frei";
     }
 }

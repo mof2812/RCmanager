@@ -176,6 +176,24 @@ namespace RelayCard
 
             return Return;
         }
+        public RETURN_T GetSignalNameEditableFlag(byte Channel, ref bool Editable)
+        {
+            RETURN_T Return;
+
+            Return = RETURN_T.OKAY;
+            Editable = false;
+
+            if (Channel < RCmanager.Constants.CHANNELS)
+            {
+                Editable = GetRelay(Channel).SignalNameEditable;
+            }
+            else
+            {
+                Return = RETURN_T.INVALIDE_CHANNEL;
+            }
+
+            return Return;
+        }
         public RETURN_T Init(byte Module, bool NightMode)
         {
             RETURN_T Return;
@@ -198,20 +216,150 @@ namespace RelayCard
 
             if ((RETURN_T)relayCH1.Init(Channel++, NightMode) == RETURN_T.OKAY)
             {
+                if (Params.Module == 0)
+                {
+                    relayCH1.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_0;
+                    if (!relayCH1.SignalNameEditable)
+                    {
+                        GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_1_ON_MODULE_0);
+                    }
+                }
+                if (Params.Module == 1)
+                {
+                    relayCH1.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_1;
+                    if (!relayCH1.SignalNameEditable)
+                    {
+                        GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_1_ON_MODULE_1);
+                    }
+                }
+
                 if ((RETURN_T)relayCH2.Init(Channel++, NightMode) == RETURN_T.OKAY)
                 {
+                    if (Params.Module == 0)
+                    {
+                        relayCH2.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_0;
+                        if (!relayCH2.SignalNameEditable)
+                        {
+                            GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_2_ON_MODULE_0);
+                        }
+                    }
+                    if (Params.Module == 1)
+                    {
+                        relayCH2.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_1;
+                        if (!relayCH2.SignalNameEditable)
+                        {
+                            GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_2_ON_MODULE_1);
+                        }
+                    }
                     if ((RETURN_T)relayCH3.Init(Channel++, NightMode) == RETURN_T.OKAY)
                     {
+                        if (Params.Module == 0)
+                        {
+                            relayCH3.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_0;
+                            if (!relayCH3.SignalNameEditable)
+                            {
+                                GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_3_ON_MODULE_0);
+                            }
+                        }
+                        if (Params.Module == 1)
+                        {
+                            relayCH3.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_1;
+                            if (!relayCH3.SignalNameEditable)
+                            {
+                                GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_3_ON_MODULE_1);
+                            }
+                        }
                         if ((RETURN_T)relayCH4.Init(Channel++, NightMode) == RETURN_T.OKAY)
                         {
+                            if (Params.Module == 0)
+                            {
+                                relayCH4.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_0;
+                                if (!relayCH4.SignalNameEditable)
+                                {
+                                    GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_4_ON_MODULE_0);
+                                }
+                            }
+                            if (Params.Module == 1)
+                            {
+                                relayCH4.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_1;
+                                if (!relayCH4.SignalNameEditable)
+                                {
+                                    GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_4_ON_MODULE_1);
+                                }
+                            }
                             if ((RETURN_T)relayCH5.Init(Channel++, NightMode) == RETURN_T.OKAY)
                             {
+                                if (Params.Module == 0)
+                                {
+                                    if (!relayCH5.SignalNameEditable)
+                                    {
+                                        GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_5_ON_MODULE_0);
+                                    }
+                                    relayCH5.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_0;
+                                }
+                                if (Params.Module == 1)
+                                {
+                                    relayCH5.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_1;
+                                    if (!relayCH5.SignalNameEditable)
+                                    {
+                                        GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_5_ON_MODULE_1);
+                                    }
+                                }
                                 if ((RETURN_T)relayCH6.Init(Channel++, NightMode) == RETURN_T.OKAY)
                                 {
+                                    if (Params.Module == 0)
+                                    {
+                                        relayCH6.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_0;
+                                        if (!relayCH6.SignalNameEditable)
+                                        {
+                                            GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_6_ON_MODULE_0);
+                                        }
+                                    }
+                                    if (Params.Module == 1)
+                                    {
+                                        relayCH6.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_1;
+                                        if (!relayCH6.SignalNameEditable)
+                                        {
+                                            GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_6_ON_MODULE_1);
+                                        }
+                                    }
                                     if ((RETURN_T)relayCH7.Init(Channel++, NightMode) == RETURN_T.OKAY)
                                     {
+                                        if (Params.Module == 0)
+                                        {
+                                            relayCH7.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_0;
+                                            if (!relayCH7.SignalNameEditable)
+                                            {
+                                                GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_7_ON_MODULE_0);
+                                            }
+                                        }
+                                        if (Params.Module == 1)
+                                        {
+                                            relayCH7.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_1;
+                                            if (!relayCH7.SignalNameEditable)
+                                            {
+                                                GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_7_ON_MODULE_1);
+                                            }
+                                        }
                                         if ((RETURN_T)relayCH8.Init(Channel++, NightMode) == RETURN_T.OKAY)
                                         {
+                                            if (Params.Module == 0)
+                                            {
+                                                relayCH8.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_0;
+                                                if (!relayCH8.SignalNameEditable)
+                                                {
+                                                    GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_8_ON_MODULE_0);
+                                                }
+                                            }
+                                            if (Params.Module == 1)
+                                            {
+                                                relayCH8.SignalNameEditable = !RCmanager.Constants.FIXED_SIGNALNAMES_ON_MODULE_1;
+                                                if (!relayCH8.SignalNameEditable)
+                                                {
+                                                    GetRelay((byte)(Channel - RCmanager.Constants.CHANNELS * Params.Module - 1)).SetSignalName(RCmanager.Constants.FIXED_SIGNALNAME_8_ON_MODULE_1);
+                                                }
+                                            }
+
                                             Return = RETURN_T.OKAY;
                                         }
 

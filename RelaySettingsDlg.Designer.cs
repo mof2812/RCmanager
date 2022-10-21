@@ -39,15 +39,15 @@
             this.lblCounter = new System.Windows.Forms.Label();
             this.txtCounter = new System.Windows.Forms.TextBox();
             this.cbMode = new System.Windows.Forms.ComboBox();
-            this.GrpSwTrigger1 = new System.Windows.Forms.GroupBox();
+            this.grpSwTrigger = new System.Windows.Forms.GroupBox();
             this.cmbTriggerChannel = new System.Windows.Forms.ComboBox();
             this.lblTriggerChannel = new System.Windows.Forms.Label();
             this.lblTriggerEnable = new System.Windows.Forms.Label();
             this.ledTriggerEnable = new Bulb.LedBulb();
-            this.GrpSwSync1 = new System.Windows.Forms.GroupBox();
+            this.grpSwSync1 = new System.Windows.Forms.GroupBox();
             this.rbAsynchron = new System.Windows.Forms.RadioButton();
             this.rbSynchron = new System.Windows.Forms.RadioButton();
-            this.GrpSwImmediate1 = new System.Windows.Forms.GroupBox();
+            this.grpSwImmediate1 = new System.Windows.Forms.GroupBox();
             this.rbImmediateOff = new System.Windows.Forms.RadioButton();
             this.rbImmediateOn = new System.Windows.Forms.RadioButton();
             this.GrpSwNegation1 = new System.Windows.Forms.GroupBox();
@@ -63,9 +63,9 @@
             this.txtSignalName = new System.Windows.Forms.TextBox();
             this.grpRelayControlTiming.SuspendLayout();
             this.GrpSwMode.SuspendLayout();
-            this.GrpSwTrigger1.SuspendLayout();
-            this.GrpSwSync1.SuspendLayout();
-            this.GrpSwImmediate1.SuspendLayout();
+            this.grpSwTrigger.SuspendLayout();
+            this.grpSwSync1.SuspendLayout();
+            this.grpSwImmediate1.SuspendLayout();
             this.GrpSwNegation1.SuspendLayout();
             this.grpEnable.SuspendLayout();
             this.grpSignalName.SuspendLayout();
@@ -216,18 +216,18 @@
             this.cbMode.Enter += new System.EventHandler(this.cbMode_Enter);
             this.cbMode.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cbMode_KeyPress);
             // 
-            // GrpSwTrigger1
+            // grpSwTrigger
             // 
-            this.GrpSwTrigger1.Controls.Add(this.cmbTriggerChannel);
-            this.GrpSwTrigger1.Controls.Add(this.lblTriggerChannel);
-            this.GrpSwTrigger1.Controls.Add(this.lblTriggerEnable);
-            this.GrpSwTrigger1.Controls.Add(this.ledTriggerEnable);
-            this.GrpSwTrigger1.Location = new System.Drawing.Point(358, 437);
-            this.GrpSwTrigger1.Name = "GrpSwTrigger1";
-            this.GrpSwTrigger1.Size = new System.Drawing.Size(195, 192);
-            this.GrpSwTrigger1.TabIndex = 3;
-            this.GrpSwTrigger1.TabStop = false;
-            this.GrpSwTrigger1.Text = "Triggerung";
+            this.grpSwTrigger.Controls.Add(this.cmbTriggerChannel);
+            this.grpSwTrigger.Controls.Add(this.lblTriggerChannel);
+            this.grpSwTrigger.Controls.Add(this.lblTriggerEnable);
+            this.grpSwTrigger.Controls.Add(this.ledTriggerEnable);
+            this.grpSwTrigger.Location = new System.Drawing.Point(358, 437);
+            this.grpSwTrigger.Name = "grpSwTrigger";
+            this.grpSwTrigger.Size = new System.Drawing.Size(195, 192);
+            this.grpSwTrigger.TabIndex = 3;
+            this.grpSwTrigger.TabStop = false;
+            this.grpSwTrigger.Text = "Triggerung";
             // 
             // cmbTriggerChannel
             // 
@@ -279,16 +279,16 @@
             this.ledTriggerEnable.Text = "Invertierung";
             this.ledTriggerEnable.Click += new System.EventHandler(this.ledTriggerEnable_Click);
             // 
-            // GrpSwSync1
+            // grpSwSync1
             // 
-            this.GrpSwSync1.Controls.Add(this.rbAsynchron);
-            this.GrpSwSync1.Controls.Add(this.rbSynchron);
-            this.GrpSwSync1.Location = new System.Drawing.Point(19, 553);
-            this.GrpSwSync1.Name = "GrpSwSync1";
-            this.GrpSwSync1.Size = new System.Drawing.Size(315, 76);
-            this.GrpSwSync1.TabIndex = 0;
-            this.GrpSwSync1.TabStop = false;
-            this.GrpSwSync1.Text = "Sychrone Betriebsart";
+            this.grpSwSync1.Controls.Add(this.rbAsynchron);
+            this.grpSwSync1.Controls.Add(this.rbSynchron);
+            this.grpSwSync1.Location = new System.Drawing.Point(19, 553);
+            this.grpSwSync1.Name = "grpSwSync1";
+            this.grpSwSync1.Size = new System.Drawing.Size(315, 76);
+            this.grpSwSync1.TabIndex = 0;
+            this.grpSwSync1.TabStop = false;
+            this.grpSwSync1.Text = "Sychrone Betriebsart";
             // 
             // rbAsynchron
             // 
@@ -316,16 +316,16 @@
             this.rbSynchron.UseVisualStyleBackColor = true;
             this.rbSynchron.CheckedChanged += new System.EventHandler(this.rbSynchron_CheckedChanged);
             // 
-            // GrpSwImmediate1
+            // grpSwImmediate1
             // 
-            this.GrpSwImmediate1.Controls.Add(this.rbImmediateOff);
-            this.GrpSwImmediate1.Controls.Add(this.rbImmediateOn);
-            this.GrpSwImmediate1.Location = new System.Drawing.Point(19, 369);
-            this.GrpSwImmediate1.Name = "GrpSwImmediate1";
-            this.GrpSwImmediate1.Size = new System.Drawing.Size(315, 76);
-            this.GrpSwImmediate1.TabIndex = 17;
-            this.GrpSwImmediate1.TabStop = false;
-            this.GrpSwImmediate1.Text = "Startverhalten";
+            this.grpSwImmediate1.Controls.Add(this.rbImmediateOff);
+            this.grpSwImmediate1.Controls.Add(this.rbImmediateOn);
+            this.grpSwImmediate1.Location = new System.Drawing.Point(19, 369);
+            this.grpSwImmediate1.Name = "grpSwImmediate1";
+            this.grpSwImmediate1.Size = new System.Drawing.Size(315, 76);
+            this.grpSwImmediate1.TabIndex = 17;
+            this.grpSwImmediate1.TabStop = false;
+            this.grpSwImmediate1.Text = "Startverhalten";
             // 
             // rbImmediateOff
             // 
@@ -485,9 +485,9 @@
             this.Controls.Add(this.btnOkay);
             this.Controls.Add(this.GrpSwMode);
             this.Controls.Add(this.GrpSwNegation1);
-            this.Controls.Add(this.GrpSwTrigger1);
-            this.Controls.Add(this.GrpSwImmediate1);
-            this.Controls.Add(this.GrpSwSync1);
+            this.Controls.Add(this.grpSwTrigger);
+            this.Controls.Add(this.grpSwImmediate1);
+            this.Controls.Add(this.grpSwSync1);
             this.Controls.Add(this.grpRelayControlTiming);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4);
@@ -497,12 +497,12 @@
             this.grpRelayControlTiming.PerformLayout();
             this.GrpSwMode.ResumeLayout(false);
             this.GrpSwMode.PerformLayout();
-            this.GrpSwTrigger1.ResumeLayout(false);
-            this.GrpSwTrigger1.PerformLayout();
-            this.GrpSwSync1.ResumeLayout(false);
-            this.GrpSwSync1.PerformLayout();
-            this.GrpSwImmediate1.ResumeLayout(false);
-            this.GrpSwImmediate1.PerformLayout();
+            this.grpSwTrigger.ResumeLayout(false);
+            this.grpSwTrigger.PerformLayout();
+            this.grpSwSync1.ResumeLayout(false);
+            this.grpSwSync1.PerformLayout();
+            this.grpSwImmediate1.ResumeLayout(false);
+            this.grpSwImmediate1.PerformLayout();
             this.GrpSwNegation1.ResumeLayout(false);
             this.GrpSwNegation1.PerformLayout();
             this.grpEnable.ResumeLayout(false);
@@ -523,11 +523,11 @@
         private System.Windows.Forms.TextBox txtOn_ms;
         private System.Windows.Forms.TextBox txtDelay_ms;
         private System.Windows.Forms.GroupBox GrpSwMode;
-        private System.Windows.Forms.GroupBox GrpSwTrigger1;
-        private System.Windows.Forms.GroupBox GrpSwSync1;
+        private System.Windows.Forms.GroupBox grpSwTrigger;
+        private System.Windows.Forms.GroupBox grpSwSync1;
         private System.Windows.Forms.RadioButton rbAsynchron;
         private System.Windows.Forms.RadioButton rbSynchron;
-        private System.Windows.Forms.GroupBox GrpSwImmediate1;
+        private System.Windows.Forms.GroupBox grpSwImmediate1;
         private System.Windows.Forms.RadioButton rbImmediateOff;
         private System.Windows.Forms.RadioButton rbImmediateOn;
         private System.Windows.Forms.GroupBox GrpSwNegation1;
